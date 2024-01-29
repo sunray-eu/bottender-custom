@@ -14,13 +14,13 @@
     "@types/fs-extra": "^11.0.4",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^20.11.10",
-    "chalk": "^5.3.0",
+    "chalk": "^4.1.2",
     "commander": "^11.1.0",
     "cross-spawn": "^7.0.3",
     "envinfo": "^7.11.0",
-    "figures": "^6.0.1",
+    "figures": "^3.0.0",
     "fs-extra": "^11.2.0",
-    "inquirer": "^9.2.13",
+    "inquirer": "^8.1.5",
     "prettier": "^3.2.4",
     "validate-npm-package-name": "^5.0.0"
   }

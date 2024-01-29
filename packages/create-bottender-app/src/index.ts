@@ -41,7 +41,7 @@ const program = new commander.Command(pkg.name)
   .allowUnknownOption()
   .parse(process.argv);
 
-if (program.getOptionValue('--info')) {
+if (program.getOptionValue('info')) {
   print(bold('\nEnvironment Info:'));
   envinfo
     .run(
@@ -60,7 +60,7 @@ if (program.getOptionValue('--info')) {
     .then(print);
 }
 
-const getQuestions = (): Record<string, any>[] => [
+const getQuestions = () => [
   ...(projectName
     ? []
     : [
@@ -222,7 +222,8 @@ const install = (
     child.on('close', (code) => {
       if (code !== 0) {
         const err = new Error('install failed');
-        (err as any).command = `${command} ${args.join(' ')}`;
+        (err as unknown as Record<string, string>).command =
+          `${command} ${args.join(' ')}`;
         reject(err);
         return;
       }
@@ -383,16 +384,14 @@ const init = async (): Promise<void> => {
       return process.exit(1);
     }
 
-    const useYarn = program.getOptionValue('--use-npm')
-      ? false
-      : shouldUseYarn();
+    const useYarn = program.getOptionValue('use-npm') ? false : shouldUseYarn();
     const root = path.resolve(name);
 
     await createBot(
       name,
       root,
       useYarn,
-      program.getOptionValue('--typescript'),
+      program.getOptionValue('typescript'),
       answer.platforms,
       answer.session
     );
