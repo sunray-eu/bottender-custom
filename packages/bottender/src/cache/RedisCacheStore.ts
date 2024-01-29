@@ -1,10 +1,10 @@
-import IORedis from 'ioredis';
+import Redis, { RedisOptions } from 'ioredis';
 import isNumber from 'lodash/isNumber';
 
 import CacheStore, { CacheValue } from './CacheStore';
 
 export default class RedisCacheStore implements CacheStore {
-  _redis: IORedis.Redis;
+  _redis: Redis;
 
   _prefix = '';
 
@@ -24,8 +24,25 @@ export default class RedisCacheStore implements CacheStore {
     // Connect to 127.0.0.1:6380, db 4, using password "authpassword"
     - new Redis('redis://:authpassword@127.0.0.1:6380/4')
   */
-  constructor(...args: any) {
-    this._redis = new IORedis(...args);
+
+  constructor(port: number, host: string, options: RedisOptions);
+
+  constructor(path: string, options: RedisOptions);
+
+  constructor(port: number, options: RedisOptions);
+
+  constructor(port: number, host: string);
+
+  constructor(options: RedisOptions);
+
+  constructor(port: number);
+
+  constructor(path: string);
+
+  constructor();
+
+  constructor(...args: []) {
+    this._redis = new Redis(...args);
   }
 
   async get(key: string): Promise<CacheValue | null> {
@@ -40,13 +57,13 @@ export default class RedisCacheStore implements CacheStore {
     let [cursor, keys] = await this._redis.scan(0);
 
     while (cursor !== '0') {
-      /* eslint-disable no-await-in-loop */
+      // eslint-disable-next-line no-await-in-loop
       const [nextCursor, newkeys] = await this._redis.scan(Number(cursor));
       cursor = nextCursor;
       keys = keys.concat(newkeys);
     }
 
-    return this._redis.mget(...keys) as any;
+    return this._redis.mget(...keys) as Promise<CacheValue[]>;
   }
 
   async put(key: string, value: CacheValue, minutes: number): Promise<void> {
@@ -69,7 +86,7 @@ export default class RedisCacheStore implements CacheStore {
     await this._redis.flushdb();
   }
 
-  getRedis(): IORedis.Redis {
+  getRedis(): Redis {
     return this._redis;
   }
 

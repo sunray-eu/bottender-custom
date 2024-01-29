@@ -1,6 +1,7 @@
 import path from 'path';
 
 import dotenv from 'dotenv';
+import { JsonObject } from 'type-fest';
 
 import { BottenderConfig } from '../types';
 
@@ -15,7 +16,10 @@ const getBottenderConfig = (): BottenderConfig | never => {
     return require(path.resolve('bottender.config.js'));
   } catch (err) {
     // if config is not found, return empty config
-    if (err.code && err.code === 'MODULE_NOT_FOUND') {
+    if (
+      (err as JsonObject).code &&
+      (err as JsonObject).code === 'MODULE_NOT_FOUND'
+    ) {
       return {};
     }
 

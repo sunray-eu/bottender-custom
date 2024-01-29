@@ -14,9 +14,9 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "axios-error": "^1.0.4",
-    "facebook-batch": "1.0.6",
+    "facebook-batch": "1.1.0",
     "lodash": "^4.17.21",
-    "type-fest": "^1.4.0",
+    "type-fest": "4.7.1",
     "warning": "^4.0.3"
   },
   "peerDependencies": {

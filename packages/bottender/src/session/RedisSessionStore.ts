@@ -19,7 +19,7 @@ export default class RedisSessionStore
   implements SessionStore
 {
   constructor(arg: RedisOption, expiresIn?: number) {
-    const cache = new RedisCacheStore(arg);
+    const cache = new RedisCacheStore(arg as never);
     super(cache, expiresIn);
   }
 }

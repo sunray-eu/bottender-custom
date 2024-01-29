@@ -1,4 +1,3 @@
-import Joi from '@hapi/joi';
 import get from 'lodash/get';
 import invariant from 'invariant';
 
@@ -8,7 +7,11 @@ import getBottenderConfig from './getBottenderConfig';
 import getChannelSchema from './getChannelSchema';
 import { bold } from './log';
 
-const getChannelConfig = (channel: Channel): any | never => {
+function getChannelConfig({
+  channel,
+}: {
+  channel: Channel;
+}): Record<string, unknown> {
   const config = getBottenderConfig();
 
   const channelConfig = get(config, `channels.${channel}`);
@@ -20,7 +23,7 @@ const getChannelConfig = (channel: Channel): any | never => {
 
   const schema = getChannelSchema(channel);
 
-  const validateResult = Joi.validate(channelConfig, schema, {
+  const validateResult = schema.validate(channelConfig, {
     allowUnknown: true,
   });
 
@@ -37,6 +40,6 @@ const getChannelConfig = (channel: Channel): any | never => {
   }
 
   return channelConfig;
-};
+}
 
 export default getChannelConfig;

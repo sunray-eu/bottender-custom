@@ -11,7 +11,7 @@ import validateProjectName from 'validate-npm-package-name';
 
 import generateAppEntry from './utils/generateAppEntry';
 import generateConfig from './utils/generateConfig';
-import { Answer, Platform, Session } from './types';
+import { Answer, ErrorResponse, Platform, Session } from './types';
 import { bold, error, print } from './shared/log';
 
 const pkg = JSON.parse(
@@ -41,7 +41,7 @@ const program = new commander.Command(pkg.name)
   .allowUnknownOption()
   .parse(process.argv);
 
-if (program.info) {
+if (program.getOptionValue('--info')) {
   print(bold('\nEnvironment Info:'));
   envinfo
     .run(
@@ -264,7 +264,7 @@ const run = async (
 
     await install(useYarn, allDependencies);
 
-    const botConfig = generateConfig(session, platforms);
+    const botConfig = await generateConfig(session, platforms);
     fs.writeFileSync(path.join(root, 'bottender.config.js'), botConfig);
 
     fs.copySync(
@@ -274,7 +274,7 @@ const run = async (
       ),
       root
     );
-    const appEntry = generateAppEntry(useTypescript, platforms);
+    const appEntry = await generateAppEntry(useTypescript, platforms);
     fs.writeFileSync(
       path.join(root, 'src', useTypescript ? 'index.ts' : 'index.js'),
       appEntry
@@ -285,11 +285,13 @@ const run = async (
   } catch (reason) {
     print('');
     print('Aborting installation.');
-    if (reason.command) {
-      error(`  ${reason.command} has failed.`);
+
+    const reasonObj = reason as { command: string | undefined };
+    if (reasonObj.command) {
+      error(`  ${reasonObj.command} has failed.`);
     } else {
       error('Unexpected error. Please report it as a bug:');
-      print(reason);
+      print(reasonObj as never);
     }
     print('');
 
@@ -381,14 +383,16 @@ const init = async (): Promise<void> => {
       return process.exit(1);
     }
 
-    const useYarn = program.useNpm ? false : shouldUseYarn();
+    const useYarn = program.getOptionValue('--use-npm')
+      ? false
+      : shouldUseYarn();
     const root = path.resolve(name);
 
     await createBot(
       name,
       root,
       useYarn,
-      program.typescript,
+      program.getOptionValue('--typescript'),
       answer.platforms,
       answer.session
     );
@@ -422,10 +426,11 @@ const init = async (): Promise<void> => {
     print('Happy hacking!');
   } catch (err) {
     error('init error with');
-    if (err.response) {
-      error(`status: ${err.response.status}`);
+    const errObj = err as ErrorResponse;
+    if (errObj.response) {
+      error(`status: ${errObj.response.status}`);
     } else {
-      error(`message: ${err.message}`);
+      error(`message: ${errObj.message}`);
     }
     return process.exit(1);
   }

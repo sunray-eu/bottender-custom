@@ -11,3 +11,11 @@ export type Answer = {
   platforms: Platform[];
   session: Session;
 };
+
+export interface ErrorResponse {
+  response?: {
+    status?: string;
+    data?: string;
+  };
+  message?: string;
+}

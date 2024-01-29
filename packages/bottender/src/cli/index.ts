@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import get from 'lodash/get';
 import updateNotifier from 'update-notifier';
+import { JsonObject } from 'type-fest';
 import { Result } from 'arg';
 import { camelcase } from 'messaging-api-common';
 
@@ -87,8 +88,8 @@ const main = async (argvFrom2: string[]) => {
       provider.help();
     }
   } catch (err) {
-    error(`An unexpected error occurred in provider ${subcommand}: ${err.message}
-${err.stack}`);
+    error(`An unexpected error occurred in provider ${subcommand}: ${(err as JsonObject).message}
+${(err as JsonObject).stack}`);
   }
 };
 

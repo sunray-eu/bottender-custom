@@ -1,6 +1,6 @@
-import { JsonObject } from 'type-fest';
+import { JsonArray, JsonObject } from 'type-fest';
 
-export type CacheValue = number | JsonObject;
+export type CacheValue = string | number | boolean | JsonObject | JsonArray;
 
 type CacheStore = {
   get(key: string): Promise<CacheValue | null>;

@@ -1,13 +1,17 @@
-import LRU from 'lru-cache';
 import cloneDeep from 'lodash/cloneDeep';
+import { LRUCache } from 'lru-cache';
 
-import CacheStore, { CacheValue } from './CacheStore';
+import CacheStore from './CacheStore';
+import type { CacheValue } from './CacheStore';
 
 export default class MemoryCacheStore implements CacheStore {
-  _lru: LRU<string, any>;
+  _lru: LRUCache<string, CacheValue>;
 
-  constructor(max?: number) {
-    this._lru = new LRU({ max });
+  constructor(max: number = 500, minutes?: number) {
+    this._lru = new LRUCache({
+      max,
+      ttl: minutes ? minutes * 60 * 1000 : undefined,
+    });
   }
 
   async get(key: string): Promise<CacheValue | null> {
@@ -21,26 +25,27 @@ export default class MemoryCacheStore implements CacheStore {
   }
 
   async all(): Promise<CacheValue[]> {
-    return this._lru.values();
+    const allValues: CacheValue[] = [];
+
+    for (const v of this._lru.values()) {
+      allValues.push(v);
+    }
+    return allValues;
   }
 
-  async put(key: string, value: CacheValue, minutes: number): Promise<void> {
+  async put(key: string, value: CacheValue): Promise<void> {
     // cloneDeep: To make sure save as writable object
     const val = value && typeof value === 'object' ? cloneDeep(value) : value;
 
-    if (minutes) {
-      this._lru.set(key, val, minutes * 60 * 1000);
-    } else {
-      this._lru.set(key, val);
-    }
+    this._lru.set(key, val);
   }
 
   async forget(key: string): Promise<void> {
-    this._lru.del(key);
+    this._lru.delete(key);
   }
 
   async flush(): Promise<void> {
-    this._lru.reset();
+    this._lru.clear();
   }
 
   getPrefix(): string {

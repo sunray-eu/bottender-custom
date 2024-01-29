@@ -3,6 +3,7 @@ import qs from 'querystring';
 import AxiosError from 'axios-error';
 import axios, { AxiosInstance } from 'axios';
 import get from 'lodash/get';
+import { JsonObject } from 'type-fest';
 import {
   OnRequestFunction,
   camelcaseKeys,
@@ -19,7 +20,7 @@ type ClientConfig = {
 
 function handleError(err: AxiosError): never {
   if (err.response && err.response.data) {
-    const error = get(err, 'response.data', {});
+    const error = get(err, 'response.data', {}) as JsonObject;
     const msg = `WhatsApp API - ${error.code} ${error.message} ${error.more_info}`;
     throw new AxiosError(msg, err);
   }
@@ -116,7 +117,7 @@ export default class TwilioClient {
       );
       return camelcaseKeys(data);
     } catch (err) {
-      handleError(err);
+      handleError(err as AxiosError);
     }
   }
 }

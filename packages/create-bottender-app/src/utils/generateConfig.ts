@@ -2,7 +2,10 @@ import prettier from 'prettier';
 
 import { Platform, Session } from '../types';
 
-const generateConfig = (session: Session, platforms: Platform[]): string =>
+const generateConfig = async (
+  session: Session,
+  platforms: Platform[]
+): Promise<string> =>
   prettier.format(
     `module.exports = {
   session: {

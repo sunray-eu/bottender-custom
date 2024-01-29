@@ -1,6 +1,5 @@
-import isBefore from 'date-fns/isBefore';
-import subMinutes from 'date-fns/subMinutes';
-import { Collection, Db, MongoClient } from 'mongodb';
+import { Collection, Db, Document, MongoClient } from 'mongodb';
+import { isBefore, subMinutes } from 'date-fns';
 
 import Session from './Session';
 import SessionStore from './SessionStore';
@@ -34,9 +33,7 @@ export default class MongoSessionStore implements SessionStore {
   }
 
   async init(): Promise<MongoSessionStore> {
-    this._connection = (
-      await MongoClient.connect(this._url, { useUnifiedTopology: true })
-    ).db();
+    this._connection = (await MongoClient.connect(this._url)).db();
 
     return this;
   }
@@ -82,7 +79,7 @@ export default class MongoSessionStore implements SessionStore {
   async destroy(key: string): Promise<void> {
     const filter = { id: key };
     try {
-      await this._sessions.remove(filter);
+      await this._sessions.deleteOne(filter);
     } catch (err) {
       console.error(err);
     }
@@ -99,7 +96,7 @@ export default class MongoSessionStore implements SessionStore {
     );
   }
 
-  get _sessions(): Collection<any> {
+  get _sessions(): Collection<Document> {
     if (this._connection == null) {
       throw new Error(
         'MongoSessionStore: must call `init` before any operation.'

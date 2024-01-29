@@ -8,7 +8,7 @@ import { snakecase } from 'messaging-api-common';
 
 import getChannelConfig from '../../../shared/getChannelConfig';
 import getSubArgs from '../sh/utils/getSubArgs';
-import { Channel } from '../../../types';
+import { Channel, ErrorResponse } from '../../../types';
 import { CliContext } from '../..';
 import { bold, error, log, print } from '../../../shared/log';
 
@@ -62,11 +62,14 @@ export const trimDomain = (
   return clone;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getMessengerProfile(_: CliContext): Promise<void> {
   try {
-    const config = getChannelConfig(Channel.Messenger);
+    const config = getChannelConfig({
+      channel: Channel.Messenger,
+    });
 
-    const { accessToken } = config;
+    const { accessToken } = config as { accessToken: string };
 
     invariant(
       accessToken,
@@ -89,13 +92,15 @@ export async function getMessengerProfile(_: CliContext): Promise<void> {
   } catch (err) {
     error(`Failed to get ${bold('messenger_profile')} settings`);
 
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+    const errorObj = err as ErrorResponse;
+    if (errorObj.response) {
+      error(`status: ${bold(errorObj.response.status as string)}`);
+
+      if (errorObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errorObj.response.data, null, 2))}`);
       }
     } else {
-      error(err.message);
+      error(errorObj.message as string);
     }
 
     return process.exit(1);
@@ -111,16 +116,20 @@ export async function setMessengerProfile(ctx: CliContext): Promise<void> {
   const force = argv['--force'];
 
   try {
-    const config = getChannelConfig(Channel.Messenger);
+    const config = getChannelConfig({
+      channel: Channel.Messenger,
+    });
 
-    const { accessToken } = config;
+    const { accessToken } = config as { accessToken: string };
 
     invariant(
       accessToken,
       '`accessToken` is not found in the `bottender.config.js` file'
     );
 
-    const { profile: _profile } = getChannelConfig(Channel.Messenger);
+    const { profile: _profile } = getChannelConfig({
+      channel: Channel.Messenger,
+    }) as { profile: Record<string, never> };
 
     const client = new MessengerClient({
       accessToken,
@@ -196,23 +205,27 @@ export async function setMessengerProfile(ctx: CliContext): Promise<void> {
     );
   } catch (err) {
     error(`Failed to set ${bold('messenger_profile')} settings`);
+    const errorObj = err as ErrorResponse;
 
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+    if (errorObj.response) {
+      error(`status: ${bold(errorObj.response.status as string)}`);
+      if (errorObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errorObj.response.data, null, 2))}`);
       }
     } else {
-      error(err.message);
+      error(errorObj.message as string);
     }
 
     return process.exit(1);
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function deleteMessengerProfile(_: CliContext): Promise<void> {
   try {
-    const config = getChannelConfig(Channel.Messenger);
+    const config = getChannelConfig({
+      channel: Channel.Messenger,
+    }) as { accessToken: string };
 
     invariant(
       config.accessToken,
@@ -230,14 +243,15 @@ export async function deleteMessengerProfile(_: CliContext): Promise<void> {
     print(`Successfully delete ${bold('messenger_profile')} settings`);
   } catch (err) {
     error(`Failed to delete ${bold('messenger_profile')} settings`);
+    const errorObj = err as ErrorResponse;
 
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+    if (errorObj.response) {
+      error(`status: ${bold(errorObj.response.status as string)}`);
+      if (errorObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errorObj.response.data, null, 2))}`);
       }
     } else {
-      error(err.message);
+      error(errorObj.message as string);
     }
 
     return process.exit(1);

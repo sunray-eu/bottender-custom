@@ -2,10 +2,10 @@ import prettier from 'prettier';
 
 import { Platform } from '../types';
 
-const generateAppEntry = (
+const generateAppEntry = async (
   isTypescript: boolean,
   platforms: Platform[]
-): string => {
+): Promise<string> => {
   if (!isTypescript) {
     return prettier.format(
       `

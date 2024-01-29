@@ -1,11 +1,10 @@
 import { EventEmitter } from 'events';
 import { URL } from 'url';
 
-import isAfter from 'date-fns/isAfter';
-import isValid from 'date-fns/isValid';
 import warning from 'warning';
 import { JsonObject } from 'type-fest';
 import { MessengerClient } from 'messaging-api-messenger';
+import { isAfter, isValid } from 'date-fns';
 
 import Session from '../session/Session';
 import { Connector } from '../bot/Connector';
@@ -166,7 +165,7 @@ export default class MessengerConnector
           _updatedAt: new Date().toISOString(),
           id: senderId,
         };
-      } else {
+      } else if (senderId) {
         let user = {};
         try {
           if (customAccessToken) {
@@ -176,9 +175,9 @@ export default class MessengerConnector
               origin: this._origin,
               skipAppSecretProof: this._skipAppSecretProof,
             });
-            user = await client.getUserProfile(senderId as any);
+            user = await client.getUserProfile(senderId);
           } else {
-            user = await this._client.getUserProfile(senderId as any);
+            user = await this._client.getUserProfile(senderId);
           }
         } catch (err) {
           warning(
@@ -193,6 +192,8 @@ export default class MessengerConnector
           ...user,
           id: senderId,
         };
+      } else {
+        warning(false, 'senderId is empty, `session.user` will not be set');
       }
     }
 

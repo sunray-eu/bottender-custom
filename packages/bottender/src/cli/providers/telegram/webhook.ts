@@ -5,17 +5,18 @@ import { TelegramClient } from 'messaging-api-telegram';
 import getChannelConfig from '../../../shared/getChannelConfig';
 import getSubArgs from '../sh/utils/getSubArgs';
 import getWebhookFromNgrok from '../../../shared/getWebhookFromNgrok';
-import { Channel } from '../../../types';
+import { Channel, ErrorResponse } from '../../../types';
 import { CliContext } from '../..';
 import { bold, error, print, warn } from '../../../shared/log';
 
 import help from './help';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getWebhook(_: CliContext): Promise<void> {
   try {
-    const config = getChannelConfig(Channel.Telegram);
+    const config = getChannelConfig({ channel: Channel.Telegram });
 
-    const { accessToken } = config;
+    const { accessToken } = config as { accessToken: string };
 
     invariant(
       accessToken,
@@ -32,13 +33,15 @@ export async function getWebhook(_: CliContext): Promise<void> {
   } catch (err) {
     error('Failed to get Telegram webhook');
 
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+    const errObj = err as ErrorResponse;
+
+    if (errObj.response) {
+      error(`status: ${bold(errObj.response.status as string)}`);
+      if (errObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errObj.response.data, null, 2))}`);
       }
     } else {
-      error(err.message);
+      error(errObj.message as string);
     }
 
     return process.exit(1);
@@ -56,9 +59,12 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
   let webhook = argv['--webhook'];
 
   try {
-    const config = getChannelConfig(Channel.Telegram);
+    const config = getChannelConfig({ channel: Channel.Telegram });
 
-    const { accessToken, path = '/webhooks/telegram' } = config;
+    const { accessToken, path = '/webhooks/telegram' } = config as {
+      accessToken: string;
+      path: string;
+    };
 
     invariant(
       accessToken,
@@ -91,25 +97,27 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
     print('Successfully set Telegram webhook callback URL');
   } catch (err) {
     error('Failed to set Telegram webhook');
+    const errObj = err as ErrorResponse;
 
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+    if (errObj.response) {
+      error(`status: ${bold(errObj.response.status as string)}`);
+      if (errObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errObj.response.data, null, 2))}`);
       }
     } else {
-      error(err.message);
+      error(errObj.message as string);
     }
 
     return process.exit(1);
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function deleteWebhook(_: CliContext): Promise<void> {
   try {
-    const config = getChannelConfig(Channel.Telegram);
+    const config = getChannelConfig({ channel: Channel.Telegram });
 
-    const { accessToken } = config;
+    const { accessToken } = config as { accessToken: string };
 
     invariant(
       accessToken,
@@ -125,14 +133,15 @@ export async function deleteWebhook(_: CliContext): Promise<void> {
     print('Successfully delete Telegram webhook');
   } catch (err) {
     error('Failed to delete Telegram webhook');
+    const errObj = err as ErrorResponse;
 
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+    if (errObj.response) {
+      error(`status: ${bold(errObj.response.status as string)}`);
+      if (errObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errObj.response.data, null, 2))}`);
       }
     } else {
-      error(err.message);
+      error(errObj.message as string);
     }
 
     return process.exit(1);

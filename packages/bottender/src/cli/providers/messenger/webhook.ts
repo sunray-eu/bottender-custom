@@ -7,7 +7,7 @@ import { MessengerClient } from 'messaging-api-messenger';
 import getChannelConfig from '../../../shared/getChannelConfig';
 import getSubArgs from '../sh/utils/getSubArgs';
 import getWebhookFromNgrok from '../../../shared/getWebhookFromNgrok';
-import { Channel } from '../../../types';
+import { Channel, ErrorResponse } from '../../../types';
 import { CliContext } from '../..';
 import { bold, error, print, warn } from '../../../shared/log';
 
@@ -47,7 +47,9 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
   const ngrokPort = argv['--ngrok-port'] || '4040';
 
   try {
-    const config = getChannelConfig(Channel.Messenger);
+    const config = getChannelConfig({
+      channel: Channel.Messenger,
+    });
 
     const {
       accessToken,
@@ -56,7 +58,7 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
       verifyToken,
       pageId,
       path = '/webhooks/messenger',
-    } = config;
+    } = config as Record<string, string>;
 
     invariant(
       accessToken,
@@ -115,7 +117,7 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
       );
     }
 
-    const fields = config.fields || defaultFields;
+    const fields = (config.fields as string[]) || defaultFields;
 
     const tokenInfo = await client.debugToken();
 
@@ -127,18 +129,18 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
     const table = new Table();
 
     table.push(
-      [chalk.green('Page ID'), pageInfo.id] as any,
-      [chalk.green('Page Name'), pageInfo.name] as any,
-      [chalk.green('App Name'), tokenInfo.application] as any,
+      [chalk.green('Page ID'), pageInfo.id],
+      [chalk.green('Page Name'), pageInfo.name],
+      [chalk.green('App Name'), tokenInfo.application],
       [
         chalk.green('Token Expires At'),
         tokenInfo.expiresAt === 0
           ? 'Never'
           : new Date(tokenInfo.expiresAt * 1000).toString(),
-      ] as any,
-      [chalk.green('Token Scopes'), tokenInfo.scopes.join(',')] as any,
-      [chalk.green('App Fields'), fields.join(',')] as any,
-      [chalk.green('Webhook URL'), webhook] as any
+      ],
+      [chalk.green('Token Scopes'), tokenInfo.scopes.join(',')],
+      [chalk.green('App Fields'), fields.join(',')],
+      [chalk.green('Webhook URL'), webhook]
     );
 
     console.log(table.toString());
@@ -183,14 +185,15 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
     );
   } catch (err) {
     error('Failed to set Messenger webhook');
+    const errorObj = err as ErrorResponse;
 
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+    if (errorObj.response) {
+      error(`status: ${bold(errorObj.response.status as string)}`);
+      if (errorObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errorObj.response.data, null, 2))}`);
       }
     } else {
-      warn(err.message);
+      warn(errorObj.message as string);
     }
 
     return process.exit(1);

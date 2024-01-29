@@ -64,7 +64,12 @@ const dev = async (ctx: CliContext): Promise<void> => {
     try {
       url = await ngrok.connect(port);
     } catch (err) {
-      if (!(err instanceof Error) && err.msg) {
+      if (
+        !(err instanceof Error) &&
+        err &&
+        typeof err === 'object' &&
+        'msg' in err
+      ) {
         throw new Error(`ngrok - ${err.msg}`);
       }
       throw err;

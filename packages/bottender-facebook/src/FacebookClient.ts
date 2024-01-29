@@ -7,7 +7,7 @@ import * as Types from './FacebookTypes';
 
 function handleError(err: AxiosError): never {
   if (err.response && err.response.data) {
-    const error = get(err, 'response.data.error');
+    const error = get(err, 'response.data.error', {}) as Record<string, string>;
     if (error) {
       const msg = `Facebook API - ${error.code} ${error.type} ${error.message}`;
       throw new AxiosError(msg, err);
@@ -67,7 +67,7 @@ export default class FacebookClient extends MessengerClient {
    * @param options -
    */
   public getComment<
-    T extends Types.CommentField = 'id' | 'message' | 'created_time'
+    T extends Types.CommentField = 'id' | 'message' | 'created_time',
   >(
     commentId: string,
     {
@@ -76,7 +76,7 @@ export default class FacebookClient extends MessengerClient {
   ): Promise<
     Pick<
       Types.Comment,
-      Types.CamelCaseUnion<Types.CommentKeyMap, typeof fields[number]>
+      Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
     >
   > {
     const conjunctFields = Array.isArray(fields) ? fields.join(',') : fields;
@@ -85,7 +85,7 @@ export default class FacebookClient extends MessengerClient {
       .get<
         Pick<
           Types.Comment,
-          Types.CamelCaseUnion<Types.CommentKeyMap, typeof fields[number]>
+          Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
         >
       >(`/${commentId}`, {
         params: {
@@ -106,7 +106,7 @@ export default class FacebookClient extends MessengerClient {
    */
   public getComments<
     T extends Types.CommentField = 'id' | 'message' | 'created_time',
-    U extends boolean = false
+    U extends boolean = false,
   >(
     objectId: string,
     {
@@ -120,7 +120,7 @@ export default class FacebookClient extends MessengerClient {
     Types.PagingData<
       Pick<
         Types.Comment,
-        Types.CamelCaseUnion<Types.CommentKeyMap, typeof fields[number]>
+        Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
       >[]
     > &
       (U extends true
@@ -140,7 +140,7 @@ export default class FacebookClient extends MessengerClient {
         Types.PagingData<
           Pick<
             Types.Comment,
-            Types.CamelCaseUnion<Types.CommentKeyMap, typeof fields[number]>
+            Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
           >[]
         > &
           (U extends true
@@ -209,10 +209,10 @@ export default class FacebookClient extends MessengerClient {
             P extends 'day'
               ? Types.PageInsightsMetricDay
               : P extends 'week'
-              ? Types.PageInsightsMetricWeek
-              : P extends 'days_28'
-              ? Types.PageInsightsMetricDays28
-              : never,
+                ? Types.PageInsightsMetricWeek
+                : P extends 'days_28'
+                  ? Types.PageInsightsMetricDays28
+                  : never,
             | 'page_tab_views_login_top_unique'
             | 'page_tab_views_login_top'
             | 'page_tab_views_logout_top'
@@ -344,16 +344,16 @@ export default class FacebookClient extends MessengerClient {
           }[];
         }
     )[],
-    P extends 'day' | 'week' | 'days_28'
+    P extends 'day' | 'week' | 'days_28',
   >(
     options: {
       metric: P extends 'day'
         ? Types.PageInsightsMetricDay[]
         : P extends 'week'
-        ? Types.PageInsightsMetricWeek[]
-        : P extends 'days_28'
-        ? Types.PageInsightsMetricDays28[]
-        : never;
+          ? Types.PageInsightsMetricWeek[]
+          : P extends 'days_28'
+            ? Types.PageInsightsMetricDays28[]
+            : never;
       period: P;
     } & MergeExclusive<
       { datePreset?: Types.DatePreset },
@@ -399,8 +399,8 @@ export default class FacebookClient extends MessengerClient {
       name: P extends 'day'
         ? Types.PostInsightsMetricDay
         : P extends 'lifetime'
-        ? Types.PostInsightsMetricLifetime
-        : never;
+          ? Types.PostInsightsMetricLifetime
+          : never;
       period: P;
       values: P extends 'day'
         ? {
@@ -408,20 +408,20 @@ export default class FacebookClient extends MessengerClient {
             endTime: string;
           }[]
         : P extends 'lifetime'
-        ? {
-            value: number;
-          }
-        : never;
+          ? {
+              value: number;
+            }
+          : never;
     }[],
-    P extends 'day' | 'lifetime'
+    P extends 'day' | 'lifetime',
   >(
     postId: string,
     options: {
       metric: P extends 'day'
         ? Types.PostInsightsMetricDay[]
         : P extends 'lifetime'
-        ? Types.PostInsightsMetricLifetime[]
-        : never;
+          ? Types.PostInsightsMetricLifetime[]
+          : never;
       period?: P;
     } & MergeExclusive<
       {

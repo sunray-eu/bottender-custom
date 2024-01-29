@@ -6,7 +6,7 @@ import { MessengerClient } from 'messaging-api-messenger';
 
 import getChannelConfig from '../../../shared/getChannelConfig';
 import getSubArgs from '../sh/utils/getSubArgs';
-import { Channel } from '../../../types';
+import { Channel, ErrorResponse } from '../../../types';
 import { CliContext } from '../..';
 import { bold, error, print } from '../../../shared/log';
 
@@ -55,9 +55,9 @@ export async function createPersona(ctx: CliContext): Promise<void> {
   const personaUrl = argv['--pic'];
 
   try {
-    const config = getChannelConfig(Channel.Messenger);
+    const config = getChannelConfig({ channel: Channel.Messenger });
 
-    const { accessToken } = config;
+    const { accessToken } = config as { accessToken: string };
 
     invariant(
       accessToken,
@@ -88,24 +88,27 @@ export async function createPersona(ctx: CliContext): Promise<void> {
   } catch (err) {
     error(`Failed to create ${bold('persona')}`);
 
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+    const errObj = err as ErrorResponse;
+
+    if (errObj.response) {
+      error(`status: ${bold(errObj.response.status as string)}`);
+      if (errObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errObj.response.data, null, 2))}`);
       }
     } else {
-      error(err.message);
+      error(errObj.message as string);
     }
 
     return process.exit(1);
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function listPersona(_: CliContext): Promise<void> {
   try {
-    const config = getChannelConfig(Channel.Messenger);
+    const config = getChannelConfig({ channel: Channel.Messenger });
 
-    const { accessToken } = config;
+    const { accessToken } = config as { accessToken: string };
 
     invariant(
       accessToken,
@@ -125,7 +128,7 @@ export async function listPersona(_: CliContext): Promise<void> {
         colWidths: [30, 30, 30],
       });
       personas.forEach((item) => {
-        table.push([item.id, item.name, item.profilePictureUrl] as any);
+        table.push([item.id, item.name, item.profilePictureUrl]);
       });
       console.log(table.toString()); // eslint-disable-line no-console
     } else {
@@ -133,13 +136,15 @@ export async function listPersona(_: CliContext): Promise<void> {
     }
   } catch (err) {
     error(`Failed to list ${bold('personas')}`);
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+
+    const errObj = err as ErrorResponse;
+    if (errObj.response) {
+      error(`status: ${bold(errObj.response.status as string)}`);
+      if (errObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errObj.response.data, null, 2))}`);
       }
     } else {
-      error(err.message);
+      error(errObj.message as string);
     }
     return process.exit(1);
   }
@@ -153,9 +158,9 @@ export async function getPersona(ctx: CliContext): Promise<void> {
   const personaId = argv['--id'];
 
   try {
-    const config = getChannelConfig(Channel.Messenger);
+    const config = getChannelConfig({ channel: Channel.Messenger });
 
-    const { accessToken } = config;
+    const { accessToken } = config as { accessToken: string };
 
     invariant(
       accessToken,
@@ -184,13 +189,15 @@ export async function getPersona(ctx: CliContext): Promise<void> {
       `Failed to get ${bold('persona')} of ID ${bold(personaId as string)}`
     );
 
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+    const errObj = err as ErrorResponse;
+
+    if (errObj.response) {
+      error(`status: ${bold(errObj.response.status as string)}`);
+      if (errObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errObj.response.data, null, 2))}`);
       }
     } else {
-      error(err.message);
+      error(errObj.message as string);
     }
 
     return process.exit(1);
@@ -205,9 +212,9 @@ export async function deletePersona(ctx: CliContext): Promise<void> {
   const personaId = argv['--id'];
 
   try {
-    const config = getChannelConfig(Channel.Messenger);
+    const config = getChannelConfig({ channel: Channel.Messenger });
 
-    const { accessToken } = config;
+    const { accessToken } = config as { accessToken: string };
 
     invariant(
       accessToken,
@@ -234,13 +241,15 @@ export async function deletePersona(ctx: CliContext): Promise<void> {
       `Failed to delete ${bold('persona')} of ID ${bold(personaId as string)}`
     );
 
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+    const errObj = err as ErrorResponse;
+
+    if (errObj.response) {
+      error(`status: ${bold(errObj.response.status as string)}`);
+      if (errObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errObj.response.data, null, 2))}`);
       }
     } else {
-      error(err.message);
+      error(errObj.message as string);
     }
 
     return process.exit(1);

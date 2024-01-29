@@ -16,7 +16,7 @@ import { WhatsappConnectorOptions } from './whatsapp/WhatsappConnector';
 export type Action<
   C extends Context,
   P extends Record<string, any> = {},
-  RAP extends Record<string, any> = {}
+  RAP extends Record<string, any> = {},
 > = (
   context: C,
   props: Props<C> & P
@@ -104,7 +104,7 @@ export type BottenderConfig = {
 
 export type RequestContext<
   B extends JsonObject = JsonObject,
-  H extends Record<string, string | string[] | undefined> = {}
+  H extends Record<string, string | string[] | undefined> = {},
 > = {
   id?: string;
   method: string;
@@ -125,3 +125,11 @@ export type ChannelBot = {
   webhookPath: string;
   bot: Bot<any, any, any, any>;
 };
+
+export interface ErrorResponse {
+  response?: {
+    status?: string;
+    data?: string;
+  };
+  message?: string;
+}

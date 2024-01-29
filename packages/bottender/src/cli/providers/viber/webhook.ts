@@ -5,7 +5,7 @@ import { ViberClient, ViberTypes } from 'messaging-api-viber';
 import getChannelConfig from '../../../shared/getChannelConfig';
 import getSubArgs from '../sh/utils/getSubArgs';
 import getWebhookFromNgrok from '../../../shared/getWebhookFromNgrok';
-import { Channel } from '../../../types';
+import { Channel, ErrorResponse } from '../../../types';
 import { CliContext } from '../..';
 import { bold, error, print, warn } from '../../../shared/log';
 
@@ -29,7 +29,9 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
   const ngrokPort = argv['--ngrok-port'] || '4040';
 
   try {
-    const config: ViberConfig = getChannelConfig(Channel.Viber);
+    const config: ViberConfig = getChannelConfig({
+      channel: Channel.Viber,
+    }) as ViberConfig;
 
     const { accessToken, sender, path = '/webhooks/viber' } = config;
 
@@ -73,22 +75,27 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
   } catch (err) {
     error('Failed to set Viber webhook');
 
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+    const errorObj = err as ErrorResponse;
+
+    if (errorObj.response) {
+      error(`status: ${bold(errorObj.response.status as string)}`);
+      if (errorObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errorObj.response.data, null, 2))}`);
       }
     } else {
-      error(err.message);
+      error(errorObj.message as string);
     }
 
     return process.exit(1);
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function deleteWebhook(_: CliContext): Promise<void> {
   try {
-    const config: ViberConfig = getChannelConfig(Channel.Viber);
+    const config: ViberConfig = getChannelConfig({
+      channel: Channel.Viber,
+    }) as ViberConfig;
 
     const { accessToken, sender } = config;
 
@@ -111,13 +118,16 @@ export async function deleteWebhook(_: CliContext): Promise<void> {
     print('Successfully delete Viber webhook');
   } catch (err) {
     error('Failed to delete Viber webhook');
-    if (err.response) {
-      error(`status: ${bold(err.response.status)}`);
-      if (err.response.data) {
-        error(`data: ${bold(JSON.stringify(err.response.data, null, 2))}`);
+
+    const errorObj = err as ErrorResponse;
+
+    if (errorObj.response) {
+      error(`status: ${bold(errorObj.response.status as string)}`);
+      if (errorObj.response.data) {
+        error(`data: ${bold(JSON.stringify(errorObj.response.data, null, 2))}`);
       }
-    } else {
-      error(err.message);
+    } else if (errorObj.message) {
+      error(errorObj.message);
     }
 
     return process.exit(1);

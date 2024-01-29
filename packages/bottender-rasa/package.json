@@ -14,9 +14,9 @@
   ],
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@types/lodash": "^4.14.149",
-    "axios": "^0.21.4",
-    "lodash": "^4.17.15"
+    "@types/lodash": "^4.14.202",
+    "axios": "^1.6.7",
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "bottender": ">= 1.2.0-0"

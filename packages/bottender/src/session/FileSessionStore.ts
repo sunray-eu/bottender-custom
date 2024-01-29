@@ -1,8 +1,7 @@
 import os from 'os';
 
 import JFSStore, { Instance } from '@bottender/jfs';
-import isBefore from 'date-fns/isBefore';
-import subMinutes from 'date-fns/subMinutes';
+import { isBefore, subMinutes } from 'date-fns';
 
 import Session from './Session';
 import SessionStore from './SessionStore';
@@ -24,7 +23,7 @@ function getDirname(arg: FileOption): string | void {
 }
 
 export default class FileSessionStore implements SessionStore {
-  _jfs: Instance<Record<string, any>>;
+  _jfs: Instance<Record<string, Session>>;
 
   // The number of minutes to store the data in the session.
   _expiresIn: number;
@@ -52,7 +51,7 @@ export default class FileSessionStore implements SessionStore {
           if (err) {
             reject(err);
           } else {
-            resolve(obj);
+            resolve(obj || null);
           }
         });
       });
@@ -73,7 +72,7 @@ export default class FileSessionStore implements SessionStore {
         if (err) {
           reject(err);
         } else {
-          resolve(objs as Session[]);
+          resolve(Object.values(objs || {}));
         }
       });
     });
@@ -84,7 +83,7 @@ export default class FileSessionStore implements SessionStore {
 
     sess.lastActivity = Date.now();
 
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       this._jfs.save(safeKey, sess, (err) => {
         if (err) {
           reject(err);
@@ -109,7 +108,7 @@ export default class FileSessionStore implements SessionStore {
     });
   }
 
-  getJFS(): Instance<Record<string, any>> {
+  getJFS(): Instance<Record<string, Session>> {
     return this._jfs;
   }
 
