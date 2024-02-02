@@ -2,14 +2,19 @@ import path from 'path';
 
 import invariant from 'invariant';
 import { merge } from 'lodash-es';
-import { pascalcase } from 'messaging-api-common';
 
 import {
   Action,
   Bot,
   BottenderConfig,
   ChannelBot,
+  LineConnector,
+  MessengerConnector,
   Plugin,
+  SlackConnector,
+  TelegramConnector,
+  ViberConnector,
+  WhatsappConnector,
   getSessionStore,
 } from '..';
 
@@ -34,11 +39,12 @@ async function getChannelBots(): Promise<ChannelBot[]> {
     channels = {},
   } = merge(bottenderConfig /* , config */) as BottenderConfig;
 
-  const sessionStore = getSessionStore();
+  const sessionStore = await getSessionStore();
 
   // TODO: refine handler entry, improve error message and hint
   // eslint-disable-next-line import/no-dynamic-require, @typescript-eslint/no-var-requires
-  const Entry: Action<any, any> = await import(path.resolve('index.js'));
+  const Entry: Action<any, any> = (await import(path.resolve('index.js')))
+    .default;
   let ErrorEntry: Action<any, any>;
   try {
     // eslint-disable-next-line import/no-dynamic-require
@@ -80,11 +86,29 @@ async function getChannelBots(): Promise<ChannelBot[]> {
             'whatsapp',
           ].includes(channel)
         ) {
-          // eslint-disable-next-line import/no-dynamic-require
-          const ChannelConnector = await import(
-            `../${channel}/${pascalcase(channel)}Connector`
-          ).default;
-          channelConnector = new ChannelConnector(connectorConfig);
+          switch (channel) {
+            case 'messenger':
+              channelConnector = new MessengerConnector(connectorConfig);
+              break;
+            case 'line':
+              channelConnector = new LineConnector(connectorConfig);
+              break;
+            case 'telegram':
+              channelConnector = new TelegramConnector(connectorConfig);
+              break;
+            case 'slack':
+              channelConnector = new SlackConnector(connectorConfig);
+              break;
+            case 'viber':
+              channelConnector = new ViberConnector(connectorConfig);
+              break;
+            case 'whatsapp':
+              channelConnector = new WhatsappConnector(connectorConfig);
+              break;
+
+            default:
+              break;
+          }
         } else {
           invariant(connector, `The connector of ${channel} is missing.`);
           channelConnector = connector;

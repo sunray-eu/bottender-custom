@@ -3,8 +3,8 @@ import { EventEmitter } from 'events';
 import debug from 'debug';
 import invariant from 'invariant';
 import pMap from 'p-map';
-import { JsonObject } from 'type-fest';
-import { camelcaseKeysDeep } from 'messaging-api-common';
+import { JsonObject, JsonValue } from 'type-fest';
+import { PlainObject, camelcaseKeysDeep } from 'messaging-api-common';
 
 import CacheBasedSessionStore from '../session/CacheBasedSessionStore';
 import Context from '../context/Context';
@@ -69,7 +69,7 @@ export type OnRequest = (
 ) => void;
 
 export default class Bot<
-  B extends JsonObject,
+  B extends Record<string, JsonValue> | PlainObject,
   C extends Client,
   E extends Event,
   Ctx extends Context<C, E>,
@@ -193,7 +193,7 @@ export default class Bot<
       const body = camelcaseKeysDeep(inputBody) as B;
 
       if (this._onRequest) {
-        this._onRequest(body, requestContext);
+        this._onRequest(body as JsonObject, requestContext);
       }
 
       const events = this._connector.mapRequestToEvents(body);

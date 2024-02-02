@@ -13,7 +13,7 @@ dotenv.config();
 const getBottenderConfig = async (): Promise<BottenderConfig> => {
   try {
     // eslint-disable-next-line import/no-dynamic-require, @typescript-eslint/no-var-requires
-    return await import(path.resolve('bottender.config.js'));
+    return (await import(path.resolve('bottender.config.js'))).default;
   } catch (err) {
     // if config is not found, return empty config
     if (

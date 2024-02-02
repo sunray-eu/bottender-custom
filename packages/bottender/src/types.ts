@@ -4,7 +4,6 @@ import { JsonObject } from 'type-fest';
 
 import Bot, { OnRequest } from './bot/Bot';
 import Context from './context/Context';
-import SessionStore from './session/SessionStore';
 import { Connector } from './bot/Connector';
 import { LineConnectorOptions } from './line/LineConnector';
 import { MessengerConnectorOptions } from './messenger/MessengerConnector';
@@ -107,7 +106,7 @@ export type BottenderConfig = {
 };
 
 export type RequestContext<
-  B extends JsonObject = JsonObject,
+  B extends object = object,
   H extends Record<string, string | string[] | undefined> = {},
 > = {
   id?: string;

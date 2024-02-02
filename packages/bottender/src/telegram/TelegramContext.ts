@@ -176,7 +176,7 @@ class TelegramContext extends Context<TelegramClient, TelegramEvent> {
     );
   }
 
-  async getChat(): Promise<Type.Chat | null> {
+  async getChat(): Promise<Type.GetChat | null> {
     if (!this._session) {
       warning(
         false,

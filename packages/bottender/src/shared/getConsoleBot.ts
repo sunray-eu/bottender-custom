@@ -14,11 +14,12 @@ async function getConsoleBot(): Promise<ConsoleBot> {
     bottenderConfig /* , config */
   ) as BottenderConfig;
 
-  const sessionStore = getSessionStore();
+  const sessionStore = await getSessionStore();
 
   // TODO: refine handler entry, improve error message and hint
   // eslint-disable-next-line import/no-dynamic-require, @typescript-eslint/no-var-requires
-  const Entry: Action<any, any> = await import(path.resolve('index.js'));
+  const Entry: Action<any, any> = (await import(path.resolve('index.js')))
+    .default;
   let ErrorEntry: Action<any, any>;
   try {
     // eslint-disable-next-line import/no-dynamic-require
