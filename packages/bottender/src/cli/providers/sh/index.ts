@@ -1,16 +1,21 @@
+import dev from './dev';
+import help from './help';
+import init from './init';
+import start from './start';
+
 export default {
   title: 'Bottender',
   subcommands: new Set(['help', 'init', 'start', 'dev']),
   get init() {
-    return require('./init').default;
+    return init;
   },
   get start() {
-    return require('./start').default;
+    return start;
   },
   get dev() {
-    return require('./dev').default;
+    return dev;
   },
   get help() {
-    return require('./help').default;
+    return help;
   },
 };

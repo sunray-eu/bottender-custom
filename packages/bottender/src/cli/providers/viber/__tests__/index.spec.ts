@@ -9,12 +9,12 @@ describe('telegram cli', () => {
   });
 
   it('should return webhook module', () => {
-    const webhook = require('../webhook').default;
+    const webhook = await import('../webhook').default;
     expect(sh.webhook).toEqual(webhook);
   });
 
   it('should return help module', () => {
-    const help = require('../help').default;
+    const help = await import('../help').default;
     expect(sh.help).toEqual(help);
   });
 });

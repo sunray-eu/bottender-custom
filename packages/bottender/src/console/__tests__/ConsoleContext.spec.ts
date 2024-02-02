@@ -8,9 +8,9 @@ let sleep;
 
 beforeEach(() => {
   /* eslint-disable global-require */
-  ConsoleContext = require('../ConsoleContext').default;
-  ConsoleEvent = require('../ConsoleEvent').default;
-  sleep = require('delay');
+  ConsoleContext = await import('../ConsoleContext').default;
+  ConsoleEvent = await import('../ConsoleEvent').default;
+  sleep = await import('delay');
   /* eslint-enable global-require */
 });
 

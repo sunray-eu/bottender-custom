@@ -1,7 +1,7 @@
 import path from 'path';
 
 import invariant from 'invariant';
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 import { pascalcase } from 'messaging-api-common';
 
 import {
@@ -21,12 +21,12 @@ export function cleanChannelBots(): void {
   channelBots = [];
 }
 
-function getChannelBots(): ChannelBot[] {
+async function getChannelBots(): Promise<ChannelBot[]> {
   if (channelBots.length > 0) {
     return channelBots;
   }
 
-  const bottenderConfig = getBottenderConfig();
+  const bottenderConfig = await getBottenderConfig();
 
   const {
     initialState,
@@ -38,11 +38,11 @@ function getChannelBots(): ChannelBot[] {
 
   // TODO: refine handler entry, improve error message and hint
   // eslint-disable-next-line import/no-dynamic-require, @typescript-eslint/no-var-requires
-  const Entry: Action<any, any> = require(path.resolve('index.js'));
+  const Entry: Action<any, any> = await import(path.resolve('index.js'));
   let ErrorEntry: Action<any, any>;
   try {
     // eslint-disable-next-line import/no-dynamic-require
-    ErrorEntry = require(path.resolve('_error.js'));
+    ErrorEntry = await import(path.resolve('_error.js'));
   } catch (err) {} // eslint-disable-line no-empty
 
   function initializeBot(bot: Bot<any, any, any, any>): void {
@@ -81,9 +81,9 @@ function getChannelBots(): ChannelBot[] {
           ].includes(channel)
         ) {
           // eslint-disable-next-line import/no-dynamic-require
-          const ChannelConnector = require(`../${channel}/${pascalcase(
-            channel
-          )}Connector`).default;
+          const ChannelConnector = await import(
+            `../${channel}/${pascalcase(channel)}Connector`
+          ).default;
           channelConnector = new ChannelConnector(connectorConfig);
         } else {
           invariant(connector, `The connector of ${channel} is missing.`);

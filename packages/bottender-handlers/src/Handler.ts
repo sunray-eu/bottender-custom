@@ -78,7 +78,7 @@ export default class Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(

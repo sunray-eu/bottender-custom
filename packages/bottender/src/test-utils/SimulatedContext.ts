@@ -3,7 +3,7 @@ import { Client, Event } from '../types';
 
 export default class SimulatedContext<
   C extends Client = any,
-  E extends Event = any
+  E extends Event = any,
 > extends Context<C, E> {
   _platform: string;
 

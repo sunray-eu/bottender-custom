@@ -34,12 +34,12 @@ it('be defined', () => {
   expect(getChannelBots).toBeDefined();
 });
 
-it('should be empty array', () => {
+it('should be empty array', async () => {
   mocked(getBottenderConfig).mockReturnValue({});
-  expect(getChannelBots()).toEqual([]);
+  expect(await getChannelBots()).toEqual([]);
 });
 
-it('should create channelBots', () => {
+it('should create channelBots', async () => {
   mocked(getBottenderConfig).mockReturnValue({
     channels: {
       messenger: {
@@ -52,7 +52,7 @@ it('should create channelBots', () => {
       },
     },
   });
-  const channelBots = getChannelBots();
+  const channelBots = await getChannelBots();
   expect(channelBots.length).toEqual(1);
 
   const webhookPaths = channelBots.map((c) => c.webhookPath);

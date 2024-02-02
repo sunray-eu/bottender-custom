@@ -51,7 +51,7 @@ class Server {
 
   public async prepare(): Promise<void> {
     if (this.useConsole) {
-      const bot = getConsoleBot();
+      const bot = await getConsoleBot();
       bot.createRuntime();
     }
   }
@@ -68,7 +68,7 @@ class Server {
       return;
     }
     const { channelBot, requestContext } =
-      getChannelBotAndRequestContext(req) || {};
+      (await getChannelBotAndRequestContext(req)) || {};
     if (!channelBot || !requestContext) {
       return;
     }

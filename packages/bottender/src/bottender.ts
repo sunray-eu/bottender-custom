@@ -1,3 +1,4 @@
+import DevServer from './server/DevServer';
 import Server, { ServerOptions } from './server/Server';
 
 type BottenderServerOptions = ServerOptions & {
@@ -9,7 +10,6 @@ type BottenderServerOptions = ServerOptions & {
 
 function bottender(options: BottenderServerOptions): Server {
   if (options.dev) {
-    const DevServer = require('./server/DevServer').default;
     return new DevServer(options);
   }
 

@@ -19,7 +19,7 @@ const RECOMMENDED_THRESHOLD = 50;
  * });
  * ```
  */
-export = function qnaMaker({
+export default function qnaMaker({
   resourceName,
   knowledgeBaseId,
   endpointKey,
@@ -99,4 +99,4 @@ export = function qnaMaker({
       await context.sendText(topAnswer.answer);
     };
   };
-};
+}

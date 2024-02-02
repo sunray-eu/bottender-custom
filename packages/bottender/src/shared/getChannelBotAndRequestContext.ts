@@ -8,12 +8,11 @@ import { ChannelBot, RequestContext } from '..';
 
 import getChannelBots from './getChannelBots';
 
-function getChannelBotAndRequestContext(req: IncomingMessage):
-  | {
-      requestContext: RequestContext;
-      channelBot: ChannelBot;
-    }
-  | undefined {
+async function getChannelBotAndRequestContext(
+  req: IncomingMessage
+): Promise<
+  { requestContext: RequestContext; channelBot: ChannelBot } | undefined
+> {
   // TODO: add proxy support in Bottender to apply X-Forwarded-Host and X-Forwarded-Proto
   // conditionally instead of replying on express.
   const hostname = (req as any).hostname || req.headers.host;
@@ -25,7 +24,7 @@ function getChannelBotAndRequestContext(req: IncomingMessage):
 
   const query = fromEntries(searchParams.entries());
 
-  const channelBots = getChannelBots();
+  const channelBots = await getChannelBots();
   for (let i = 0; i < channelBots.length; i++) {
     const channelBot = channelBots[i];
     const matchPath = match<Record<string, string>>(channelBot.webhookPath);

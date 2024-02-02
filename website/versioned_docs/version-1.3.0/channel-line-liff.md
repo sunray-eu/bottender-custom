@@ -98,7 +98,7 @@ server.get('/liff', (req, res) => {
 Before starting using any feature provided by LIFF, you need to create a `liff.html` file in the root directory of the project and copy the following code into it for LIFF initialization:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

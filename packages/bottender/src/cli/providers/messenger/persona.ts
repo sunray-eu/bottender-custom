@@ -55,7 +55,7 @@ export async function createPersona(ctx: CliContext): Promise<void> {
   const personaUrl = argv['--pic'];
 
   try {
-    const config = getChannelConfig({ channel: Channel.Messenger });
+    const config = await getChannelConfig({ channel: Channel.Messenger });
 
     const { accessToken } = config as { accessToken: string };
 
@@ -108,7 +108,7 @@ export async function listPersona(_: CliContext): Promise<void> {
   try {
     const config = getChannelConfig({ channel: Channel.Messenger });
 
-    const { accessToken } = config as { accessToken: string };
+    const { accessToken } = (await config) as { accessToken: string };
 
     invariant(
       accessToken,
@@ -160,7 +160,7 @@ export async function getPersona(ctx: CliContext): Promise<void> {
   try {
     const config = getChannelConfig({ channel: Channel.Messenger });
 
-    const { accessToken } = config as { accessToken: string };
+    const { accessToken } = (await config) as { accessToken: string };
 
     invariant(
       accessToken,
@@ -214,7 +214,7 @@ export async function deletePersona(ctx: CliContext): Promise<void> {
   try {
     const config = getChannelConfig({ channel: Channel.Messenger });
 
-    const { accessToken } = config as { accessToken: string };
+    const { accessToken } = (await config) as { accessToken: string };
 
     invariant(
       accessToken,

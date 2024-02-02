@@ -7,12 +7,12 @@ import getBottenderConfig from './getBottenderConfig';
 import getChannelSchema from './getChannelSchema';
 import { bold } from './log';
 
-function getChannelConfig({
+async function getChannelConfig({
   channel,
 }: {
   channel: Channel;
-}): Record<string, unknown> {
-  const config = getBottenderConfig();
+}): Promise<Record<string, unknown>> {
+  const config = await getBottenderConfig();
 
   const channelConfig = get(config, `channels.${channel}`);
 

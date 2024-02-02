@@ -47,7 +47,7 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
   const ngrokPort = argv['--ngrok-port'] || '4040';
 
   try {
-    const config = getChannelConfig({
+    const config = await getChannelConfig({
       channel: Channel.Messenger,
     });
 

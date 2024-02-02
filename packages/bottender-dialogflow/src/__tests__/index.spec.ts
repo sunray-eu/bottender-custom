@@ -72,7 +72,7 @@ function setup({
   const detectIntentResolvedValue: [
     protos.google.cloud.dialogflow.v2.IDetectIntentResponse,
     protos.google.cloud.dialogflow.v2.IDetectIntentRequest,
-    {} // eslint-disable-line @typescript-eslint/ban-types
+    {}, // eslint-disable-line @typescript-eslint/ban-types
   ] = [detectIntentResponse, detectIntentRequest, {}];
 
   mocked(

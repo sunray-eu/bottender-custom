@@ -24,14 +24,14 @@ const BOT_MAP = {
   whatsapp: WhatsappBot,
 };
 
-function initializeServer({
+async function initializeServer({
   isConsole,
   config,
 }: {
   isConsole?: boolean;
   config?: BottenderConfig;
-} = {}): express.Application | void {
-  const bottenderConfig = getBottenderConfig();
+} = {}): Promise<void | express.Application> {
+  const bottenderConfig = await getBottenderConfig();
 
   const { initialState, plugins, channels } = merge(bottenderConfig, config);
 
@@ -39,11 +39,11 @@ function initializeServer({
 
   // TODO: refine handler entry, improve error message and hint
   // eslint-disable-next-line import/no-dynamic-require, @typescript-eslint/no-var-requires
-  const Entry: Action<any, any> = require(path.resolve('index.js'));
+  const Entry: Action<any, any> = await import(path.resolve('index.js'));
   let ErrorEntry: Action<any, any>;
   try {
     // eslint-disable-next-line import/no-dynamic-require
-    ErrorEntry = require(path.resolve('_error.js'));
+    ErrorEntry = await import(path.resolve('_error.js'));
   } catch (err) {} // eslint-disable-line no-empty
 
   function initializeBot(bot: Bot<any, any, any, any>): void {
@@ -64,7 +64,7 @@ function initializeServer({
   }
 
   if (isConsole) {
-    const ConsoleBot = require('./console/ConsoleBot').default;
+    const ConsoleBot = await import('./console/ConsoleBot').default;
 
     const bot = new ConsoleBot({
       fallbackMethods: true,

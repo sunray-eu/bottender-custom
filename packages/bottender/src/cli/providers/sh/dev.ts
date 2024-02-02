@@ -24,7 +24,7 @@ const dev = async (ctx: CliContext): Promise<void> => {
   const port = argv['--port'] || process.env.PORT || 5000;
   const inspectionUrl = argv['--inspect'];
 
-  const config = getBottenderConfig();
+  const config = await getBottenderConfig();
 
   const { channels } = config;
 

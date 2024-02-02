@@ -20,7 +20,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -111,7 +111,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -140,7 +140,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -170,7 +170,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -199,7 +199,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -228,7 +228,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -257,7 +257,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -286,7 +286,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -315,7 +315,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -345,7 +345,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -374,7 +374,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -404,7 +404,7 @@ export default class TelegramHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(

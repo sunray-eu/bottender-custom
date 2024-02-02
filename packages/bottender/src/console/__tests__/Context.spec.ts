@@ -5,8 +5,8 @@ let Context;
 
 beforeEach(() => {
   /* eslint-disable global-require */
-  warning = require('warning');
-  Context = require('../../context/Context').default;
+  warning = await import('warning');
+  Context = await import('../../context/Context').default;
   /* eslint-enable global-require */
 });
 

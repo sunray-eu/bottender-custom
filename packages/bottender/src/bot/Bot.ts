@@ -72,7 +72,7 @@ export default class Bot<
   B extends JsonObject,
   C extends Client,
   E extends Event,
-  Ctx extends Context<C, E>
+  Ctx extends Context<C, E>,
 > {
   _sessions: SessionStore;
 

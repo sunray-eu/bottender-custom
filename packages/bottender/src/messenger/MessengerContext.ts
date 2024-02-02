@@ -93,7 +93,7 @@ class MessengerContext extends Context<MessengerClient, MessengerEvent> {
   _getSendMethodOptions<
     O extends {
       tag?: MessengerTypes.MessageTag;
-    }
+    },
   >(
     options: O
   ): {

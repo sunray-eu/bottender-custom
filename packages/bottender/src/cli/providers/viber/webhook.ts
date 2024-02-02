@@ -29,9 +29,9 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
   const ngrokPort = argv['--ngrok-port'] || '4040';
 
   try {
-    const config: ViberConfig = getChannelConfig({
+    const config: ViberConfig = (await getChannelConfig({
       channel: Channel.Viber,
-    }) as ViberConfig;
+    })) as ViberConfig;
 
     const { accessToken, sender, path = '/webhooks/viber' } = config;
 
@@ -93,9 +93,9 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function deleteWebhook(_: CliContext): Promise<void> {
   try {
-    const config: ViberConfig = getChannelConfig({
+    const config: ViberConfig = (await getChannelConfig({
       channel: Channel.Viber,
-    }) as ViberConfig;
+    })) as ViberConfig;
 
     const { accessToken, sender } = config;
 

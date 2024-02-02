@@ -14,7 +14,7 @@ import help from './help';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getWebhook(_: CliContext): Promise<void> {
   try {
-    const config = getChannelConfig({ channel: Channel.Telegram });
+    const config = await getChannelConfig({ channel: Channel.Telegram });
 
     const { accessToken } = config as { accessToken: string };
 
@@ -59,7 +59,7 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
   let webhook = argv['--webhook'];
 
   try {
-    const config = getChannelConfig({ channel: Channel.Telegram });
+    const config = await getChannelConfig({ channel: Channel.Telegram });
 
     const { accessToken, path = '/webhooks/telegram' } = config as {
       accessToken: string;
@@ -115,7 +115,7 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function deleteWebhook(_: CliContext): Promise<void> {
   try {
-    const config = getChannelConfig({ channel: Channel.Telegram });
+    const config = await getChannelConfig({ channel: Channel.Telegram });
 
     const { accessToken } = config as { accessToken: string };
 

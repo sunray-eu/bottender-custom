@@ -25,22 +25,26 @@ const BOT_MAP = {
   whatsapp: WhatsappBot,
 };
 
-function getClient<C extends string>(
+async function getClient<C extends string>(
   channel: C
-): C extends 'messenger'
-  ? MessengerClient
-  : C extends 'line'
-  ? LineClient
-  : C extends 'slack'
-  ? SlackOAuthClient
-  : C extends 'telegram'
-  ? TelegramClient
-  : C extends 'viber'
-  ? ViberClient
-  : C extends 'whatsapp'
-  ? TwilioClient
-  : any {
-  const { channels = {} } = getBottenderConfig();
+): Promise<
+  Awaited<
+    C extends 'messenger'
+      ? MessengerClient
+      : C extends 'line'
+        ? LineClient
+        : C extends 'slack'
+          ? SlackOAuthClient
+          : C extends 'telegram'
+            ? TelegramClient
+            : C extends 'viber'
+              ? ViberClient
+              : C extends 'whatsapp'
+                ? TwilioClient
+                : any
+  >
+> {
+  const { channels = {} } = await getBottenderConfig();
   const sessionStore = getSessionStore();
 
   const channelConfig = (channels as Record<string, any>)[channel];

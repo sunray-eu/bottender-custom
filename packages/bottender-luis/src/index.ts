@@ -20,7 +20,7 @@ import { EntityModel, IntentModel, LuisResult, Sentiment } from './types';
  * });
  * ```
  */
-export = function luis({
+export default function luis({
   appId,
   appKey,
   endpoint,
@@ -120,4 +120,4 @@ export = function luis({
 
     return next;
   };
-};
+}

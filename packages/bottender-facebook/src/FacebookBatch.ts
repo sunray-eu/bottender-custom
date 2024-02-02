@@ -144,10 +144,10 @@ function getPageInsights<P extends 'day' | 'week' | 'days_28'>(
     metric: P extends 'day'
       ? Types.PageInsightsMetricDay[]
       : P extends 'week'
-      ? Types.PageInsightsMetricWeek[]
-      : P extends 'days_28'
-      ? Types.PageInsightsMetricDays28[]
-      : never;
+        ? Types.PageInsightsMetricWeek[]
+        : P extends 'days_28'
+          ? Types.PageInsightsMetricDays28[]
+          : never;
     period: P;
   } & MergeExclusive<
     { datePreset?: Types.DatePreset },
@@ -190,8 +190,8 @@ function getPostInsights<P extends 'day' | 'lifetime'>(
     metric: P extends 'day'
       ? Types.PostInsightsMetricDay[]
       : P extends 'lifetime'
-      ? Types.PostInsightsMetricLifetime[]
-      : never;
+        ? Types.PostInsightsMetricLifetime[]
+        : never;
     period?: P;
   } & MergeExclusive<
     {

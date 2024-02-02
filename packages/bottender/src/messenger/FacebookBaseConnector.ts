@@ -33,7 +33,7 @@ export type FacebookBaseConnectorOptions<C extends MessengerClient> =
 
 export default class FacebookBaseConnector<
   RequestBody extends JsonObject,
-  Client extends MessengerClient
+  Client extends MessengerClient,
 > {
   _client: Client;
 

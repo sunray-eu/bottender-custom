@@ -20,7 +20,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -119,7 +119,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -148,7 +148,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -177,7 +177,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -207,7 +207,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -237,7 +237,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -267,7 +267,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
       this.on(
         (context) =>
@@ -290,7 +290,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -319,7 +319,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -349,7 +349,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -379,7 +379,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -408,7 +408,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -437,7 +437,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -466,7 +466,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -495,7 +495,7 @@ export default class MessengerHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(

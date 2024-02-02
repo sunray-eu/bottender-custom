@@ -11,22 +11,22 @@ describe('sh cli', () => {
   });
 
   it('should return init module', () => {
-    const init = require('../init').default;
+    const init = await import('../init').default;
     expect(sh.init).toEqual(init);
   });
 
   it('should return help module', () => {
-    const help = require('../help').default;
+    const help = await import('../help').default;
     expect(sh.help).toEqual(help);
   });
 
   it('should return start module', () => {
-    const start = require('../start').default;
+    const start = await import('../start').default;
     expect(sh.start).toEqual(start);
   });
 
   it('should return dev module', () => {
-    const dev = require('../dev').default;
+    const dev = await import('../dev').default;
     expect(sh.dev).toEqual(dev);
   });
 });

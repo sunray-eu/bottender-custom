@@ -1,16 +1,21 @@
+import help from './help';
+import persona from './persona';
+import profile from './profile';
+import webhook from './webhook';
+
 export default {
   title: 'Bottender',
   subcommands: new Set(['help', 'persona', 'profile', 'webhook']),
   get persona() {
-    return require('./persona').default;
+    return persona;
   },
   get profile() {
-    return require('./profile').default;
+    return profile;
   },
   get webhook() {
-    return require('./webhook').default;
+    return webhook;
   },
   get help() {
-    return require('./help').default;
+    return help;
   },
 };

@@ -28,7 +28,7 @@ type Response = {
 
 export default abstract class Context<
   C extends Client = any,
-  E extends Event = any
+  E extends Event = any,
 > {
   /**
    * The name of the platform.

@@ -53,7 +53,7 @@ function getTargetAction(
  * });
  * ```
  */
-export = function dialogflow({
+export default function dialogflow({
   projectId,
   languageCode = 'en',
   actions = {},
@@ -145,4 +145,4 @@ export = function dialogflow({
 
     return next;
   };
-};
+}

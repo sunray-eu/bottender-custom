@@ -45,32 +45,36 @@ export enum SessionDriver {
   Mongo = 'mongo',
 }
 
-export type SessionConfig = {
-  driver: string;
-  expiresIn?: number;
-  stores:
-    | {
-        memory?: {
-          maxSize?: number;
-        };
-        file?: {
-          dirname?: string;
-        };
-        redis?: {
-          port?: number;
-          host?: string;
-          password?: string;
-          db?: number;
-        };
-        mongo?: {
-          url?: string;
-          collectionName?: string;
-        };
-      }
-    | {
-        [P in Exclude<string, SessionDriver>]?: SessionStore;
-      };
+// Define individual store config types
+type MemoryStoreConfig = { memory?: { maxSize?: number } };
+type FileStoreConfig = { dirname?: string };
+type RedisStoreConfig = {
+  port?: number;
+  host?: string;
+  password?: string;
+  db?: number;
 };
+type MongoStoreConfig = { url?: string; collectionName?: string };
+
+// Map driver names to their config types
+type StoreConfigs = {
+  [SessionDriver.Memory]: MemoryStoreConfig;
+  [SessionDriver.File]: FileStoreConfig;
+  [SessionDriver.Redis]: RedisStoreConfig;
+  [SessionDriver.Mongo]: MongoStoreConfig;
+};
+
+// Helper type for extracting store config based on the driver
+type StoreConfigForDriver<Driver extends SessionDriver> = {
+  [K in Driver]: { driver: K; expiresIn?: number; store: StoreConfigs[K] };
+}[Driver];
+
+// Union type for all possible session configurations
+export type SessionConfig =
+  | StoreConfigForDriver<SessionDriver.Memory>
+  | StoreConfigForDriver<SessionDriver.File>
+  | StoreConfigForDriver<SessionDriver.Redis>
+  | StoreConfigForDriver<SessionDriver.Mongo>;
 
 type ChannelCommonConfig = {
   enabled: boolean;

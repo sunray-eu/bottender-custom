@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import invariant from 'invariant';
 import { MessengerClient, MessengerTypes } from 'messaging-api-messenger';
 import { addedDiff, deletedDiff, diff, updatedDiff } from 'deep-object-diff';
-import { omit, pick } from 'lodash';
+import { omit, pick } from 'lodash-es';
 import { snakecase } from 'messaging-api-common';
 
 import getChannelConfig from '../../../shared/getChannelConfig';
@@ -69,7 +69,7 @@ export async function getMessengerProfile(_: CliContext): Promise<void> {
       channel: Channel.Messenger,
     });
 
-    const { accessToken } = config as { accessToken: string };
+    const { accessToken } = (await config) as { accessToken: string };
 
     invariant(
       accessToken,
@@ -120,16 +120,16 @@ export async function setMessengerProfile(ctx: CliContext): Promise<void> {
       channel: Channel.Messenger,
     });
 
-    const { accessToken } = config as { accessToken: string };
+    const { accessToken } = (await config) as { accessToken: string };
 
     invariant(
       accessToken,
       '`accessToken` is not found in the `bottender.config.js` file'
     );
 
-    const { profile: _profile } = getChannelConfig({
+    const { profile: _profile } = (await getChannelConfig({
       channel: Channel.Messenger,
-    }) as { profile: Record<string, never> };
+    })) as { profile: Record<string, never> };
 
     const client = new MessengerClient({
       accessToken,
@@ -223,9 +223,9 @@ export async function setMessengerProfile(ctx: CliContext): Promise<void> {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function deleteMessengerProfile(_: CliContext): Promise<void> {
   try {
-    const config = getChannelConfig({
+    const config = (await getChannelConfig({
       channel: Channel.Messenger,
-    }) as { accessToken: string };
+    })) as { accessToken: string };
 
     invariant(
       config.accessToken,

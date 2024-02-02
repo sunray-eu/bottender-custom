@@ -984,7 +984,7 @@ export type GetCommentOptions<T extends CommentField> = {
 
 export type GetCommentsOptions<
   T extends CommentField,
-  U extends boolean
+  U extends boolean,
 > = PaginationOptions & {
   summary?: U;
   filter?: 'toplevel' | 'stream';

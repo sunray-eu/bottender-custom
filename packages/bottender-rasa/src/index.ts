@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Action, Context, withProps } from 'bottender';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 import { Entity, Intent, ParsedResult } from './types';
 
@@ -18,7 +18,7 @@ import { Entity, Intent, ParsedResult } from './types';
  * });
  * ```
  */
-export = function rasa({
+export default function rasa({
   origin = 'http://localhost:5005',
   actions,
   confidenceThreshold,
@@ -79,4 +79,4 @@ export = function rasa({
 
     return next;
   };
-};
+}

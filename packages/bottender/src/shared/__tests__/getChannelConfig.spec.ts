@@ -62,22 +62,22 @@ let Joi;
 let getChannelConfig;
 
 beforeEach(() => {
-  getBottenderConfig = require('../getBottenderConfig').default; // eslint-disable-line global-require
-  Joi = require('@hapi/joi'); // eslint-disable-line global-require
-  getChannelConfig = require('../getChannelConfig').default; // eslint-disable-line global-require
+  getBottenderConfig = await import('../getBottenderConfig').default; // eslint-disable-line global-require
+  Joi = await import('@hapi/joi'); // eslint-disable-line global-require
+  getChannelConfig = await import('../getChannelConfig').default; // eslint-disable-line global-require
 });
 
 it('be defined', () => {
   expect(getChannelConfig).toBeDefined();
 });
 
-it('read the config file with platform key', () => {
+it('read the config file with platform key', async () => {
   const { MOCK_FILE_WITH_PLATFORM } = setup();
 
   getBottenderConfig.mockReturnValue(MOCK_FILE_WITH_PLATFORM);
 
   const platform = 'messenger';
-  const config = getChannelConfig(platform);
+  const config = await getChannelConfig(platform);
   expect(config).toEqual({
     accessToken: '__PUT_YOUR_ACCESS_TOKEN_HERE__',
     verifyToken: '__PUT_YOUR_VERITY_TOKEN_HERE__',
@@ -117,14 +117,14 @@ it('read the config file with platform key', () => {
 });
 
 describe('Joi validate', () => {
-  it('should validate as default', () => {
+  it('should validate as default', async () => {
     const { MOCK_FILE_WITH_PLATFORM } = setup();
     getBottenderConfig.mockReturnValue(MOCK_FILE_WITH_PLATFORM);
 
     const platform = 'messenger';
 
     const spy = jest.spyOn(Joi, 'validate');
-    getChannelConfig(platform);
+    await getChannelConfig(platform);
 
     expect(spy).toBeCalled();
 
@@ -132,7 +132,7 @@ describe('Joi validate', () => {
     spy.mockRestore();
   });
 
-  it('should throw error if validate failed', () => {
+  it('should throw error if validate failed', async () => {
     const { MOCK_FILE_WITH_PLATFORM } = setup();
 
     // messenger.accessToken should be string type originally
@@ -143,7 +143,7 @@ describe('Joi validate', () => {
     const spy = jest.spyOn(Joi, 'validate');
 
     expect(() => {
-      getChannelConfig('messenger');
+      await getChannelConfig('messenger');
     }).toThrow();
     expect(spy).toHaveBeenCalled();
 

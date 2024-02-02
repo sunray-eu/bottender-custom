@@ -20,7 +20,7 @@ export default class LineHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -112,7 +112,7 @@ export default class LineHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -141,7 +141,7 @@ export default class LineHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -172,7 +172,7 @@ export default class LineHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -202,7 +202,7 @@ export default class LineHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(
@@ -231,7 +231,7 @@ export default class LineHandler extends Handler {
     } else {
       const [predicate, handler] = args as [
         Predicate,
-        FunctionalHandler | Builder
+        FunctionalHandler | Builder,
       ];
 
       warning(

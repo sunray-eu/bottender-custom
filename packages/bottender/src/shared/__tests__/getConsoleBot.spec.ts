@@ -34,7 +34,7 @@ it('be defined', () => {
   expect(getConsoleBot).toBeDefined();
 });
 
-it('should be instance of ConsoleBot', () => {
+it('should be instance of ConsoleBot', async () => {
   mocked(getBottenderConfig).mockReturnValue({});
-  expect(getConsoleBot()).toBeInstanceOf(ConsoleBot);
+  expect(await getConsoleBot()).toBeInstanceOf(ConsoleBot);
 });

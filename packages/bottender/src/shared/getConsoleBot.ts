@@ -1,14 +1,14 @@
 import path from 'path';
 
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 
 import ConsoleBot from '../console/ConsoleBot';
 import { Action, Bot, BottenderConfig, Plugin, getSessionStore } from '..';
 
 import getBottenderConfig from './getBottenderConfig';
 
-function getConsoleBot(): ConsoleBot {
-  const bottenderConfig = getBottenderConfig();
+async function getConsoleBot(): Promise<ConsoleBot> {
+  const bottenderConfig = await getBottenderConfig();
 
   const { initialState, plugins } = merge(
     bottenderConfig /* , config */
@@ -18,11 +18,11 @@ function getConsoleBot(): ConsoleBot {
 
   // TODO: refine handler entry, improve error message and hint
   // eslint-disable-next-line import/no-dynamic-require, @typescript-eslint/no-var-requires
-  const Entry: Action<any, any> = require(path.resolve('index.js'));
+  const Entry: Action<any, any> = await import(path.resolve('index.js'));
   let ErrorEntry: Action<any, any>;
   try {
     // eslint-disable-next-line import/no-dynamic-require
-    ErrorEntry = require(path.resolve('_error.js'));
+    ErrorEntry = await import(path.resolve('_error.js'));
   } catch (err) {} // eslint-disable-line no-empty
 
   function initializeBot(bot: Bot<any, any, any, any>): void {
