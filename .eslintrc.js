@@ -35,7 +35,8 @@ module.exports = {
         singleQuote: true,
       },
     ],
-
+    // FIXME: Fix `any` type errors later
+    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-empty-function': 'off',

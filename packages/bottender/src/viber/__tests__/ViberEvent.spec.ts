@@ -11,20 +11,20 @@ const subscribed = {
     language: 'en',
     apiVersion: 1,
   },
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
 };
 
 const unsubscribed = {
   event: 'unsubscribed',
   timestamp: 1457764197627,
   userId: '01234567890A=',
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
 };
 
 const conversationStarted = {
   event: 'conversation_started',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   type: 'open',
   context: 'context information',
   user: {
@@ -41,21 +41,21 @@ const conversationStarted = {
 const delivered = {
   event: 'delivered',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   userId: '01234567890A=',
 };
 
 const seen = {
   event: 'seen',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   userId: '01234567890A=',
 };
 
 const failed = {
   event: 'failed',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   userId: '01234567890A=',
   desc: 'failure description',
 };
@@ -63,7 +63,7 @@ const failed = {
 const textMessage = {
   event: 'message',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   sender: {
     id: '01234567890A=',
     name: 'John McClane',
@@ -82,7 +82,7 @@ const textMessage = {
 const pictureMessage = {
   event: 'message',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   sender: {
     id: '01234567890A=',
     name: 'John McClane',
@@ -102,7 +102,7 @@ const pictureMessage = {
 const videoMessage = {
   event: 'message',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   sender: {
     id: '01234567890A=',
     name: 'John McClane',
@@ -122,7 +122,7 @@ const videoMessage = {
 const fileMessage = {
   event: 'message',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   sender: {
     id: '01234567890A=',
     name: 'John McClane',
@@ -143,7 +143,7 @@ const fileMessage = {
 const stickerMessage = {
   event: 'message',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   sender: {
     id: '01234567890A=',
     name: 'John McClane',
@@ -162,7 +162,7 @@ const stickerMessage = {
 const contactMessage = {
   event: 'message',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   sender: {
     id: '01234567890A=',
     name: 'John McClane',
@@ -184,7 +184,7 @@ const contactMessage = {
 const urlMessage = {
   event: 'message',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   sender: {
     id: '01234567890A=',
     name: 'John McClane',
@@ -203,7 +203,7 @@ const urlMessage = {
 const locationMessage = {
   event: 'message',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   sender: {
     id: '01234567890A=',
     name: 'John McClane',
@@ -614,7 +614,7 @@ it('#subscribed', () => {
       language: 'en',
       apiVersion: 1,
     },
-    messageToken: 4912661846655238145,
+    messageToken: 4912661846655238145n,
   });
   expect(new ViberEvent(unsubscribed).subscribed).toEqual(null);
   expect(new ViberEvent(conversationStarted).subscribed).toEqual(null);
@@ -640,7 +640,7 @@ it('#unsubscribed', () => {
     event: 'unsubscribed',
     timestamp: 1457764197627,
     userId: '01234567890A=',
-    messageToken: 4912661846655238145,
+    messageToken: 4912661846655238145n,
   });
   expect(new ViberEvent(conversationStarted).unsubscribed).toEqual(null);
   expect(new ViberEvent(delivered).unsubscribed).toEqual(null);
@@ -667,7 +667,7 @@ it('#conversationStarted', () => {
   expect(new ViberEvent(conversationStarted).conversationStarted).toEqual({
     event: 'conversation_started',
     timestamp: 1457764197627,
-    messageToken: 4912661846655238145,
+    messageToken: 4912661846655238145n,
     type: 'open',
     context: 'context information',
     user: {
@@ -703,7 +703,7 @@ it('#delivered', () => {
   expect(new ViberEvent(delivered).delivered).toEqual({
     event: 'delivered',
     timestamp: 1457764197627,
-    messageToken: 4912661846655238145,
+    messageToken: 4912661846655238145n,
     userId: '01234567890A=',
   });
   expect(new ViberEvent(seen).delivered).toEqual(null);
@@ -729,7 +729,7 @@ it('#seen', () => {
   expect(new ViberEvent(seen).seen).toEqual({
     event: 'seen',
     timestamp: 1457764197627,
-    messageToken: 4912661846655238145,
+    messageToken: 4912661846655238145n,
     userId: '01234567890A=',
   });
   expect(new ViberEvent(failed).seen).toEqual(null);
@@ -755,7 +755,7 @@ it('#failed', () => {
   expect(new ViberEvent(failed).failed).toEqual({
     event: 'failed',
     timestamp: 1457764197627,
-    messageToken: 4912661846655238145,
+    messageToken: 4912661846655238145n,
     userId: '01234567890A=',
     desc: 'failure description',
   });

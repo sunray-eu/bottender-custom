@@ -1,5 +1,4 @@
 import { MessengerClient } from 'messaging-api-messenger';
-import { mocked } from 'ts-jest/utils';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
 import { getMessengerProfile } from '../profile';
@@ -21,9 +20,9 @@ const MOCK_FILE_WITH_PLATFORM = {
 beforeEach(() => {
   process.exit = jest.fn();
 
-  mocked(getChannelConfig).mockReturnValue(
-    MOCK_FILE_WITH_PLATFORM.channels.messenger
-  );
+  jest
+    .mocked(getChannelConfig)
+    .mockReturnValue(MOCK_FILE_WITH_PLATFORM.channels.messenger);
 });
 
 describe('resolved', () => {
@@ -35,11 +34,13 @@ describe('resolved', () => {
       },
     };
 
-    mocked(MessengerClient.prototype.getMessengerProfile).mockResolvedValue({});
+    jest
+      .mocked(MessengerClient.prototype.getMessengerProfile)
+      .mockResolvedValue({});
 
     await getMessengerProfile(ctx);
 
-    const client = mocked(MessengerClient).mock.instances[0];
+    const client = jest.mocked(MessengerClient).mock.instances[0];
 
     expect(client.getMessengerProfile).toBeCalledWith([
       'account_linking_url',
@@ -59,13 +60,13 @@ describe('resolved', () => {
       },
     };
 
-    mocked(MessengerClient.prototype.getMessengerProfile).mockResolvedValue(
-      null
-    );
+    jest
+      .mocked(MessengerClient.prototype.getMessengerProfile)
+      .mockResolvedValue(null);
 
     await getMessengerProfile(ctx);
 
-    const client = mocked(MessengerClient).mock.instances[0];
+    const client = jest.mocked(MessengerClient).mock.instances[0];
 
     expect(log.error).toBeCalled();
     expect(client.getMessengerProfile).toBeCalled();
@@ -85,9 +86,9 @@ describe('reject', () => {
         status: 400,
       },
     };
-    mocked(MessengerClient.prototype.getMessengerProfile).mockRejectedValue(
-      error
-    );
+    jest
+      .mocked(MessengerClient.prototype.getMessengerProfile)
+      .mockRejectedValue(error);
 
     await getMessengerProfile(ctx);
 
@@ -116,14 +117,16 @@ describe('reject', () => {
         },
       },
     };
-    mocked(MessengerClient.prototype.getMessengerProfile).mockRejectedValue(
-      error
-    );
+    jest
+      .mocked(MessengerClient.prototype.getMessengerProfile)
+      .mockRejectedValue(error);
 
     await getMessengerProfile(ctx);
 
     expect(log.error).toBeCalled();
-    expect(mocked(log.error).mock.calls[2][0]).not.toMatch(/\[object Object\]/);
+    expect(jest.mocked(log.error).mock.calls[2][0]).not.toMatch(
+      /\[object Object\]/
+    );
     expect(process.exit).toBeCalled();
   });
 
@@ -134,9 +137,9 @@ describe('reject', () => {
         _: [],
       },
     };
-    mocked(MessengerClient.prototype.getMessengerProfile).mockRejectedValue(
-      new Error('something wrong happened')
-    );
+    jest
+      .mocked(MessengerClient.prototype.getMessengerProfile)
+      .mockRejectedValue(new Error('something wrong happened'));
 
     await getMessengerProfile(ctx);
 

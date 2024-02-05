@@ -1,11 +1,11 @@
 import path from 'path';
 
 import fs from 'fs-extra';
-import get from 'lodash/get';
 import updateNotifier from 'update-notifier';
 import { JsonObject } from 'type-fest';
 import { Result } from 'arg';
 import { camelcase } from 'messaging-api-common';
+import { get } from 'lodash-es';
 
 import { error } from '../shared/log';
 

@@ -66,7 +66,7 @@ it('should resolve corresponding action if intent score > scoreThreshold', async
       requestQuery = query;
       return true;
     })
-    .reply(200, function () {
+    .reply(200, () => {
       requestHeaders = this.req.headers;
       return {
         query: 'forward to frank 30 dollars through HSBC',

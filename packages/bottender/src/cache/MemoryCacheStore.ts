@@ -1,5 +1,5 @@
-import cloneDeep from 'lodash/cloneDeep';
 import { LRUCache } from 'lru-cache';
+import { cloneDeep } from 'lodash-es';
 
 import CacheStore from './CacheStore';
 import type { CacheValue } from './CacheStore';

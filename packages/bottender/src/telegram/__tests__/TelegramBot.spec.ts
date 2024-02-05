@@ -1,5 +1,3 @@
-import { mocked } from 'ts-jest/utils';
-
 import TelegramBot from '../TelegramBot';
 import TelegramConnector from '../TelegramConnector';
 
@@ -63,7 +61,8 @@ describe('#createLongPollingRuntime', () => {
       },
     ];
 
-    mocked(bot.connector.client.getUpdates)
+    jest
+      .mocked(bot.connector.client.getUpdates)
       .mockResolvedValueOnce(getUpdates)
       .mockImplementationOnce(() => {
         bot.stop();
@@ -108,7 +107,8 @@ describe('#createLongPollingRuntime', () => {
       },
     ];
 
-    mocked(bot.connector.client.getUpdates)
+    jest
+      .mocked(bot.connector.client.getUpdates)
       .mockResolvedValueOnce(getUpdates)
       .mockImplementationOnce(() => {
         bot.stop();

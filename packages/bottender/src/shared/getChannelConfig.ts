@@ -1,5 +1,5 @@
-import get from 'lodash/get';
 import invariant from 'invariant';
+import { get } from 'lodash-es';
 
 import { Channel } from '../types';
 

@@ -1,5 +1,4 @@
 import { ViberClient } from 'messaging-api-viber';
-import { mocked } from 'ts-jest/utils';
 
 import ViberConnector from '../ViberConnector';
 import ViberContext from '../ViberContext';
@@ -21,20 +20,20 @@ const subscribedRequest: ViberRequestBody = {
     language: 'en',
     apiVersion: 1,
   },
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
 };
 
 const unsubscribedRequest: ViberRequestBody = {
   event: 'unsubscribed',
   timestamp: 1457764197627,
   userId: '01234567890A=',
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
 };
 
 const conversationStartedRequest: ViberRequestBody = {
   event: 'conversation_started',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   type: 'open',
   context: 'context information',
   user: {
@@ -51,21 +50,21 @@ const conversationStartedRequest: ViberRequestBody = {
 const deliveredRequest: ViberRequestBody = {
   event: 'delivered',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   userId: '01234567890A=',
 };
 
 const seenRequest: ViberRequestBody = {
   event: 'seen',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   userId: '01234567890A=',
 };
 
 const failedRequest: ViberRequestBody = {
   event: 'failed',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   userId: '01234567890A=',
   desc: 'failure description',
 };
@@ -73,7 +72,7 @@ const failedRequest: ViberRequestBody = {
 const messageRequest: ViberRequestBody = {
   event: 'message',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   sender: {
     id: '01234567890A=',
     name: 'John McClane',
@@ -96,7 +95,7 @@ function setup() {
     skipLegacyProfile: false,
   });
 
-  const client = mocked(ViberClient).mock.instances[0];
+  const client = jest.mocked(ViberClient).mock.instances[0];
 
   return {
     connector,

@@ -1,6 +1,5 @@
 import warning from 'warning';
 import { TelegramClient } from 'messaging-api-telegram';
-import { mocked } from 'ts-jest/utils';
 
 import TelegramContext from '../TelegramContext';
 import TelegramEvent from '../TelegramEvent';
@@ -685,7 +684,7 @@ describe('#answerShippingQuery', () => {
       result: true,
     };
 
-    mocked(client.answerShippingQuery).mockResolvedValue(response);
+    jest.mocked(client.answerShippingQuery).mockResolvedValue(response);
 
     const result = await context.answerShippingQuery(true);
 
@@ -727,7 +726,7 @@ describe('#answerPreCheckoutQuery', () => {
       result: true,
     };
 
-    mocked(client.answerPreCheckoutQuery).mockResolvedValue(response);
+    jest.mocked(client.answerPreCheckoutQuery).mockResolvedValue(response);
 
     const result = await context.answerPreCheckoutQuery(true);
 
@@ -772,7 +771,7 @@ describe('#answerInlineQuery', () => {
       ok: true,
     };
 
-    mocked(client.answerInlineQuery).mockResolvedValue(response);
+    jest.mocked(client.answerInlineQuery).mockResolvedValue(response);
 
     const result = await context.answerInlineQuery(
       [
@@ -915,7 +914,7 @@ describe('#answerCallbackQuery', () => {
       ok: true,
     };
 
-    mocked(client.answerCallbackQuery).mockResolvedValue(response);
+    jest.mocked(client.answerCallbackQuery).mockResolvedValue(response);
 
     const result = await context.answerCallbackQuery({
       url: 'https://example.com/',
@@ -988,7 +987,7 @@ describe('#getUserProfilePhotos', () => {
       ],
     };
 
-    mocked(client.getUserProfilePhotos).mockResolvedValue(profile);
+    jest.mocked(client.getUserProfilePhotos).mockResolvedValue(profile);
 
     const result = await context.getUserProfilePhotos({ limit: 2 });
 
@@ -1009,7 +1008,7 @@ describe('#getChat', () => {
       type: 'private',
     };
 
-    mocked(client.getChat).mockResolvedValue(chat);
+    jest.mocked(client.getChat).mockResolvedValue(chat);
 
     const result = await context.getChat();
 
@@ -1035,7 +1034,7 @@ describe('#getChatAdministrators', () => {
       },
     ];
 
-    mocked(client.getChatAdministrators).mockResolvedValue(administrators);
+    jest.mocked(client.getChatAdministrators).mockResolvedValue(administrators);
 
     const result = await context.getChatAdministrators();
 
@@ -1048,7 +1047,7 @@ describe('#getChatMembersCount', () => {
   it('should to call client.getChatMembersCount', async () => {
     const { context, client } = setup();
 
-    mocked(client.getChatMembersCount).mockResolvedValue('6');
+    jest.mocked(client.getChatMembersCount).mockResolvedValue('6');
 
     const result = await context.getChatMembersCount();
 
@@ -1072,7 +1071,7 @@ describe('#getChatMember', () => {
       status: 'creator',
     };
 
-    mocked(client.getChatMember).mockResolvedValue(member);
+    jest.mocked(client.getChatMember).mockResolvedValue(member);
 
     const result = await context.getChatMember(313534466);
 

@@ -166,7 +166,7 @@ it('should support JWT', async () => {
   let requestHeaders;
   nock('http://localhost:5005')
     .post('/model/parse')
-    .reply(200, function () {
+    .reply(200, () => {
       requestHeaders = this.req.headers;
       return {
         entities: [

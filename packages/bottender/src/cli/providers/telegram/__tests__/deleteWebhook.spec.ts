@@ -1,5 +1,4 @@
 import { TelegramClient } from 'messaging-api-telegram';
-import { mocked } from 'ts-jest/utils';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
 import { deleteWebhook } from '../webhook';
@@ -21,9 +20,9 @@ const MOCK_FILE_WITH_PLATFORM = {
 beforeEach(() => {
   process.exit = jest.fn();
 
-  mocked(getChannelConfig).mockReturnValue(
-    MOCK_FILE_WITH_PLATFORM.channels.telegram
-  );
+  jest
+    .mocked(getChannelConfig)
+    .mockReturnValue(MOCK_FILE_WITH_PLATFORM.channels.telegram);
 });
 
 describe('resolve', () => {
@@ -35,12 +34,12 @@ describe('resolve', () => {
       },
     };
 
-    mocked(TelegramClient.prototype.deleteWebhook).mockResolvedValue(true);
+    jest.mocked(TelegramClient.prototype.deleteWebhook).mockResolvedValue(true);
 
     await deleteWebhook(ctx);
 
     expect(log.print).toHaveBeenCalledTimes(1);
-    expect(mocked(log.print).mock.calls[0][0]).toMatch(/Successfully/);
+    expect(jest.mocked(log.print).mock.calls[0][0]).toMatch(/Successfully/);
   });
 });
 
@@ -53,7 +52,9 @@ describe('reject', () => {
       },
     };
 
-    mocked(TelegramClient.prototype.deleteWebhook).mockResolvedValue(false);
+    jest
+      .mocked(TelegramClient.prototype.deleteWebhook)
+      .mockResolvedValue(false);
 
     expect(deleteWebhook(ctx).then).toThrow();
   });
@@ -66,7 +67,7 @@ describe('reject', () => {
       },
     };
 
-    mocked(getChannelConfig).mockReturnValueOnce({});
+    jest.mocked(getChannelConfig).mockReturnValueOnce({});
 
     expect(deleteWebhook(ctx).then).toThrow();
   });

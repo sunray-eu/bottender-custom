@@ -1,5 +1,5 @@
 import Redis, { RedisOptions } from 'ioredis';
-import isNumber from 'lodash/isNumber';
+import { isNumber } from 'lodash-es';
 
 import CacheStore, { CacheValue } from './CacheStore';
 

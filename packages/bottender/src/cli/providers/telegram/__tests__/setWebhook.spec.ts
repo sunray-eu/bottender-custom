@@ -1,6 +1,5 @@
 import { Confirm } from 'enquirer';
 import { TelegramClient } from 'messaging-api-telegram';
-import { mocked } from 'ts-jest/utils';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
 import getWebhookFromNgrok from '../../../../shared/getWebhookFromNgrok';
@@ -42,17 +41,19 @@ const setup = (
 beforeEach(() => {
   process.exit = jest.fn();
 
-  mocked(getChannelConfig).mockReturnValue(
-    MOCK_FILE_WITH_PLATFORM.channels.telegram
-  );
+  jest
+    .mocked(getChannelConfig)
+    .mockReturnValue(MOCK_FILE_WITH_PLATFORM.channels.telegram);
 
-  mocked(getWebhookFromNgrok).mockResolvedValue('https://fakeDomain.ngrok.io');
+  jest
+    .mocked(getWebhookFromNgrok)
+    .mockResolvedValue('https://fakeDomain.ngrok.io');
 
   Confirm.mockImplementation(() => ({
     run: jest.fn().mockResolvedValue(true),
   }));
 
-  mocked(TelegramClient.prototype.setWebhook).mockResolvedValue(true);
+  jest.mocked(TelegramClient.prototype.setWebhook).mockResolvedValue(true);
 });
 
 describe('resolve', () => {
@@ -62,7 +63,7 @@ describe('resolve', () => {
     await setWebhook(ctx);
 
     expect(log.print).toHaveBeenCalledTimes(1);
-    expect(mocked(log.print).mock.calls[0][0]).toMatch(/Successfully/);
+    expect(jest.mocked(log.print).mock.calls[0][0]).toMatch(/Successfully/);
   });
 
   it('get ngrok webhook to set up', async () => {
@@ -72,7 +73,7 @@ describe('resolve', () => {
 
     expect(getWebhookFromNgrok).toBeCalledWith('4040');
     expect(log.print).toHaveBeenCalledTimes(1);
-    expect(mocked(log.print).mock.calls[0][0]).toMatch(/Successfully/);
+    expect(jest.mocked(log.print).mock.calls[0][0]).toMatch(/Successfully/);
   });
 
   it('set ngrok webhook port', async () => {
@@ -88,7 +89,7 @@ describe('reject', () => {
   it('reject when accessToken not found in config file', async () => {
     const ctx = setup({ webhook: 'http://example.com/webhook' });
 
-    mocked(getChannelConfig).mockReturnValue({});
+    jest.mocked(getChannelConfig).mockReturnValue({});
 
     await setWebhook(ctx);
 
@@ -101,7 +102,9 @@ describe('reject', () => {
   it('reject when telegram return not success', async () => {
     const ctx = setup({ webhook: 'http://example.com/webhook' });
 
-    mocked(TelegramClient.prototype.setWebhook).mockRejectedValue(new Error());
+    jest
+      .mocked(TelegramClient.prototype.setWebhook)
+      .mockRejectedValue(new Error());
 
     await setWebhook(ctx);
 

@@ -112,7 +112,7 @@ export type BottenderConfig = {
 
 export type RequestContext<
   B extends object | undefined = object,
-  H extends Record<string, string | string[] | undefined> = {},
+  H extends Record<string, string | string[] | undefined> = any,
 > = {
   id?: string;
   method: string;

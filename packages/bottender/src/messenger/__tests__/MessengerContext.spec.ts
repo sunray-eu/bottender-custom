@@ -1,6 +1,5 @@
 import warning from 'warning';
 import { MessengerClient } from 'messaging-api-messenger';
-import { mocked } from 'ts-jest/utils';
 
 import MessengerContext from '../MessengerContext';
 import MessengerEvent from '../MessengerEvent';
@@ -86,7 +85,7 @@ describe('#getUserProfile', () => {
       profilePic: 'https://example.com/pic.png',
     };
 
-    mocked(client.getUserProfile).mockResolvedValue(user);
+    jest.mocked(client.getUserProfile).mockResolvedValue(user);
 
     const result = await context.getUserProfile();
 
@@ -108,7 +107,7 @@ describe('#getUserProfile', () => {
       gender: 'male',
     };
 
-    mocked(client.getUserProfile).mockResolvedValue(user);
+    jest.mocked(client.getUserProfile).mockResolvedValue(user);
 
     const result = await context.getUserProfile({
       fields: [

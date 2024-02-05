@@ -29,7 +29,7 @@ describe('#onSubscribed', () => {
       language: 'en',
       api_version: 1,
     },
-    message_token: 4912661846655238145,
+    message_token: 4912661846655238145n,
   };
 
   it('should return this', async () => {
@@ -88,7 +88,7 @@ describe('#onUnsubscribed', () => {
     event: 'unsubscribed',
     timestamp: 1457764197627,
     user_id: '01234567890A=',
-    message_token: 4912661846655238145,
+    message_token: 4912661846655238145n,
   };
 
   it('should return this', async () => {
@@ -146,7 +146,7 @@ describe('#onConversationStarted', () => {
   const conversationStarted = {
     event: 'conversation_started',
     timestamp: 1457764197627,
-    message_token: 4912661846655238145,
+    message_token: 4912661846655238145n,
     type: 'open',
     context: 'context information',
     user: {
@@ -215,7 +215,7 @@ describe('#onDelivered', () => {
   const delivered = {
     event: 'delivered',
     timestamp: 1457764197627,
-    message_token: 4912661846655238145,
+    message_token: 4912661846655238145n,
     user_id: '01234567890A=',
   };
 
@@ -274,7 +274,7 @@ describe('#onSeen', () => {
   const seen = {
     event: 'seen',
     timestamp: 1457764197627,
-    message_token: 4912661846655238145,
+    message_token: 4912661846655238145n,
     user_id: '01234567890A=',
   };
 
@@ -333,7 +333,7 @@ describe('#onFailed', () => {
   const failed = {
     event: 'failed',
     timestamp: 1457764197627,
-    message_token: 4912661846655238145,
+    message_token: 4912661846655238145n,
     user_id: '01234567890A=',
     desc: 'failure description',
   };

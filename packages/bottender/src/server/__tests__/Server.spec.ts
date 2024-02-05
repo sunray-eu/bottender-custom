@@ -3,7 +3,6 @@ import net from 'net';
 import path from 'path';
 
 import { JsonArray, JsonObject } from 'type-fest';
-import { mocked } from 'ts-jest/utils';
 
 import Server from '../Server';
 import getBottenderConfig from '../../shared/getBottenderConfig';
@@ -39,7 +38,7 @@ afterEach(() => {
 });
 
 it('support built-in connectors', async () => {
-  mocked(getBottenderConfig).mockReturnValue({
+  jest.mocked(getBottenderConfig).mockReturnValue({
     channels: {
       messenger: {
         enabled: true,
@@ -139,7 +138,7 @@ it('support custom connectors', async () => {
     preprocess: jest.fn(() => ({ shouldNext: true })),
   };
 
-  mocked(getBottenderConfig).mockReturnValue({
+  jest.mocked(getBottenderConfig).mockReturnValue({
     channels: {
       custom: {
         enabled: true,

@@ -1,5 +1,4 @@
 import { TelegramClient } from 'messaging-api-telegram';
-import { mocked } from 'ts-jest/utils';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
 import { getWebhook } from '../webhook';
@@ -21,11 +20,11 @@ const MOCK_FILE_WITH_PLATFORM = {
 beforeEach(() => {
   process.exit = jest.fn();
 
-  mocked(getChannelConfig).mockReturnValue(
-    MOCK_FILE_WITH_PLATFORM.channels.telegram
-  );
+  jest
+    .mocked(getChannelConfig)
+    .mockReturnValue(MOCK_FILE_WITH_PLATFORM.channels.telegram);
 
-  mocked(TelegramClient.prototype.getWebhookInfo).mockResolvedValue({
+  jest.mocked(TelegramClient.prototype.getWebhookInfo).mockResolvedValue({
     url: 'https://4a16faff.ngrok.io/',
     hasCustomCertificate: false,
     pendingUpdateCount: 0,
@@ -56,7 +55,7 @@ describe('reject', () => {
         _: [],
       },
     };
-    mocked(TelegramClient.prototype.getWebhookInfo).mockResolvedValueOnce({
+    jest.mocked(TelegramClient.prototype.getWebhookInfo).mockResolvedValueOnce({
       ok: false,
     });
 
@@ -71,7 +70,7 @@ describe('reject', () => {
       },
     };
 
-    mocked(getChannelConfig).mockReturnValueOnce({});
+    jest.mocked(getChannelConfig).mockReturnValueOnce({});
 
     expect(getWebhook(ctx).then).toThrow();
   });

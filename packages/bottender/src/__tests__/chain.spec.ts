@@ -15,8 +15,8 @@ function setup() {
 it('should not call sendText if First action return undefined', async () => {
   const { context } = setup();
 
-  function First(ctx, { next }) {} // eslint-disable-line @typescript-eslint/no-empty-function
-  function Second(ctx, { next }) {} // eslint-disable-line @typescript-eslint/no-empty-function
+  function First(_ctx: any, { _next }: any) {} // eslint-disable-line @typescript-eslint/no-empty-function
+  function Second(_ctx: any, { _next }: any) {} // eslint-disable-line @typescript-eslint/no-empty-function
 
   const Chain = chain([First, Second]);
 
@@ -28,13 +28,13 @@ it('should not call sendText if First action return undefined', async () => {
 it('should call sendText with hi if first action return SayHi', async () => {
   const { context } = setup();
 
-  async function SayHi(ctx) {
+  async function SayHi(ctx: { sendText: (arg0: string) => any }) {
     await ctx.sendText('hi');
   }
-  function First(ctx, { next }) {
+  function First(_ctx: any, { _next }: any) {
     return SayHi;
   }
-  function Second(ctx, { next }) {} // eslint-disable-line @typescript-eslint/no-empty-function
+  function Second(_ctx: any, { _next }: any) {} // eslint-disable-line @typescript-eslint/no-empty-function
 
   const Chain = chain([First, Second]);
 
@@ -46,13 +46,13 @@ it('should call sendText with hi if first action return SayHi', async () => {
 it('should call sendText with hi if second action return SayHi', async () => {
   const { context } = setup();
 
-  async function SayHi(ctx) {
+  async function SayHi(ctx: { sendText: (arg0: string) => any }) {
     await ctx.sendText('hi');
   }
-  function First(ctx, { next }) {
+  function First(_ctx: any, { next }: any) {
     return next;
   }
-  function Second(ctx, { next }) {
+  function Second(_ctx: any, { next }: any) {
     return SayHi;
   }
 
@@ -66,13 +66,13 @@ it('should call sendText with hi if second action return SayHi', async () => {
 it('should call sendText with hi if second action return next', async () => {
   const { context } = setup();
 
-  async function SayHi(ctx) {
+  async function SayHi(ctx: { sendText: (arg0: string) => any }) {
     await ctx.sendText('hi');
   }
-  function First(ctx, { next }) {
+  function First(_ctx: any, { next }: any) {
     return next;
   }
-  function Second(ctx, { next }) {
+  function Second(_ctx: any, { next }: any) {
     return next;
   }
 

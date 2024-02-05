@@ -1,6 +1,5 @@
 import warning from 'warning';
 import { Line, LineClient } from 'messaging-api-line';
-import { mocked } from 'ts-jest/utils';
 
 import LineContext from '../LineContext';
 import LineEvent from '../LineEvent';
@@ -158,7 +157,7 @@ describe('#getMessageContent', () => {
     });
 
     const buf = Buffer.from('');
-    mocked(client.getMessageContent).mockResolvedValue(buf);
+    jest.mocked(client.getMessageContent).mockResolvedValue(buf);
 
     const res = await context.getMessageContent();
 
@@ -1390,7 +1389,7 @@ describe('account link APIs', () => {
   describe('#issueLinkToken', () => {
     it('should call client.issueLinkToken', async () => {
       const { context, client, session } = setup();
-      mocked(client.issueLinkToken).mockResolvedValue({
+      jest.mocked(client.issueLinkToken).mockResolvedValue({
         token: 'xxxxx',
       });
 

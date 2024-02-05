@@ -1,4 +1,3 @@
-import Context from '../../context/Context';
 import TwilioClient from '../TwilioClient';
 import WhatsappContext from '../WhatsappContext';
 import WhatsappEvent from '../WhatsappEvent';

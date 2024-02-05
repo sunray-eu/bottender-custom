@@ -1,6 +1,5 @@
 import warning from 'warning';
 import { MessengerClient } from 'messaging-api-messenger';
-import { mocked } from 'ts-jest/utils';
 
 import MessengerConnector from '../MessengerConnector';
 import MessengerContext from '../MessengerContext';
@@ -169,7 +168,7 @@ function setup({
     skipLegacyProfile,
   });
 
-  const client = mocked(MessengerClient).mock.instances[0];
+  const client = jest.mocked(MessengerClient).mock.instances[0];
 
   return {
     client,
@@ -295,7 +294,7 @@ describe('#updateSession', () => {
       timezone: 8,
       gender: 'male',
     };
-    mocked(client.getUserProfile).mockResolvedValue(user);
+    jest.mocked(client.getUserProfile).mockResolvedValue(user);
 
     const session = {};
     await connector.updateSession(session, request);
@@ -326,7 +325,7 @@ describe('#updateSession', () => {
       timezone: 8,
       gender: 'male',
     };
-    mocked(client.getUserProfile).mockResolvedValue(user);
+    jest.mocked(client.getUserProfile).mockResolvedValue(user);
 
     const session = {
       user: {
@@ -361,7 +360,7 @@ describe('#updateSession', () => {
       timezone: 8,
       gender: 'male',
     };
-    mocked(client.getUserProfile).mockResolvedValue(user);
+    jest.mocked(client.getUserProfile).mockResolvedValue(user);
 
     const session = {
       user: {
@@ -396,7 +395,7 @@ describe('#updateSession', () => {
       timezone: 8,
       gender: 'male',
     };
-    mocked(client.getUserProfile).mockResolvedValue(user);
+    jest.mocked(client.getUserProfile).mockResolvedValue(user);
 
     const session = {
       user: {
@@ -424,7 +423,7 @@ describe('#updateSession', () => {
     });
     const error = new Error('fail');
 
-    mocked(client.getUserProfile).mockRejectedValue(error);
+    jest.mocked(client.getUserProfile).mockRejectedValue(error);
 
     const session = {};
     await connector.updateSession(session, request);

@@ -1,6 +1,5 @@
 import { Confirm } from 'enquirer';
 import { ViberClient } from 'messaging-api-viber';
-import { mocked } from 'ts-jest/utils';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
 import getWebhookFromNgrok from '../../../../shared/getWebhookFromNgrok';
@@ -24,9 +23,11 @@ function setup({ config }: { config?: Record<string, any> } = {}) {
 
   log.bold = jest.fn((s) => s);
 
-  mocked(getWebhookFromNgrok).mockResolvedValue('https://fakeDomain.ngrok.io');
+  jest
+    .mocked(getWebhookFromNgrok)
+    .mockResolvedValue('https://fakeDomain.ngrok.io');
 
-  mocked(getChannelConfig).mockReturnValue(
+  jest.mocked(getChannelConfig).mockReturnValue(
     config || {
       accessToken: ACCESS_TOKEN,
       sender: {
@@ -35,7 +36,7 @@ function setup({ config }: { config?: Record<string, any> } = {}) {
     }
   );
 
-  mocked(ViberClient.prototype.setWebhook).mockResolvedValue({
+  jest.mocked(ViberClient.prototype.setWebhook).mockResolvedValue({
     status: 0,
     statusMessage: 'ok',
     eventTypes: [
@@ -80,7 +81,7 @@ describe('resolve', () => {
 
     await setWebhook(ctx);
 
-    const client = mocked(ViberClient).mock.instances[0];
+    const client = jest.mocked(ViberClient).mock.instances[0];
 
     expect(client.setWebhook).toBeCalledWith('http://example.com/webhook', [
       'delivered',
@@ -102,7 +103,7 @@ describe('resolve', () => {
 
     await setWebhook(ctx);
 
-    const client = mocked(ViberClient).mock.instances[0];
+    const client = jest.mocked(ViberClient).mock.instances[0];
 
     expect(getWebhookFromNgrok).toBeCalledWith('4040');
     expect(client.setWebhook).toBeCalledWith(
@@ -150,9 +151,9 @@ describe('reject', () => {
   it('reject when viber return not success', async () => {
     setup();
 
-    mocked(ViberClient.prototype.setWebhook).mockRejectedValueOnce(
-      new Error('setWebhook failed')
-    );
+    jest
+      .mocked(ViberClient.prototype.setWebhook)
+      .mockRejectedValueOnce(new Error('setWebhook failed'));
 
     const ctx = {
       config: null,

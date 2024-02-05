@@ -2,7 +2,6 @@ import qs from 'querystring';
 
 import AxiosError from 'axios-error';
 import axios, { AxiosInstance } from 'axios';
-import get from 'lodash/get';
 import { JsonObject } from 'type-fest';
 import {
   OnRequestFunction,
@@ -10,6 +9,7 @@ import {
   createRequestInterceptor,
   pascalcaseKeys,
 } from 'messaging-api-common';
+import { get } from 'lodash-es';
 
 type ClientConfig = {
   accountSid: string;

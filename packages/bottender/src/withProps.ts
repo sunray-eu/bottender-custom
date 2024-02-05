@@ -1,4 +1,4 @@
-import partial from 'lodash/partial';
+import { partial } from 'lodash-es';
 
 import Context from './context/Context';
 import { Action } from './types';

@@ -1,5 +1,5 @@
-import omit from 'lodash/omit';
 import sleep from 'delay';
+import { omit } from 'lodash-es';
 
 const methodMap = {
   // method name, arguments length (includes options)

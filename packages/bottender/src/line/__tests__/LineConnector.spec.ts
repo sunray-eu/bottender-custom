@@ -1,6 +1,5 @@
 import warning from 'warning';
 import { LineClient } from 'messaging-api-line';
-import { mocked } from 'ts-jest/utils';
 
 import LineConnector, { GetSessionKeyPrefixFunction } from '../LineConnector';
 import LineContext from '../LineContext';
@@ -83,7 +82,7 @@ const webhookVerifyRequestBody: LineRequestBody = {
 
 beforeEach(() => {
   // Clear all instances and calls to constructor and all methods:
-  mocked(LineClient).mockClear();
+  jest.mocked(LineClient).mockClear();
 });
 
 function setup({
@@ -103,7 +102,7 @@ function setup({
     getSessionKeyPrefix,
   });
 
-  const client = mocked(LineClient).mock.instances[0];
+  const client = jest.mocked(LineClient).mock.instances[0];
 
   return {
     client,
@@ -287,7 +286,7 @@ describe('#updateSession', () => {
       statusMessage: 'Hello, LINE!',
       _updatedAt: expect.any(String),
     };
-    mocked(client).getUserProfile.mockResolvedValue(user);
+    jest.mocked(client).getUserProfile.mockResolvedValue(user);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const session: any = {};
@@ -381,8 +380,8 @@ describe('#updateSession', () => {
       'Uxxxxxxxxxxxxxx...3',
     ];
 
-    mocked(client).getGroupMemberProfile.mockResolvedValue(user);
-    mocked(client).getAllGroupMemberIds.mockResolvedValue(memberIds);
+    jest.mocked(client).getGroupMemberProfile.mockResolvedValue(user);
+    jest.mocked(client).getAllGroupMemberIds.mockResolvedValue(memberIds);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const session: any = {};
@@ -445,7 +444,7 @@ describe('#updateSession', () => {
       'Uxxxxxxxxxxxxxx...3',
     ];
 
-    mocked(client).getAllGroupMemberIds.mockResolvedValue(memberIds);
+    jest.mocked(client).getAllGroupMemberIds.mockResolvedValue(memberIds);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const session: any = {};
@@ -518,8 +517,8 @@ describe('#updateSession', () => {
       'Uxxxxxxxxxxxxxx...3',
     ];
 
-    mocked(client).getRoomMemberProfile.mockResolvedValue(user);
-    mocked(client).getAllRoomMemberIds.mockResolvedValue(memberIds);
+    jest.mocked(client).getRoomMemberProfile.mockResolvedValue(user);
+    jest.mocked(client).getAllRoomMemberIds.mockResolvedValue(memberIds);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const session: any = {};
@@ -582,7 +581,7 @@ describe('#updateSession', () => {
       'Uxxxxxxxxxxxxxx...3',
     ];
 
-    mocked(client).getAllRoomMemberIds.mockResolvedValue(memberIds);
+    jest.mocked(client).getAllRoomMemberIds.mockResolvedValue(memberIds);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const session: any = {};

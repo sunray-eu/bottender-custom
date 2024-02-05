@@ -1,10 +1,10 @@
 import { EventEmitter } from 'events';
 
-import chunk from 'lodash/chunk';
 import invariant from 'invariant';
 import warning from 'warning';
 import { JsonObject } from 'type-fest';
 import { Line, LineClient } from 'messaging-api-line';
+import { chunk } from 'lodash-es';
 
 import Context from '../context/Context';
 import Session from '../session/Session';

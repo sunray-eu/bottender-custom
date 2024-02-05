@@ -1,5 +1,4 @@
 import { ViberClient } from 'messaging-api-viber';
-import { mocked } from 'ts-jest/utils';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
 import { deleteWebhook } from '../webhook';
@@ -14,7 +13,7 @@ const ACCESS_TOKEN = '__ACCESS_TOKEN__';
 function setup({ config }: { config?: Record<string, any> } = {}) {
   process.exit = jest.fn();
 
-  mocked(getChannelConfig).mockReturnValue(
+  jest.mocked(getChannelConfig).mockReturnValue(
     config || {
       accessToken: ACCESS_TOKEN,
       sender: {
@@ -35,7 +34,7 @@ describe('resolve', () => {
       },
     };
 
-    mocked(ViberClient.prototype.removeWebhook).mockResolvedValue({
+    jest.mocked(ViberClient.prototype.removeWebhook).mockResolvedValue({
       status: 0,
       statusMessage: 'ok',
     });
@@ -57,9 +56,9 @@ describe('reject', () => {
       },
     };
 
-    mocked(ViberClient.prototype.removeWebhook).mockRejectedValueOnce(
-      new Error('removeWebhook failed')
-    );
+    jest
+      .mocked(ViberClient.prototype.removeWebhook)
+      .mockRejectedValueOnce(new Error('removeWebhook failed'));
 
     expect(deleteWebhook(ctx).then).toThrow();
   });
@@ -67,7 +66,7 @@ describe('reject', () => {
   it('reject when `accessToken` is not found in the `bottender.config.js` file', () => {
     setup();
 
-    mocked(getChannelConfig).mockReturnValueOnce(null);
+    jest.mocked(getChannelConfig).mockReturnValueOnce(null);
 
     const ctx = {
       config: null,

@@ -1,6 +1,5 @@
 import warning from 'warning';
 import { ViberClient } from 'messaging-api-viber';
-import { mocked } from 'ts-jest/utils';
 
 import ViberContext from '../ViberContext';
 import ViberEvent from '../ViberEvent';
@@ -14,7 +13,7 @@ const ACCESS_TOKEN = 'ACCESS_TOKEN';
 const rawEvent: ViberRawEvent = {
   event: 'message',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   sender: {
     id: '01234567890A=',
     name: 'John McClane',
@@ -438,7 +437,7 @@ describe('#getUserDetails', () => {
       deviceType: 'iPhone9,4',
     };
 
-    mocked(client.getUserDetails).mockResolvedValue(user);
+    jest.mocked(client.getUserDetails).mockResolvedValue(user);
 
     const result = await context.getUserDetails();
 
@@ -465,7 +464,7 @@ describe('#getOnlineStatus', () => {
       onlineStatusMessage: 'online',
     };
 
-    mocked(client.getOnlineStatus).mockResolvedValue([user]);
+    jest.mocked(client.getOnlineStatus).mockResolvedValue([user]);
 
     const result = await context.getOnlineStatus();
 

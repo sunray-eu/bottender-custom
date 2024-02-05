@@ -1,7 +1,5 @@
 import path from 'path';
 
-import { mocked } from 'ts-jest/utils';
-
 import ConsoleBot from '../../console/ConsoleBot';
 import getBottenderConfig from '../getBottenderConfig';
 import getConsoleBot from '../getConsoleBot';
@@ -35,6 +33,6 @@ it('be defined', () => {
 });
 
 it('should be instance of ConsoleBot', async () => {
-  mocked(getBottenderConfig).mockReturnValue({});
+  jest.mocked(getBottenderConfig).mockReturnValue({});
   expect(await getConsoleBot()).toBeInstanceOf(ConsoleBot);
 });

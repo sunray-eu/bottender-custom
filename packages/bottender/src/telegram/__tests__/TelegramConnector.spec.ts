@@ -1,5 +1,4 @@
 import { TelegramClient } from 'messaging-api-telegram';
-import { mocked } from 'ts-jest/utils';
 
 import TelegramConnector from '../TelegramConnector';
 import TelegramContext from '../TelegramContext';
@@ -270,7 +269,7 @@ function setup() {
     skipLegacyProfile: false,
   });
 
-  const client = mocked(TelegramClient).mock.instances[0];
+  const client = jest.mocked(TelegramClient).mock.instances[0];
 
   return {
     connector,

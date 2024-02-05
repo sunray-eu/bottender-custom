@@ -1,7 +1,5 @@
 import path from 'path';
 
-import { mocked } from 'ts-jest/utils';
-
 import getBottenderConfig from '../getBottenderConfig';
 import getChannelBots, { cleanChannelBots } from '../getChannelBots';
 
@@ -35,12 +33,12 @@ it('be defined', () => {
 });
 
 it('should be empty array', async () => {
-  mocked(getBottenderConfig).mockReturnValue({});
+  jest.mocked(getBottenderConfig).mockReturnValue({});
   expect(await getChannelBots()).toEqual([]);
 });
 
 it('should create channelBots', async () => {
-  mocked(getBottenderConfig).mockReturnValue({
+  jest.mocked(getBottenderConfig).mockReturnValue({
     channels: {
       messenger: {
         enabled: true,

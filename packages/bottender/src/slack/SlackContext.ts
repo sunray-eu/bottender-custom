@@ -134,7 +134,7 @@ export default class SlackContext extends Context<
           blocks?: SlackTypes.MessageBlock[] | string;
         }
       | string,
-    options?: {}
+    options?: object
   ): Promise<any> {
     warning(
       false,
@@ -181,7 +181,7 @@ export default class SlackContext extends Context<
           blocks?: SlackTypes.MessageBlock[] | string;
         }
       | string,
-    options?: {}
+    options?: object
   ): Promise<any> {
     warning(
       false,

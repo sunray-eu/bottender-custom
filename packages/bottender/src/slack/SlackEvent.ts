@@ -189,7 +189,7 @@ export default class SlackEvent implements Event<SlackRawEvent> {
    * The action from Slack interactive message.
    *
    */
-  get action(): {} | null {
+  get action(): object | null {
     if (this.isBlockActionOrInteractiveMessage) {
       return (this._rawEvent as InteractiveMessageEvent).actions[0];
     }

@@ -84,7 +84,7 @@ export type Message = {
 };
 
 export type UIEvent = {
-  actions: {}[];
+  actions: object[];
   callbackId: string;
   team: {
     id: string;

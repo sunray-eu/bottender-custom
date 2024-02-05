@@ -1,5 +1,3 @@
-import { mocked } from 'ts-jest/utils';
-
 import Bot from '../Bot';
 import MemorySessionStore from '../../session/MemorySessionStore';
 import { Connector } from '../Connector';
@@ -134,7 +132,7 @@ describe('#createRequestHandler', () => {
   it('should call updateSession with the session and the event', async () => {
     const { bot, connector, sessionStore } = setup();
 
-    mocked(sessionStore).read.mockResolvedValue(null);
+    jest.mocked(sessionStore).read.mockResolvedValue(null);
 
     bot.onEvent(App);
 
@@ -148,7 +146,7 @@ describe('#createRequestHandler', () => {
   it('should call the registered action with the context', async () => {
     const { bot, sessionStore } = setup();
 
-    mocked(sessionStore).read.mockResolvedValue(session);
+    jest.mocked(sessionStore).read.mockResolvedValue(session);
 
     let receivedContext;
     bot.onEvent(function MyAction(context) {
@@ -176,7 +174,7 @@ describe('#createRequestHandler', () => {
   it('should call the onRequest function with the body and the request context', async () => {
     const { bot, sessionStore, onRequest } = setup();
 
-    mocked(sessionStore).read.mockResolvedValue(session);
+    jest.mocked(sessionStore).read.mockResolvedValue(session);
 
     bot.onEvent(App);
 
@@ -200,8 +198,8 @@ describe('#createRequestHandler', () => {
       },
     };
 
-    mocked(connector).createContext.mockReturnValue(ctx);
-    mocked(sessionStore).read.mockResolvedValue(session);
+    jest.mocked(connector).createContext.mockReturnValue(ctx);
+    jest.mocked(sessionStore).read.mockResolvedValue(session);
 
     bot.onEvent(function MyAction(context) {
       context.response.status = 200;
@@ -250,8 +248,8 @@ describe('#createRequestHandler', () => {
   it('should call handler without session if unique session id is null', async () => {
     const { bot, connector } = setup();
 
-    mocked(connector).getUniqueSessionKey.mockReturnValue(null);
-    mocked(connector).createContext.mockReturnValue({
+    jest.mocked(connector).getUniqueSessionKey.mockReturnValue(null);
+    jest.mocked(connector).createContext.mockReturnValue({
       event,
       session: undefined,
     });
@@ -318,7 +316,7 @@ describe('#createRequestHandler', () => {
 
     const { bot, sessionStore } = setup();
 
-    mocked(sessionStore).read.mockResolvedValue(session);
+    jest.mocked(sessionStore).read.mockResolvedValue(session);
 
     bot.onEvent(App);
 
@@ -363,16 +361,17 @@ describe('#createRequestHandler', () => {
       },
     };
 
-    mocked(connector)
+    jest
+      .mocked(connector)
       .getUniqueSessionKey.mockReturnValueOnce('1')
       .mockReturnValueOnce('2');
-    mocked(connector).mapRequestToEvents.mockReturnValue([event1, event2]);
-    mocked(connector).createContext.mockImplementation((params) => ({
+    jest.mocked(connector).mapRequestToEvents.mockReturnValue([event1, event2]);
+    jest.mocked(connector).createContext.mockImplementation((params) => ({
       event: params.event,
       session: params.session,
     }));
 
-    mocked(sessionStore).read.mockResolvedValue(null);
+    jest.mocked(sessionStore).read.mockResolvedValue(null);
 
     bot.onEvent(App);
 
@@ -547,7 +546,7 @@ describe('context life cycle', () => {
 
     const { bot, connector } = setup();
 
-    mocked(connector).createContext.mockReturnValue({
+    jest.mocked(connector).createContext.mockReturnValue({
       event,
       session: undefined,
       handlerDidEnd,

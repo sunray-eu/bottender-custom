@@ -1,6 +1,5 @@
 import { Confirm } from 'enquirer';
 import { MessengerClient } from 'messaging-api-messenger';
-import { mocked } from 'ts-jest/utils';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
 import getWebhookFromNgrok from '../../../../shared/getWebhookFromNgrok';
@@ -34,9 +33,11 @@ function setup({
 
   log.bold = jest.fn((s) => s);
 
-  mocked(getWebhookFromNgrok).mockResolvedValue('https://fakeDomain.ngrok.io');
+  jest
+    .mocked(getWebhookFromNgrok)
+    .mockResolvedValue('https://fakeDomain.ngrok.io');
 
-  mocked(getChannelConfig).mockReturnValue(
+  jest.mocked(getChannelConfig).mockReturnValue(
     config || {
       accessToken: ACCESS_TOKEN,
       appId: APP_ID,
@@ -45,11 +46,11 @@ function setup({
     }
   );
 
-  mocked(MessengerClient.prototype.createSubscription).mockResolvedValue({
+  jest.mocked(MessengerClient.prototype.createSubscription).mockResolvedValue({
     success,
   });
 
-  mocked(MessengerClient.prototype.debugToken).mockResolvedValue({
+  jest.mocked(MessengerClient.prototype.debugToken).mockResolvedValue({
     type: 'PAGE',
     appId: '000000000000000',
     application: 'Social Cafe',
@@ -60,7 +61,7 @@ function setup({
     userId: 1207059,
   });
 
-  mocked(MessengerClient.prototype.getPageInfo).mockResolvedValue({
+  jest.mocked(MessengerClient.prototype.getPageInfo).mockResolvedValue({
     id: '123456789',
     name: 'Page Name',
   });
@@ -89,7 +90,7 @@ describe('resolve', () => {
 
     await setWebhook(ctx);
 
-    const client = mocked(MessengerClient).mock.instances[0];
+    const client = jest.mocked(MessengerClient).mock.instances[0];
 
     expect(client.createSubscription).toBeCalledWith({
       accessToken: '__APP_ID__|__APP_SECRET__',
@@ -112,7 +113,7 @@ describe('resolve', () => {
   it('get ngrok webhook to set up', async () => {
     setup();
 
-    mocked(MessengerClient.prototype.axios.post).mockResolvedValue({
+    jest.mocked(MessengerClient.prototype.axios.post).mockResolvedValue({
       data: { success: true },
     });
 
@@ -125,7 +126,7 @@ describe('resolve', () => {
 
     await setWebhook(ctx);
 
-    const client = mocked(MessengerClient).mock.instances[0];
+    const client = jest.mocked(MessengerClient).mock.instances[0];
 
     expect(getWebhookFromNgrok).toBeCalledWith('4040');
     expect(client.createSubscription).toBeCalledWith({
@@ -179,7 +180,7 @@ describe('resolve', () => {
 
     await setWebhook(ctx);
 
-    const client = mocked(MessengerClient).mock.instances[0];
+    const client = jest.mocked(MessengerClient).mock.instances[0];
 
     expect(getWebhookFromNgrok).toBeCalledWith('4040');
     expect(client.createSubscription).toBeCalledWith({

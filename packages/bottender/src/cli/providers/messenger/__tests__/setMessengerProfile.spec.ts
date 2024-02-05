@@ -1,5 +1,4 @@
 import { MessengerClient } from 'messaging-api-messenger';
-import { mocked } from 'ts-jest/utils';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
 import { setMessengerProfile } from '../profile';
@@ -40,11 +39,11 @@ const MOCK_FILE_WITH_PLATFORM = {
 beforeEach(() => {
   process.exit = jest.fn();
 
-  mocked(getChannelConfig).mockReturnValue(
-    MOCK_FILE_WITH_PLATFORM.channels.messenger
-  );
+  jest
+    .mocked(getChannelConfig)
+    .mockReturnValue(MOCK_FILE_WITH_PLATFORM.channels.messenger);
 
-  mocked(MessengerClient.prototype.getMessengerProfile).mockReturnValue([
+  jest.mocked(MessengerClient.prototype.getMessengerProfile).mockReturnValue([
     {
       persistentMenu: [
         {
@@ -76,7 +75,7 @@ describe('resolve', () => {
 
       await setMessengerProfile(ctx);
 
-      const client = mocked(MessengerClient).mock.instances[0];
+      const client = jest.mocked(MessengerClient).mock.instances[0];
 
       expect(client.deleteMessengerProfile).toBeCalledWith([
         'account_linking_url',
@@ -115,7 +114,7 @@ describe('resolve', () => {
         },
       };
 
-      mocked(getChannelConfig).mockReturnValue({
+      jest.mocked(getChannelConfig).mockReturnValue({
         accessToken: '__FAKE_TOKEN__',
         profile: {
           getStarted: {
@@ -140,7 +139,7 @@ describe('resolve', () => {
 
       await setMessengerProfile(ctx);
 
-      const client = mocked(MessengerClient).mock.instances[0];
+      const client = jest.mocked(MessengerClient).mock.instances[0];
 
       expect(client.setMessengerProfile).toBeCalledWith({
         getStarted: {
@@ -171,7 +170,7 @@ describe('resolve', () => {
           '--force': true,
         },
       };
-      mocked(getChannelConfig).mockReturnValue({
+      jest.mocked(getChannelConfig).mockReturnValue({
         accessToken: '__FAKE_TOKEN__',
         profile: {
           getStarted: {
@@ -203,12 +202,12 @@ describe('resolve', () => {
 
       await setMessengerProfile(ctx);
 
-      const client = mocked(MessengerClient).mock.instances[0];
+      const client = jest.mocked(MessengerClient).mock.instances[0];
 
-      expect(mocked(client.setMessengerProfile).mock.calls[0][0]).toEqual({
+      expect(jest.mocked(client.setMessengerProfile).mock.calls[0][0]).toEqual({
         whitelistedDomains: ['http://example.com'],
       });
-      expect(mocked(client.setMessengerProfile).mock.calls[1][0]).toEqual({
+      expect(jest.mocked(client.setMessengerProfile).mock.calls[1][0]).toEqual({
         getStarted: {
           payload: '<GET_STARTED_PAYLOAD>',
         },
@@ -243,7 +242,7 @@ describe('resolve', () => {
         _: [],
       },
     };
-    mocked(MessengerClient.prototype.getMessengerProfile).mockReturnValue([
+    jest.mocked(MessengerClient.prototype.getMessengerProfile).mockReturnValue([
       {
         persistentMenu: [
           {
@@ -263,7 +262,7 @@ describe('resolve', () => {
 
     await setMessengerProfile(ctx);
 
-    const client = mocked(MessengerClient).mock.instances[0];
+    const client = jest.mocked(MessengerClient).mock.instances[0];
 
     expect(client.setMessengerProfile).toBeCalledWith({
       getStarted: {
@@ -292,7 +291,7 @@ describe('resolve', () => {
         _: [],
       },
     };
-    mocked(MessengerClient.prototype.getMessengerProfile).mockReturnValue([
+    jest.mocked(MessengerClient.prototype.getMessengerProfile).mockReturnValue([
       {
         persistent_menu: [
           {
@@ -309,7 +308,7 @@ describe('resolve', () => {
         ],
       },
     ]);
-    mocked(getChannelConfig).mockReturnValue({
+    jest.mocked(getChannelConfig).mockReturnValue({
       accessToken: '__FAKE_TOKEN__',
       profile: {
         getStarted: {
@@ -341,12 +340,12 @@ describe('resolve', () => {
 
     await setMessengerProfile(ctx);
 
-    const client = mocked(MessengerClient).mock.instances[0];
+    const client = jest.mocked(MessengerClient).mock.instances[0];
 
-    expect(mocked(client.setMessengerProfile).mock.calls[0][0]).toEqual({
+    expect(jest.mocked(client.setMessengerProfile).mock.calls[0][0]).toEqual({
       whitelistedDomains: ['http://example.com'],
     });
-    expect(mocked(client.setMessengerProfile).mock.calls[1][0]).toEqual({
+    expect(jest.mocked(client.setMessengerProfile).mock.calls[1][0]).toEqual({
       getStarted: {
         payload: '<GET_STARTED_PAYLOAD>',
       },
@@ -383,7 +382,7 @@ describe('resolve', () => {
 
     await setMessengerProfile(ctx);
 
-    const client = mocked(MessengerClient).mock.instances[0];
+    const client = jest.mocked(MessengerClient).mock.instances[0];
 
     expect(client.setMessengerProfile).toBeCalledWith({
       getStarted: {
@@ -393,7 +392,7 @@ describe('resolve', () => {
   });
 
   it('successfully delete diff fields `whitelisted_domains`', async () => {
-    mocked(MessengerClient.prototype.getMessengerProfile).mockReturnValue([
+    jest.mocked(MessengerClient.prototype.getMessengerProfile).mockReturnValue([
       {
         persistentMenu: [
           {
@@ -423,7 +422,7 @@ describe('resolve', () => {
 
     await setMessengerProfile(ctx);
 
-    const client = mocked(MessengerClient).mock.instances[0];
+    const client = jest.mocked(MessengerClient).mock.instances[0];
 
     expect(client.deleteMessengerProfile).toBeCalledWith([
       'whitelisted_domains',
@@ -431,7 +430,7 @@ describe('resolve', () => {
   });
 
   it('do nothing and log info', async () => {
-    mocked(MessengerClient.prototype.getMessengerProfile).mockReturnValue([
+    jest.mocked(MessengerClient.prototype.getMessengerProfile).mockReturnValue([
       {
         getStarted: {
           payload: '<GET_STARTED_PAYLOAD>',
@@ -460,7 +459,7 @@ describe('resolve', () => {
 
     await setMessengerProfile(ctx);
 
-    const client = mocked(MessengerClient).mock.instances[0];
+    const client = jest.mocked(MessengerClient).mock.instances[0];
 
     expect(client.deleteMessengerProfile).not.toBeCalled();
     expect(client.setMessengerProfile).not.toBeCalled();
@@ -484,9 +483,9 @@ describe('reject', () => {
       },
     };
 
-    mocked(MessengerClient.prototype.setMessengerProfile).mockRejectedValue(
-      error
-    );
+    jest
+      .mocked(MessengerClient.prototype.setMessengerProfile)
+      .mockRejectedValue(error);
 
     await setMessengerProfile(ctx);
 
@@ -515,14 +514,16 @@ describe('reject', () => {
         _: [],
       },
     };
-    mocked(MessengerClient.prototype.setMessengerProfile).mockRejectedValue(
-      error
-    );
+    jest
+      .mocked(MessengerClient.prototype.setMessengerProfile)
+      .mockRejectedValue(error);
 
     await setMessengerProfile(ctx);
 
     expect(log.error).toBeCalled();
-    expect(mocked(log.error).mock.calls[2][0]).not.toMatch(/\[object Object\]/);
+    expect(jest.mocked(log.error).mock.calls[2][0]).not.toMatch(
+      /\[object Object\]/
+    );
     expect(process.exit).toBeCalled();
   });
 });

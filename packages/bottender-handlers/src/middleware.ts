@@ -2,7 +2,7 @@ import compose from 'koa-compose';
 
 import { Builder } from './Handler';
 
-type Middleware = (context?: any, next?: Middleware) => {};
+type Middleware = (context?: any, next?: Middleware) => object;
 
 const middleware = (m: (Middleware | Builder)[]) =>
   compose(m.map((item) => ('build' in item ? item.build() : item)));

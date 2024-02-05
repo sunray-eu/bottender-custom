@@ -3,7 +3,7 @@ import Server, { ServerOptions } from './server/Server';
 
 type BottenderServerOptions = ServerOptions & {
   /**
-   * Whether to launch Bottender in dev mode - @default false
+   * Whether to launch Bottender in dev mode - default false
    */
   dev?: boolean;
 };

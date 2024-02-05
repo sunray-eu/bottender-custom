@@ -1,5 +1,4 @@
 import { SlackOAuthClient } from 'messaging-api-slack';
-import { mocked } from 'ts-jest/utils';
 
 import SlackConnector from '../SlackConnector';
 import SlackContext from '../SlackContext';
@@ -844,7 +843,7 @@ function setup({
     includeBotMessages,
   });
 
-  const client = mocked(SlackOAuthClient).mock.instances[0];
+  const client = jest.mocked(SlackOAuthClient).mock.instances[0];
 
   return {
     connector,
@@ -1045,10 +1044,10 @@ describe('#updateSession', () => {
     const members = [user];
     const session = {};
 
-    mocked(client.getUserInfo).mockResolvedValue(user);
-    mocked(client.getConversationInfo).mockResolvedValue(channel);
-    mocked(client.getAllConversationMembers).mockResolvedValue(members);
-    mocked(client.getAllUserList).mockResolvedValue(members);
+    jest.mocked(client.getUserInfo).mockResolvedValue(user);
+    jest.mocked(client.getConversationInfo).mockResolvedValue(channel);
+    jest.mocked(client.getAllConversationMembers).mockResolvedValue(members);
+    jest.mocked(client.getAllUserList).mockResolvedValue(members);
 
     await connector.updateSession(session, request);
 
@@ -1132,10 +1131,10 @@ describe('#updateSession', () => {
     const members = [user];
     const session = {};
 
-    mocked(client.getUserInfo).mockResolvedValue(user);
-    mocked(client.getConversationInfo).mockResolvedValue(channel);
-    mocked(client.getAllConversationMembers).mockResolvedValue(members);
-    mocked(client.getAllUserList).mockResolvedValue(members);
+    jest.mocked(client.getUserInfo).mockResolvedValue(user);
+    jest.mocked(client.getConversationInfo).mockResolvedValue(channel);
+    jest.mocked(client.getAllConversationMembers).mockResolvedValue(members);
+    jest.mocked(client.getAllUserList).mockResolvedValue(members);
 
     await connector.updateSession(session, interactiveMessageRequest);
 

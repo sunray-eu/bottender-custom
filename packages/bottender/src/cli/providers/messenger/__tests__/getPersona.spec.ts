@@ -1,5 +1,4 @@
 import { MessengerClient } from 'messaging-api-messenger';
-import { mocked } from 'ts-jest/utils';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
 import { getPersona } from '../persona';
@@ -21,9 +20,9 @@ const MOCK_FILE_WITH_PLATFORM = {
 beforeEach(() => {
   process.exit = jest.fn();
 
-  mocked(getChannelConfig).mockReturnValue(
-    MOCK_FILE_WITH_PLATFORM.channels.messenger
-  );
+  jest
+    .mocked(getChannelConfig)
+    .mockReturnValue(MOCK_FILE_WITH_PLATFORM.channels.messenger);
 });
 
 describe('resolved', () => {
@@ -36,7 +35,7 @@ describe('resolved', () => {
       },
     };
 
-    mocked(MessengerClient.prototype.getPersona).mockResolvedValue({
+    jest.mocked(MessengerClient.prototype.getPersona).mockResolvedValue({
       id: 'PERSONA_ID',
       name: 'PERSONA_NAME',
       profilePictureUrl: 'PERSONA_PROFILE_PICTURE_URL',
@@ -44,7 +43,7 @@ describe('resolved', () => {
 
     await getPersona(ctx);
 
-    const client = mocked(MessengerClient).mock.instances[0];
+    const client = jest.mocked(MessengerClient).mock.instances[0];
 
     expect(MessengerClient).toBeCalledWith({
       accessToken: '__FAKE_TOKEN__',
@@ -61,7 +60,7 @@ describe('resolved', () => {
       },
     };
 
-    mocked(MessengerClient.prototype.getPersona).mockResolvedValue(null);
+    jest.mocked(MessengerClient.prototype.getPersona).mockResolvedValue(null);
 
     await getPersona(ctx);
 
@@ -76,7 +75,7 @@ describe('resolved', () => {
       },
     };
 
-    mocked(MessengerClient.prototype.getPersona).mockResolvedValue(null);
+    jest.mocked(MessengerClient.prototype.getPersona).mockResolvedValue(null);
 
     await getPersona(ctx);
 
@@ -98,7 +97,7 @@ describe('reject', () => {
         status: 400,
       },
     };
-    mocked(MessengerClient.prototype.getPersona).mockRejectedValue(error);
+    jest.mocked(MessengerClient.prototype.getPersona).mockRejectedValue(error);
 
     await getPersona(ctx);
 
@@ -128,12 +127,14 @@ describe('reject', () => {
         },
       },
     };
-    mocked(MessengerClient.prototype.getPersona).mockRejectedValue(error);
+    jest.mocked(MessengerClient.prototype.getPersona).mockRejectedValue(error);
 
     await getPersona(ctx);
 
     expect(log.error).toBeCalled();
-    expect(mocked(log.error).mock.calls[2][0]).not.toMatch(/\[object Object\]/);
+    expect(jest.mocked(log.error).mock.calls[2][0]).not.toMatch(
+      /\[object Object\]/
+    );
     expect(process.exit).toBeCalled();
   });
 
@@ -145,9 +146,9 @@ describe('reject', () => {
         '--id': '54321',
       },
     };
-    mocked(MessengerClient.prototype.getPersona).mockRejectedValue(
-      new Error('something wrong happened')
-    );
+    jest
+      .mocked(MessengerClient.prototype.getPersona)
+      .mockRejectedValue(new Error('something wrong happened'));
 
     await getPersona(ctx);
 

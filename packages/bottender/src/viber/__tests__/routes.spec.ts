@@ -8,7 +8,7 @@ import { run } from '../../bot/Bot';
 const viberEventTextMessage = new ViberEvent({
   event: 'message',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   sender: {
     id: '01234567890A=',
     name: 'John McClane',
@@ -35,20 +35,20 @@ const viberEventSubscribed = new ViberEvent({
     language: 'en',
     apiVersion: 1,
   },
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
 });
 
 const viberEventUnsubscribed = new ViberEvent({
   event: 'unsubscribed',
   timestamp: 1457764197627,
   userId: '01234567890A=',
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
 });
 
 const viberEventConversationStarted = new ViberEvent({
   event: 'conversation_started',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   type: 'open',
   context: 'context information',
   user: {
@@ -65,21 +65,21 @@ const viberEventConversationStarted = new ViberEvent({
 const viberEventDelivered = new ViberEvent({
   event: 'delivered',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   userId: '01234567890A=',
 });
 
 const viberEventSeen = new ViberEvent({
   event: 'seen',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   userId: '01234567890A=',
 });
 
 const viberEventFailed = new ViberEvent({
   event: 'failed',
   timestamp: 1457764197627,
-  messageToken: 4912661846655238145,
+  messageToken: 4912661846655238145n,
   userId: '01234567890A=',
   desc: 'failure description',
 });

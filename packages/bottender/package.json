@@ -4,11 +4,11 @@
   "description": "A framework for building conversational user interfaces.",
   "license": "MIT",
   "homepage": "https://bottender.js.org/",
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/Yoctol/bottender.git"
   },
+  "type": "module",
   "main": "dist/index.js",
   "browser": "dist/browser.js",
   "bin": {
@@ -46,7 +46,7 @@
     "axios": "^1.6.7",
     "axios-error": "^1.0.4",
     "body-parser": "^1.20.2",
-    "chalk": "~5.3.0",
+    "chalk": "^5.3.0",
     "change-case": "^5.4.2",
     "cli-table3": "^0.6.3",
     "date-fns": "^3.3.1",

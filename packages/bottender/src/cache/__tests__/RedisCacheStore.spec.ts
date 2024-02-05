@@ -4,7 +4,7 @@ import RedisCacheStore from '../RedisCacheStore';
 
 describe('#constructor', () => {
   it('can call without any arguments', () => {
-    const store = new RedisCacheStore(); // eslint-disable-line no-unused-vars
+    const _store = new RedisCacheStore(); // eslint-disable-line no-unused-vars
 
     expect(Redis).toBeCalledWith();
   });
