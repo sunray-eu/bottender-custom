@@ -1,3 +1,4 @@
+import { JsonArray, JsonObject, JsonValue } from 'type-fest';
 import { MessengerTypes } from 'bottender';
 
 export { FacebookConnectorOptions } from './FacebookConnector';
@@ -367,7 +368,7 @@ export type Comment = {
   /**
    * For comments on a photo or video, this is that object. Otherwise, this is empty.
    */
-  object: any;
+  object: object;
   /**
    * For comment replies, this the comment that this is a reply to.
    */
@@ -534,7 +535,7 @@ type EntityAtTextRange = {
   /**
    * The object itself
    */
-  object: any;
+  object: object;
   /**
    * The character offset in the source text of the text indicating the object
    */
@@ -754,7 +755,7 @@ type Location = {
   zip: string;
 };
 
-type PageAdminNote = any;
+type PageAdminNote = object;
 
 /**
  * https://developers.facebook.com/docs/graph-api/reference/age-range/
@@ -822,12 +823,238 @@ type VideoUploadLimits = {
 /**
  * https://developers.facebook.com/docs/graph-api/reference/page
  */
-type Page = Record<string, any>;
+type Page = {
+  id: string; // numeric string
+  about?: string;
+  access_token?: string;
+  ad_campaign?: JsonObject;
+  affiliation?: string;
+  app_id?: string; // id
+  artists_we_like?: string;
+  attire?: 'Casual' | 'Dressy' | 'Unspecified';
+  awards?: string;
+  band_interests?: string;
+  band_members?: string;
+  best_page?: Page;
+  bio?: string;
+  birthday?: string;
+  booking_agent?: string;
+  built?: string;
+  business?: JsonValue; // Requires more specific type or any
+  can_checkin?: boolean;
+  can_post?: boolean;
+  category?: string;
+  category_list?: JsonArray;
+  checkins?: number; // unsigned int32
+  company_overview?: string;
+  connected_instagram_account?: JsonObject;
+  connected_page_backed_instagram_account?: JsonObject;
+  contact_address?: JsonObject;
+  copyright_attribution_insights?: JsonObject;
+  copyright_whitelisted_ig_partners?: string[];
+  country_page_likes?: number; // unsigned int32
+  cover?: CoverPhoto;
+  culinary_team?: string;
+  current_location?: string;
+  delivery_and_pickup_option_info?: string[];
+  description?: string;
+  description_html?: string;
+  differently_open_offerings?: Record<string, boolean>;
+  directed_by?: string;
+  display_subtext?: string;
+  displayed_message_response_time?: string;
+  does_viewer_have_page_permission_link_ig?: boolean;
+  emails?: string[];
+  engagement?: JsonObject;
+  fan_count?: number; // unsigned int32
+  featured_video?: JsonObject;
+  features?: string;
+  followers_count?: number; // unsigned int32
+  food_styles?: string[];
+  founded?: string;
+  general_info?: string;
+  general_manager?: string;
+  genre?: string;
+  global_brand_page_name?: string;
+  global_brand_root_id?: string; // numeric string
+  has_added_app?: boolean;
+  has_lead_access?: JsonObject;
+  has_transitioned_to_new_page_experience?: boolean;
+  has_whatsapp_business_number?: boolean;
+  has_whatsapp_number?: boolean;
+  hometown?: string;
+  hours?: Record<string, string>;
+  impressum?: string;
+  influences?: string;
+  instagram_business_account?: JsonObject;
+  is_always_open?: boolean;
+  is_chain?: boolean;
+  is_community_page?: boolean;
+  is_eligible_for_branded_content?: boolean;
+  is_eligible_for_disable_connect_ig_btn_for_non_page_admin_am_web?: boolean;
+  is_messenger_bot_get_started_enabled?: boolean;
+  is_messenger_platform_bot?: boolean;
+  is_owned?: boolean;
+  is_permanently_closed?: boolean;
+  is_published?: boolean;
+  is_unclaimed?: boolean;
+  is_verified?: boolean; // Deprecated, use "verification_status"
+  is_webhooks_subscribed?: boolean; // Deprecated
+  keywords?: null; // Deprecated
+  leadgen_tos_acceptance_time?: Date;
+  leadgen_tos_accepted?: boolean;
+  leadgen_tos_accepting_user?: User;
+  link?: string;
+  location?: Location;
+  members?: string;
+  merchant_id?: string;
+  merchant_review_status?: 'enum'; // Requires more specific type or enum definition
+  messaging_feature_status?: JsonObject;
+  messenger_ads_default_icebreakers?: string[];
+  messenger_ads_default_quick_replies?: string[];
+  messenger_ads_quick_replies_type?: 'UNKNOWN' | 'PAGE_SHOP' | 'RETAIL';
+  mission?: string;
+  mpg?: string;
+  name?: string;
+  name_with_location_descriptor?: string;
+  network?: string;
+  new_like_count?: number; // unsigned int32
+  offer_eligible?: boolean;
+  overall_star_rating?: number; // float
+  page_token?: string;
+  parent_page?: Page;
+  parking?: JsonObject;
+  payment_options?: JsonObject;
+  personal_info?: string;
+  personal_interests?: string;
+  pharma_safety_info?: string;
+  phone?: string;
+  pickup_options?: string[]; // enum list, more specific types required
+  place_type?:
+    | 'CITY'
+    | 'COUNTRY'
+    | 'EVENT'
+    | 'GEO_ENTITY'
+    | 'PLACE'
+    | 'RESIDENCE'
+    | 'STATE_PROVINCE'
+    | 'TEXT';
+  plot_outline?: string;
+  preferred_audience?: JsonObject;
+  press_contact?: string;
+  price_range?: string;
+  privacy_info_url?: string;
+  produced_by?: string;
+  products?: string;
+  promotion_eligible?: boolean;
+  promotion_ineligible_reason?: string;
+  public_transit?: string;
+  rating_count?: number; // unsigned int32
+  recipient?: string; // numeric string
+  record_label?: string;
+  release_date?: string;
+  restaurant_services?: JsonObject;
+  restaurant_specialties?: JsonObject;
+  schedule?: string;
+  screenplay_by?: string;
+  season?: string;
+  single_line_address?: string;
+  starring?: string;
+  start_info?: JsonObject;
+  store_code?: string;
+  store_location_descriptor?: string;
+  store_number?: number; // unsigned int32
+  studio?: string;
+  supports_donate_button_in_live_video?: boolean;
+  talking_about_count?: number; // unsigned int32
+  temporary_status?:
+    | 'differently_open'
+    | 'temporarily_closed'
+    | 'operating_as_usual'
+    | 'no_data';
+  unread_message_count?: number; // unsigned int32
+  unread_notif_count?: number; // unsigned int32
+  unseen_message_count?: number; // unsigned int32
+  username?: string;
+  verification_status?: 'blue_verified' | 'gray_verified' | 'not_verified';
+  voip_info?: JsonObject;
+  website?: string;
+  were_here_count?: number; // unsigned int32
+  whatsapp_number?: string;
+  written_by?: string;
+};
 
 /**
  * https://developers.facebook.com/docs/graph-api/reference/event
  */
-type Event = Record<string, any>;
+type Event = {
+  id: string; // numeric string
+  attending_count: number;
+  can_guests_invite: boolean;
+  category:
+    | 'CLASSIC_LITERATURE'
+    | 'COMEDY'
+    | 'CRAFTS'
+    | 'DANCE'
+    | 'DRINKS'
+    | 'FITNESS_AND_WORKOUTS'
+    | 'FOODS'
+    | 'GAMES'
+    | 'GARDENING'
+    | 'HEALTH_AND_MEDICAL'
+    | 'HEALTHY_LIVING_AND_SELF_CARE'
+    | 'HOME_AND_GARDEN'
+    | 'MUSIC_AND_AUDIO'
+    | 'PARTIES'
+    | 'PROFESSIONAL_NETWORKING'
+    | 'RELIGIONS'
+    | 'SHOPPING_EVENT'
+    | 'SOCIAL_ISSUES'
+    | 'SPORTS'
+    | 'THEATER'
+    | 'TV_AND_MOVIES'
+    | 'VISUAL_ARTS';
+  cover: CoverPhoto;
+  created_time: Date;
+  declined_count: number;
+  description: string;
+  discount_code_enabled: boolean;
+  end_time?: string;
+  event_times?: JsonArray;
+  guest_list_enabled: boolean;
+  interested_count: number;
+  is_canceled: boolean;
+  is_draft: boolean;
+  is_online: boolean;
+  is_page_owned: boolean;
+  maybe_count: number;
+  name: string;
+  noreply_count: number;
+  online_event_format:
+    | 'messenger_room'
+    | 'third_party'
+    | 'fb_live'
+    | 'other'
+    | 'none';
+  online_event_third_party_url?: string;
+  owner: JsonObject; // Should be defined more specifically based on what "profile" includes
+  place?: JsonObject;
+  scheduled_publish_time?: string;
+  start_time: string;
+  ticket_uri?: string;
+  ticket_uri_start_sales_time?: string;
+  ticketing_privacy_uri?: string;
+  ticketing_terms_uri?: string;
+  timezone: string; // This could be refined to a specific set or format of timezone strings
+  type:
+    | 'private'
+    | 'public'
+    | 'group'
+    | 'community'
+    | 'friends'
+    | 'work_company';
+  updated_time: Date;
+};
 
 /**
  * https://developers.facebook.com/docs/graph-api/reference/v6.0/group
@@ -905,13 +1132,13 @@ type CoverPhoto = {
 /**
  * https://developers.facebook.com/docs/graph-api/reference/application
  */
-type Application = Record<string, any>;
+type Application = Record<string, unknown>;
 
 /**
  * https://developers.facebook.com/docs/graph-api/reference/story-attachment-media/
  */
 type StoryAttachmentMedia = {
-  image: any;
+  image: JsonObject;
   source: string;
 };
 

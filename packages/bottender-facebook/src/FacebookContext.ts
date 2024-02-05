@@ -1,14 +1,14 @@
 import { EventEmitter } from 'events';
 
 import warning from 'warning';
+import { BatchRequest, FacebookBatchQueue } from 'facebook-batch';
 import {
   Context,
   MessengerBatch,
   MessengerTypes,
   RequestContext,
 } from 'bottender';
-import { FacebookBatchQueue } from 'facebook-batch';
-import { JsonObject } from 'type-fest';
+import { JsonObject, JsonValue } from 'type-fest';
 
 import FacebookBatch from './FacebookBatch';
 import FacebookClient from './FacebookClient';
@@ -153,7 +153,7 @@ export default class FacebookContext extends Context<
         // FIXME: this type should be fixed in MessengerBatch
         MessengerBatch.sendMessage(recipient, message, {
           accessToken: this._customAccessToken,
-        } as any)
+        })
       );
     }
     return this._client.sendMessage(recipient, message);
@@ -251,18 +251,17 @@ export default class FacebookContext extends Context<
       return null;
     }
 
+    // Fixme: typing is wrong here (CamelCase)
     if (this._batchQueue) {
-      return this._batchQueue.push<
-        Pick<
-          Types.Comment,
-          Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
-        >
-      >(
+      return this._batchQueue.push<JsonValue>(
         FacebookBatch.getComment(commentId, {
           accessToken: this._customAccessToken,
           fields,
-        })
-      );
+        }) as BatchRequest
+      ) as Promise<Pick<
+        Types.Comment,
+        Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
+      > | null>;
     }
     return this._client.getComment(commentId, { fields });
   }
