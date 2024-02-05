@@ -49,7 +49,7 @@ async function Default(context) {
   await context.sendText('Hello World');
 }
 
-module.exports = async function App(context) {
+module.exports = async function App(_context) {
   return router([
     slack.event('app_home_opened', Home),
     slack.event('block_actions', OnBlockActions),

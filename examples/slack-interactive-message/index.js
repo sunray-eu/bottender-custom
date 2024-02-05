@@ -93,7 +93,7 @@ async function HandleInteractiveMessage(context) {
   );
 }
 
-module.exports = async function App(context) {
+module.exports = async function App(_context) {
   return router([
     text('*', HandleText),
     slack.event('interactive_message', HandleInteractiveMessage),

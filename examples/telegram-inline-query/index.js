@@ -38,7 +38,7 @@ async function CollectFeedback(context) {
   );
 }
 
-module.exports = async function App(context) {
+module.exports = async function App(_context) {
   return router([
     telegram.inlineQuery(AnswerInlineQuery),
     telegram.chosenInlineResult(CollectFeedback),

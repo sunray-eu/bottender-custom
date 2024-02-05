@@ -1,10 +1,13 @@
+import { EventEmitter } from 'events';
 import { IncomingHttpHeaders } from 'http';
 
 import { JsonObject } from 'type-fest';
 
 import Bot, { OnRequest } from './bot/Bot';
 import Context from './context/Context';
+import SessionStore from './session/SessionStore';
 import { Connector } from './bot/Connector';
+import { Event } from './context/Event';
 import { LineConnectorOptions } from './line/LineConnector';
 import { MessengerConnectorOptions } from './messenger/MessengerConnector';
 import { SlackConnectorOptions } from './slack/SlackConnector';
@@ -122,7 +125,35 @@ export type RequestContext<
 
 export type Client = object;
 
-export { Event } from './context/Event';
+export { Event };
+
+export type Builder<C extends Context> = {
+  build: () => Action<C, any>;
+};
+
+export type RequestHandler<B> = (
+  body: B,
+  requestContext?: RequestContext
+) => B | Promise<B>;
+
+export interface IBot<
+  B extends Record<string, unknown> | JsonObject = JsonObject,
+  C extends Client = Client,
+  E extends Event = Event,
+  Ctx extends Context<C, E> = Context<C, E>,
+> {
+  connector: Connector<B, C>;
+  sessions: SessionStore;
+  handler: Action<Ctx, any> | null;
+  emitter: EventEmitter;
+
+  onEvent(handler: Action<Ctx, any> | Builder<Ctx>): Bot<B, C, E, Ctx>;
+  onError(handler: Action<Ctx, any> | Builder<Ctx>): Bot<B, C, E, Ctx>;
+  setInitialState(initialState: JsonObject): Bot<B, C, E, Ctx>;
+  use(plugin: Plugin<Ctx>): Bot<B, C, E, Ctx>;
+  initSessionStore(): Promise<void>;
+  createRequestHandler(): RequestHandler<B>;
+}
 
 export type ChannelBot = {
   webhookPath: string;

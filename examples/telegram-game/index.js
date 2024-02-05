@@ -1,4 +1,4 @@
-const { router, telegram, text, route } = require('bottender/router');
+const { router, telegram, text, _route } = require('bottender/router');
 
 const { createSession } = require('./gameSession');
 
@@ -26,7 +26,7 @@ async function HandleCallbackQuery(context) {
   });
 }
 
-module.exports = async function App(context) {
+module.exports = async function App(_context) {
   return router([
     text(/\/game/, SendGame),
     telegram.callbackQuery(HandleCallbackQuery),

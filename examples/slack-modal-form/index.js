@@ -181,7 +181,7 @@ async function OnBlockActions(context) {
   }
 }
 
-async function OnViewSubmission(context) {
+async function _OnViewSubmission(context) {
   const values = getFormValues(context.event.rawEvent.view);
   await context.chat.postMessage({
     text: `You submited the form. The contents you provided as follow:
@@ -211,7 +211,7 @@ async function Default(context) {
   });
 }
 
-module.exports = async function App(context) {
+module.exports = async function App(_context) {
   return router([
     slack.event('block_actions', OnBlockActions),
     slack.event('view_submission', OnFormSubmitted),

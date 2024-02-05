@@ -16,7 +16,9 @@ app.prepare().then(() => {
   server.use(
     bodyParser.json({
       verify: (req, _, buf) => {
-        (req as any).rawBody = buf.toString();
+        if ('rawBody' in req) {
+          req.rawBody = buf.toString();
+        }
       },
     })
   );

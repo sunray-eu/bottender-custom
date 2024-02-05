@@ -34,9 +34,10 @@ async function DefaultAction(context) {
   await context.sendText('please type /poll to create a new demo poll.');
 }
 
+// eslint-disable-next-line no-empty-function
 async function DoNothing() {}
 
-module.exports = async function App(context) {
+module.exports = async function App(_context) {
   return router([
     text(/\/poll/, NewPoll),
     telegram.poll(DoNothing),

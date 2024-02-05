@@ -25,13 +25,19 @@ function createMiddleware(bot: Bot) {
       {
         method: req.method,
         path: req.path,
-        query: req.query,
+        query: req.query as Record<string, string>,
         headers: req.headers,
+        rawBody: req.body,
+        body: req.body,
+        params: req.params,
+        url: req.url,
       }
     );
     if (response) {
       res.set(response.headers || {});
-      res.status(response.status || 200);
+      res.status(
+        (typeof response.status === 'number' && response.status) || 200
+      );
       res.send(response.body || '');
     } else {
       res.status(200);

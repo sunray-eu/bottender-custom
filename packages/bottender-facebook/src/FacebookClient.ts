@@ -131,7 +131,7 @@ export default class FacebookClient extends MessengerClient {
               canComment: boolean;
             };
           }
-        : any)
+        : unknown)
   > {
     const conjunctFields = Array.isArray(fields) ? fields.join(',') : fields;
 
@@ -151,7 +151,7 @@ export default class FacebookClient extends MessengerClient {
                   canComment: boolean;
                 };
               }
-            : any)
+            : unknown)
       >(`/${objectId}/comments`, {
         params: {
           limit,

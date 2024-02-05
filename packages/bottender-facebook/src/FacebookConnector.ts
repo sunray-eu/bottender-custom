@@ -18,7 +18,7 @@ import FacebookEvent from './FacebookEvent';
 import { ChangesEntry, FacebookWebhookRequestBody } from './FacebookTypes';
 
 // TODO: use exported type
-type Session = Record<string, any>;
+type Session = Record<string, unknown>;
 
 export type FacebookConnectorOptions = {
   appId: string;

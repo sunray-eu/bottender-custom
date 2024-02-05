@@ -15,7 +15,7 @@ import FacebookEvent from './FacebookEvent';
 import * as Types from './FacebookTypes';
 
 // TODO: use exported type
-type Session = Record<string, any>;
+type Session = Record<string, unknown>;
 
 export type FacebookContextOptions = {
   appId?: string;
@@ -104,7 +104,7 @@ export default class FacebookContext extends Context<
         // FIXME: this type should be fixed in MessengerBatch
         MessengerBatch.sendText(recipient, text, {
           accessToken: this._customAccessToken,
-        } as any)
+        })
       );
     }
     return this._client.sendText(recipient, text);

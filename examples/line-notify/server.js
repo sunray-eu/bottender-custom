@@ -34,7 +34,7 @@ app.prepare().then(() => {
   server.get('/notify/new', (req, res) => {
     const filename = path.join(`${__dirname}/notify.html`);
     const url = lineNotify.getAuthLink('test');
-    ejs.renderFile(filename, { url }, {}, function (err, str) {
+    ejs.renderFile(filename, { url }, {}, (err, str) => {
       if (err) {
         console.log('err:');
         console.log(err);
@@ -43,7 +43,7 @@ app.prepare().then(() => {
     });
   });
 
-  server.get('/notify/redirect', async function (req, res) {
+  server.get('/notify/redirect', async (req, res) => {
     const code = req.query.code;
     const token = await lineNotify.getToken(code);
     await lineNotify.sendNotify(token, 'Hello bottender!');

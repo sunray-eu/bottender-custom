@@ -38,7 +38,7 @@ async function AnswerKeyboard(context) {
   });
 }
 
-module.exports = async function App(context) {
+module.exports = async function App(_context) {
   return router([
     text('show keyboard', ShowKeyboard),
     text(/[🍔🍕🌮🍱]/u, AnswerKeyboard),

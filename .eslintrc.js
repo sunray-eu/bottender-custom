@@ -15,6 +15,14 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-undef': 'off',
     'prefer-destructuring': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'warn', // or "error"
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
 
     camelcase: 'warn',
 

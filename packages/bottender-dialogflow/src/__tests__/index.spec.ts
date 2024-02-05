@@ -1,7 +1,6 @@
 import dialogflowSdk, { protos } from '@google-cloud/dialogflow';
 import { Context, chain } from 'bottender';
 // FIXME: export public API for testing
-import { mocked } from 'ts-jest/utils';
 import { run } from 'bottender/dist/bot/Bot';
 
 import dialogflow from '..';
@@ -75,15 +74,15 @@ function setup({
     {}, // eslint-disable-line @typescript-eslint/ban-types
   ] = [detectIntentResponse, detectIntentRequest, {}];
 
-  mocked(
-    dialogflowSdk.SessionsClient.prototype
-  ).projectAgentSessionPath.mockReturnValueOnce(sessionPath);
-  mocked(
-    dialogflowSdk.SessionsClient.prototype
-  ).detectIntent.mockResolvedValueOnce(
-    // @ts-ignore: this resolved type should not be hinted to never
-    detectIntentResolvedValue
-  );
+  jest
+    .mocked(dialogflowSdk.SessionsClient.prototype)
+    .projectAgentSessionPath.mockReturnValueOnce(sessionPath);
+  jest
+    .mocked(dialogflowSdk.SessionsClient.prototype)
+    .detectIntent.mockResolvedValueOnce(
+      // @ts-ignore: this resolved type should not be hinted to never
+      detectIntentResolvedValue
+    );
 
   const context = new TestContext({
     client: {},
@@ -146,7 +145,8 @@ it('should resolve corresponding action if intent match name', async () => {
   expect(context.intent).toBe('greeting');
   expect(context.isHandled).toBe(true);
 
-  const sessionClient = mocked(dialogflowSdk.SessionsClient).mock.instances[0];
+  const sessionClient = jest.mocked(dialogflowSdk.SessionsClient).mock
+    .instances[0];
 
   expect(sessionClient.projectAgentSessionPath).toBeCalledWith(
     'PROJECT_ID',
@@ -597,7 +597,8 @@ it('should support parameters of dialogflow', async () => {
 
   await app(context, {});
 
-  const sessionClient = mocked(dialogflowSdk.SessionsClient).mock.instances[0];
+  const sessionClient = jest.mocked(dialogflowSdk.SessionsClient).mock
+    .instances[0];
 
   expect(context.sendText).toBeCalledWith('Hello!');
 

@@ -77,7 +77,7 @@ async function Default(context) {
   });
 }
 
-module.exports = async function App(context) {
+module.exports = async function App(_context) {
   return router([
     slack.event('block_actions', OnBlockActions),
     slack.event('view_closed', OnViewClosed),
