@@ -8,6 +8,7 @@ import {
   RequestContext,
 } from 'bottender';
 import { FacebookBatchQueue } from 'facebook-batch';
+import { JsonObject } from 'type-fest';
 
 import FacebookBatch from './FacebookBatch';
 import FacebookClient from './FacebookClient';
@@ -22,7 +23,7 @@ export type FacebookContextOptions = {
   client: FacebookClient;
   event: FacebookEvent;
   session?: Session;
-  initialState?: Record<string, any>;
+  initialState?: JsonObject;
   requestContext?: RequestContext;
   customAccessToken?: string;
   batchQueue?: FacebookBatchQueue | null;

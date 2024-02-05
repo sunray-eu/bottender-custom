@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { IBot } from 'bottender/src/types';
 
 export type InstanceOfIBot<T> =
