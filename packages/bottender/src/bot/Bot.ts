@@ -17,7 +17,7 @@ import { Event } from '../context/Event';
 import { Connector } from './Connector';
 
 type Builder<C extends Context> = {
-  build: () => Action<C, any>;
+  build: () => Action<C>;
 };
 
 const debugRequest = debug('bottender:request');
