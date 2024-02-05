@@ -1,4 +1,4 @@
-import { Confirm } from 'enquirer';
+import inquirer from 'inquirer';
 import { MessengerClient } from 'messaging-api-messenger';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
@@ -7,8 +7,8 @@ import { setWebhook } from '../webhook';
 import * as log from '../../../../shared/log';
 
 jest.mock('messaging-api-messenger');
-jest.mock('enquirer', () => ({
-  Confirm: jest.fn(),
+jest.mock('inquirer', () => ({
+  prompt: jest.fn(),
 }));
 
 jest.mock('../../../../shared/getWebhookFromNgrok');
@@ -70,10 +70,7 @@ function setup({
     post: jest.fn().mockResolvedValue({ data: { success: true } }),
   };
 
-  Confirm.mockImplementation(() => ({
-    run: jest.fn().mockResolvedValue(true),
-  }));
-
+  jest.mocked(inquirer.prompt).mockResolvedValue({ usingNgrok: true });
   return {};
 }
 

@@ -1,4 +1,4 @@
-import { Confirm } from 'enquirer';
+import inquirer from 'inquirer';
 import { TelegramClient } from 'messaging-api-telegram';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
@@ -7,8 +7,8 @@ import { setWebhook } from '../webhook';
 import * as log from '../../../../shared/log';
 
 jest.mock('messaging-api-telegram');
-jest.mock('enquirer', () => ({
-  Confirm: jest.fn(),
+jest.mock('inquirer', () => ({
+  prompt: jest.fn(),
 }));
 
 jest.mock('../../../../shared/getWebhookFromNgrok');
@@ -49,9 +49,7 @@ beforeEach(() => {
     .mocked(getWebhookFromNgrok)
     .mockResolvedValue('https://fakeDomain.ngrok.io');
 
-  Confirm.mockImplementation(() => ({
-    run: jest.fn().mockResolvedValue(true),
-  }));
+  jest.mocked(inquirer.prompt).mockResolvedValue({ usingNgrok: true });
 
   jest.mocked(TelegramClient.prototype.setWebhook).mockResolvedValue(true);
 });

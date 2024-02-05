@@ -1,4 +1,4 @@
-import { Confirm } from 'enquirer';
+import inquirer from 'inquirer';
 import { ViberClient } from 'messaging-api-viber';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
@@ -7,8 +7,8 @@ import { setWebhook } from '../webhook';
 import * as log from '../../../../shared/log';
 
 jest.mock('messaging-api-viber');
-jest.mock('enquirer', () => ({
-  Confirm: jest.fn(),
+jest.mock('inquirer', () => ({
+  prompt: jest.fn(),
 }));
 
 jest.mock('../../../../shared/getWebhookFromNgrok');
@@ -49,9 +49,7 @@ function setup({ config }: { config?: Record<string, any> } = {}) {
     ],
   });
 
-  Confirm.mockImplementation(() => ({
-    run: jest.fn().mockResolvedValue(true),
-  }));
+  jest.mocked(inquirer.prompt).mockResolvedValue({ usingNgrok: true });
 
   return {};
 }

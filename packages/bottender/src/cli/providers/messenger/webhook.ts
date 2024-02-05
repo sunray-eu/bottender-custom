@@ -1,7 +1,7 @@
 import Table from 'cli-table3';
 import chalk from 'chalk';
-import invariant from 'invariant';
-import { Confirm } from 'enquirer';
+import inquirer from 'inquirer';
+import invariant from 'invariant'; // Import inquirer
 import { MessengerClient } from 'messaging-api-messenger';
 
 import getChannelConfig from '../../../shared/getChannelConfig';
@@ -51,6 +51,7 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
       channel: Channel.Messenger,
     });
 
+    // Destructuring for clarity
     const {
       accessToken,
       appId,
@@ -60,6 +61,7 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
       path = '/webhooks/messenger',
     } = config as Record<string, string>;
 
+    // Invariant checks
     invariant(
       accessToken,
       '`accessToken` is not found in the `bottender.config.js` file'
@@ -82,12 +84,14 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
 
     if (!webhook) {
       warn('We can not find the webhook callback URL you provided.');
-      const prompt = new Confirm({
-        name: 'question',
-        message: `Are you using ngrok (get URL from ngrok server on http://127.0.0.1:${ngrokPort})?`,
-      });
-      const result = await prompt.run();
-      if (result) {
+      const answer = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'usingNgrok',
+          message: `Are you using ngrok (get URL from ngrok server on http://127.0.0.1:${ngrokPort})?`,
+        },
+      ]);
+      if (answer.usingNgrok) {
         webhook = `${await getWebhookFromNgrok(ngrokPort)}${path}`;
       }
     }
@@ -145,12 +149,15 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
 
     console.log(table.toString());
 
-    const prompt = new Confirm(
-      `Are you sure to create subscription with those settings?`
-    );
-    const result = await prompt.run();
+    const confirmSubscription = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'confirm',
+        message: 'Are you sure to create subscription with those settings?',
+      },
+    ]);
 
-    if (!result) {
+    if (!confirmSubscription.confirm) {
       return;
     }
 

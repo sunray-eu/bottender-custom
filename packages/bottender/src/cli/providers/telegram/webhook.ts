@@ -1,5 +1,5 @@
-import invariant from 'invariant';
-import { Confirm } from 'enquirer';
+import inquirer from 'inquirer';
+import invariant from 'invariant'; // Use inquirer
 import { TelegramClient } from 'messaging-api-telegram';
 
 import getChannelConfig from '../../../shared/getChannelConfig';
@@ -11,7 +11,6 @@ import { bold, error, print, warn } from '../../../shared/log';
 
 import help from './help';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getWebhook(_: CliContext): Promise<void> {
   try {
     const config = await getChannelConfig({ channel: Channel.Telegram });
@@ -71,18 +70,18 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
       '`accessToken` is not found in the `bottender.config.js` file'
     );
 
-    const client = new TelegramClient({
-      accessToken,
-    });
+    const client = new TelegramClient({ accessToken });
 
     if (!webhook) {
       warn('We can not find the webhook callback URL you provided.');
-      const prompt = new Confirm({
-        name: 'question',
-        message: `Are you using ngrok (get URL from ngrok server on http://127.0.0.1:${ngrokPort})?`,
-      });
-      const result = await prompt.run();
-      if (result) {
+      const answers = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'usingNgrok',
+          message: `Are you using ngrok (get URL from ngrok server on http://127.0.0.1:${ngrokPort})?`,
+        },
+      ]);
+      if (answers.usingNgrok) {
         webhook = `${await getWebhookFromNgrok(ngrokPort)}${path}`;
       }
     }
@@ -112,7 +111,6 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function deleteWebhook(_: CliContext): Promise<void> {
   try {
     const config = await getChannelConfig({ channel: Channel.Telegram });

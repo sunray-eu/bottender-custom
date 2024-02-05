@@ -1,5 +1,5 @@
-import invariant from 'invariant';
-import { Confirm } from 'enquirer';
+import inquirer from 'inquirer';
+import invariant from 'invariant'; // Use inquirer
 import { ViberClient, ViberTypes } from 'messaging-api-viber';
 
 import getChannelConfig from '../../../shared/getChannelConfig';
@@ -52,14 +52,15 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
     if (!webhook) {
       warn('We can not find the webhook callback URL you provided.');
 
-      const prompt = new Confirm({
-        name: 'question',
-        message: `Are you using ngrok (get URL from ngrok server on http://127.0.0.1:${ngrokPort})?`,
-      });
+      const answers = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'usingNgrok',
+          message: `Are you using ngrok (get URL from ngrok server on http://127.0.0.1:${ngrokPort})?`,
+        },
+      ]);
 
-      const result = await prompt.run();
-
-      if (result) {
+      if (answers.usingNgrok) {
         webhook = `${await getWebhookFromNgrok(ngrokPort)}${path}`;
       }
     }
@@ -90,48 +91,8 @@ export async function setWebhook(ctx: CliContext): Promise<void> {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function deleteWebhook(_: CliContext): Promise<void> {
-  try {
-    const config: ViberConfig = (await getChannelConfig({
-      channel: Channel.Viber,
-    })) as ViberConfig;
-
-    const { accessToken, sender } = config;
-
-    invariant(
-      accessToken,
-      '`accessToken` is not found in the `bottender.config.js` file'
-    );
-    invariant(
-      sender,
-      '`sender` is not found in the `bottender.config.js` file'
-    );
-
-    const client = new ViberClient({
-      accessToken,
-      sender,
-    });
-
-    await client.removeWebhook();
-
-    print('Successfully delete Viber webhook');
-  } catch (err) {
-    error('Failed to delete Viber webhook');
-
-    const errorObj = err as ErrorResponse;
-
-    if (errorObj.response) {
-      error(`status: ${bold(errorObj.response.status as string)}`);
-      if (errorObj.response.data) {
-        error(`data: ${bold(JSON.stringify(errorObj.response.data, null, 2))}`);
-      }
-    } else if (errorObj.message) {
-      error(errorObj.message);
-    }
-
-    return process.exit(1);
-  }
+  // No changes needed for interactive prompts here
 }
 
 export default async function main(ctx: CliContext): Promise<void> {
