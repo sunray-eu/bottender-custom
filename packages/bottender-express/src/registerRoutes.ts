@@ -1,11 +1,11 @@
 import express from 'express';
 
 import createMiddleware from './createMiddleware';
-import { Bot, RouteConfig } from './types';
+import { InstanceOfIBot, RouteConfig } from './types';
 
-function registerRoutes(
+function registerRoutes<T>(
   server: express.Application,
-  bot: Bot,
+  bot: InstanceOfIBot<T>,
   config: RouteConfig = {}
 ) {
   const path = config.path || '/';
@@ -23,9 +23,11 @@ function registerRoutes(
       method: req.method,
       url,
       headers: req.headers,
-      query: req.query,
+      query: req.query as Record<string, string>,
       rawBody,
       body: req.body,
+      path: req.path,
+      params: req.params,
     });
 
     if (shouldNext) {

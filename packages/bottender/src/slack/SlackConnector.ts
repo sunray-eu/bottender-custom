@@ -21,6 +21,7 @@ import {
   Message,
   SlackRawEvent,
   SlackRequestBody,
+  SlackRequestContext,
   UIEvent,
 } from './SlackTypes';
 
@@ -395,18 +396,7 @@ export default class SlackConnector
     );
   }
 
-  preprocess({
-    method,
-    headers,
-    body,
-    rawBody,
-  }: {
-    method: string;
-    headers: Record<string, string>;
-    query: Record<string, string>;
-    rawBody: string;
-    body: Record<string, any>;
-  }) {
+  preprocess({ method, headers, body, rawBody }: SlackRequestContext) {
     if (method.toLowerCase() !== 'post') {
       return {
         shouldNext: true,
@@ -417,12 +407,14 @@ export default class SlackConnector
     const signature = headers['x-slack-signature'];
 
     if (
-      this._signingSecret &&
-      !this.verifySignatureBySigningSecret({
-        rawBody,
-        timestamp,
-        signature,
-      })
+      !timestamp ||
+      !signature ||
+      (this._signingSecret &&
+        !this.verifySignatureBySigningSecret({
+          rawBody,
+          timestamp,
+          signature,
+        }))
     ) {
       const error = {
         message: 'Slack Signing Secret Validation Failed!',
@@ -441,9 +433,7 @@ export default class SlackConnector
     }
 
     const token =
-      !body.token && body.payload && typeof body.payload === 'string'
-        ? JSON.parse(body.payload).token
-        : body.token;
+      'token' in body ? body.token : (JSON.parse(body.payload).token as string);
 
     if (this._verificationToken && !this.verifySignature(token)) {
       const error = {
@@ -462,7 +452,7 @@ export default class SlackConnector
       };
     }
 
-    if (body.type === 'url_verification') {
+    if ('type' in body && body.type === 'url_verification' && body.challenge) {
       return {
         shouldNext: false,
         response: {

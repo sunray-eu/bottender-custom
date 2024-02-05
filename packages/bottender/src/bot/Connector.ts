@@ -6,6 +6,15 @@ import Session from '../session/Session';
 import { Event } from '../context/Event';
 import { RequestContext } from '../types';
 
+// Define the preprocess function response structure
+interface PreprocessResponse {
+  shouldNext: boolean;
+  response?: {
+    status: number;
+    body: Record<string, unknown> | string;
+  };
+}
+
 export interface Connector<B, C> {
   client?: C;
   platform: string;
@@ -22,4 +31,7 @@ export interface Connector<B, C> {
     requestContext?: RequestContext;
     emitter?: EventEmitter | null;
   }): any;
+  preprocess(
+    context: RequestContext
+  ): Promise<PreprocessResponse> | PreprocessResponse;
 }

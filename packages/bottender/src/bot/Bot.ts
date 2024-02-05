@@ -7,11 +7,19 @@ import { JsonObject, JsonValue } from 'type-fest';
 import { PlainObject, camelcaseKeysDeep } from 'messaging-api-common';
 
 import CacheBasedSessionStore from '../session/CacheBasedSessionStore';
-import Context from '../context/Context';
+import Context, { Response } from '../context/Context';
 import MemoryCacheStore from '../cache/MemoryCacheStore';
 import Session from '../session/Session';
 import SessionStore from '../session/SessionStore';
-import { Action, Client, Plugin, Props, RequestContext } from '../types';
+import {
+  Action,
+  Client,
+  IBot,
+  Plugin,
+  Props,
+  RequestContext,
+  RequestHandler,
+} from '../types';
 import { Event } from '../context/Event';
 
 import { Connector } from './Connector';
@@ -58,11 +66,6 @@ export function run<C extends Context>(action: Action<C>): Action<C> {
   };
 }
 
-type RequestHandler<B> = (
-  body: B,
-  requestContext?: RequestContext
-) => void | Promise<void>;
-
 export type OnRequest = (
   body: JsonObject,
   requestContext?: RequestContext
@@ -73,7 +76,8 @@ export default class Bot<
   C extends Client,
   E extends Event,
   Ctx extends Context<C, E>,
-> {
+> implements IBot<B, C, E, Ctx>
+{
   _sessions: SessionStore;
 
   _initialized: boolean;
@@ -180,7 +184,7 @@ export default class Bot<
     return async (
       inputBody: B,
       requestContext?: RequestContext
-    ): Promise<void | never> => {
+    ): Promise<Response | void> => {
       if (!inputBody) {
         throw new Error('Bot.createRequestHandler: Missing argument.');
       }
@@ -198,7 +202,7 @@ export default class Bot<
 
       const events = this._connector.mapRequestToEvents(body);
 
-      const contexts = await pMap(
+      const contexts: Ctx[] = await pMap(
         events,
         async (event) => {
           const { platform } = this._connector;

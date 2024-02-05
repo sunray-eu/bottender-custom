@@ -20,7 +20,7 @@ type Options<C extends Client, E extends Event> = {
   emitter?: EventEmitter | null;
 };
 
-type Response = {
+export type Response = {
   status: number;
   headers: Record<string, string>;
   body: unknown;

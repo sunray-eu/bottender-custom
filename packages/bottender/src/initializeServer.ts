@@ -1,8 +1,8 @@
 import path from 'path';
 
 import express from 'express';
-import merge from 'lodash/merge';
 import { createServer, registerRoutes } from '@bottender/express';
+import { merge } from 'lodash-es';
 
 import Bot from './bot/Bot';
 import ConsoleBot from './console/ConsoleBot';
@@ -94,9 +94,9 @@ async function initializeServer({
       .forEach(({ channel, webhookPath, bot }) => {
         const routePath = webhookPath || `/webhooks/${channel}`;
         if (server) {
-          registerRoutes(server, bot, { path: routePath });
+          registerRoutes<typeof bot>(server, bot, { path: routePath });
         } else {
-          server = createServer(bot, {
+          server = createServer<typeof bot>(bot, {
             path: routePath,
           });
         }

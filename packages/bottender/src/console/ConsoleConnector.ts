@@ -89,4 +89,8 @@ export default class ConsoleConnector
       mockPlatform: this._platform,
     });
   }
+
+  preprocess(_context: RequestContext) {
+    return { shouldNext: true };
+  }
 }

@@ -1,10 +1,11 @@
 import { EventEmitter } from 'events';
 import { IncomingHttpHeaders } from 'http';
 
-import { JsonObject } from 'type-fest';
+import { JsonObject, JsonValue } from 'type-fest';
+import { PlainObject } from 'messaging-api-common';
 
 import Bot, { OnRequest } from './bot/Bot';
-import Context from './context/Context';
+import Context, { Response } from './context/Context';
 import SessionStore from './session/SessionStore';
 import { Connector } from './bot/Connector';
 import { Event } from './context/Event';
@@ -110,7 +111,7 @@ export type BottenderConfig = {
 };
 
 export type RequestContext<
-  B extends object = object,
+  B extends object | undefined = object,
   H extends Record<string, string | string[] | undefined> = {},
 > = {
   id?: string;
@@ -135,10 +136,12 @@ export type Builder<C extends Context> = {
 export type RequestHandler<B> = (
   body: B,
   requestContext?: RequestContext
-) => B | Promise<B>;
+) => void | Promise<Response | void>;
 
 export interface IBot<
-  B extends Record<string, unknown> | JsonObject = JsonObject,
+  B extends Record<string, JsonValue> | PlainObject =
+    | Record<string, JsonValue>
+    | PlainObject,
   C extends Client = Client,
   E extends Event = Event,
   Ctx extends Context<C, E> = Context<C, E>,

@@ -1,3 +1,5 @@
+import { RequestContext } from '../types';
+
 export * from 'messaging-api-slack/dist/SlackTypes';
 export { SlackConnectorOptions } from './SlackConnector';
 export { SlackContextOptions } from './SlackContext';
@@ -150,6 +152,15 @@ type EventsAPIBody = {
   authedUsers: string[];
   eventId: string;
   eventTime: number;
+  challenge?: string;
 };
 
 export type SlackRequestBody = EventsAPIBody | { payload: string };
+
+export type SlackRequestContext = RequestContext<
+  SlackRequestBody,
+  {
+    'x-slack-request-timestamp'?: string;
+    'x-slack-signature'?: string;
+  }
+>;

@@ -1,9 +1,9 @@
 import isEmpty from 'lodash/isEmpty';
 import { NextFunction, Request, Response } from 'express';
 
-import { Bot } from './types';
+import { IBot } from './types';
 
-function createMiddleware(bot: Bot) {
+function createMiddleware(bot: IBot) {
   const requestHandler = bot.createRequestHandler();
 
   const wrapper =
