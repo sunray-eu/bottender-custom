@@ -11,6 +11,7 @@ import {
   MessengerTypes,
   RequestContext,
 } from 'bottender';
+import { JsonObject } from 'type-fest';
 
 import FacebookClient from './FacebookClient';
 import FacebookContext from './FacebookContext';
@@ -150,7 +151,7 @@ export default class FacebookConnector
   public async createContext(params: {
     event: FacebookEvent | MessengerEvent;
     session?: Session;
-    initialState?: Record<string, any>;
+    initialState?: JsonObject;
     requestContext?: RequestContext;
     emitter?: EventEmitter;
   }): Promise<FacebookContext | MessengerContext> {
