@@ -390,7 +390,7 @@ class MessengerContext extends Context<MessengerClient, MessengerEvent> {
         MessengerBatch.markSeen(
           this._session.user.id,
           // FIXME: this type should be fixed in MessengerBatch
-          this._getMethodOptions({}) as any
+          this._getMethodOptions({})
         )
       );
     }

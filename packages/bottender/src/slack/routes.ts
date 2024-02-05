@@ -1,43 +1,42 @@
-import Context from '../context/Context';
 import { Action } from '../types';
 import { RoutePredicate, route } from '../router';
 
 import SlackContext from './SlackContext';
 import { EventTypes, InteractionTypes } from './SlackTypes';
 
-type Route = <C extends Context>(
-  action: Action<SlackContext, any>
+type Route = <C extends SlackContext>(
+  action: Action<C>
 ) => {
   predicate: RoutePredicate<C>;
-  action: Action<SlackContext, any>;
+  action: Action<C>;
 };
 
 type Slack = Route & {
   any: Route;
   message: Route;
-  event: <C extends Context>(
+  event: <C extends SlackContext>(
     eventType: EventTypes | InteractionTypes,
-    action: Action<SlackContext, any>
+    action: Action<C>
   ) => {
     predicate: RoutePredicate<C>;
-    action: Action<SlackContext, any>;
+    action: Action<C>;
   };
-  command: <C extends Context>(
+  command: <C extends SlackContext>(
     commandText: string,
-    action: Action<SlackContext, any>
+    action: Action<C>
   ) => {
     predicate: RoutePredicate<C>;
-    action: Action<SlackContext, any>;
+    action: Action<C>;
   };
 };
 
-const slack: Slack = <C extends Context>(action: Action<SlackContext, any>) => {
+const slack: Slack = <C extends SlackContext>(action: Action<C>) => {
   return route((context: C) => context.platform === 'slack', action);
 };
 
 slack.any = slack;
 
-function message<C extends Context>(action: Action<SlackContext, any>) {
+function message<C extends SlackContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'slack' && context.event.isMessage,
     action
@@ -46,30 +45,32 @@ function message<C extends Context>(action: Action<SlackContext, any>) {
 
 slack.message = message;
 
-function event<C extends Context>(
+function event<C extends SlackContext>(
   eventType: EventTypes | InteractionTypes,
-  action: Action<SlackContext, any>
+  action: Action<C>
 ) {
   return route(
     (context: C) =>
-      context.platform === 'slack' &&
-      context.event.rawEvent.type &&
-      (eventType === '*' || context.event.rawEvent.type === eventType),
+      (context.platform === 'slack' &&
+        context.event.rawEvent.type &&
+        (eventType === '*' || context.event.rawEvent.type === eventType)) ||
+      false,
     action
   );
 }
 
 slack.event = event;
 
-function command<C extends Context>(
+function command<C extends SlackContext>(
   commandText: string,
-  action: Action<SlackContext, any>
+  action: Action<C>
 ) {
   return route(
     (context: C) =>
-      context.platform === 'slack' &&
-      context.event.command &&
-      (commandText === '*' || context.event.command === commandText),
+      (context.platform === 'slack' &&
+        context.event.command &&
+        (commandText === '*' || context.event.command === commandText)) ||
+      false,
     action
   );
 }

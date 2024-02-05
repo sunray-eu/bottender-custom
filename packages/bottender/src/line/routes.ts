@@ -1,14 +1,13 @@
-import Context from '../context/Context';
 import { Action } from '../types';
 import { RoutePredicate, route } from '../router';
 
 import LineContext from './LineContext';
 
-type Route = <C extends Context>(
-  action: Action<LineContext, any>
+type Route = <C extends LineContext>(
+  action: Action<C>
 ) => {
   predicate: RoutePredicate<C>;
-  action: Action<LineContext, any>;
+  action: Action<C>;
 };
 
 type Line = Route & {
@@ -34,13 +33,13 @@ type Line = Route & {
   };
 };
 
-const line: Line = <C extends Context>(action: Action<LineContext, any>) => {
+const line: Line = <C extends LineContext>(action: Action<C>) => {
   return route((context: C) => context.platform === 'line', action);
 };
 
 line.any = line;
 
-function message<C extends Context>(action: Action<LineContext, any>) {
+function message<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'line' && context.event.isMessage,
     action
@@ -49,7 +48,7 @@ function message<C extends Context>(action: Action<LineContext, any>) {
 
 line.message = message;
 
-function follow<C extends Context>(action: Action<LineContext, any>) {
+function follow<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'line' && context.event.isFollow,
     action
@@ -58,7 +57,7 @@ function follow<C extends Context>(action: Action<LineContext, any>) {
 
 line.follow = follow;
 
-function unfollow<C extends Context>(action: Action<LineContext, any>) {
+function unfollow<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'line' && context.event.isUnfollow,
     action
@@ -67,7 +66,7 @@ function unfollow<C extends Context>(action: Action<LineContext, any>) {
 
 line.unfollow = unfollow;
 
-function join<C extends Context>(action: Action<LineContext, any>) {
+function join<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'line' && context.event.isJoin,
     action
@@ -76,7 +75,7 @@ function join<C extends Context>(action: Action<LineContext, any>) {
 
 line.join = join;
 
-function leave<C extends Context>(action: Action<LineContext, any>) {
+function leave<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'line' && context.event.isLeave,
     action
@@ -85,7 +84,7 @@ function leave<C extends Context>(action: Action<LineContext, any>) {
 
 line.leave = leave;
 
-function memberJoined<C extends Context>(action: Action<LineContext, any>) {
+function memberJoined<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'line' && context.event.isMemberJoined,
     action
@@ -94,7 +93,7 @@ function memberJoined<C extends Context>(action: Action<LineContext, any>) {
 
 line.memberJoined = memberJoined;
 
-function memberLeft<C extends Context>(action: Action<LineContext, any>) {
+function memberLeft<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'line' && context.event.isMemberLeft,
     action
@@ -103,7 +102,7 @@ function memberLeft<C extends Context>(action: Action<LineContext, any>) {
 
 line.memberLeft = memberLeft;
 
-function postback<C extends Context>(action: Action<LineContext, any>) {
+function postback<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'line' && context.event.isPostback,
     action
@@ -112,7 +111,7 @@ function postback<C extends Context>(action: Action<LineContext, any>) {
 
 line.postback = postback;
 
-function beacon<C extends Context>(action: Action<LineContext, any>) {
+function beacon<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'line' && context.event.isBeacon,
     action
@@ -121,43 +120,43 @@ function beacon<C extends Context>(action: Action<LineContext, any>) {
 
 line.beacon = beacon;
 
-function beaconEnter<C extends Context>(action: Action<LineContext, any>) {
+function beaconEnter<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) =>
       context.platform === 'line' &&
       context.event.isBeacon &&
-      context.event.beacon.type === 'enter',
+      context.event.beacon?.type === 'enter',
     action
   );
 }
 
 beacon.enter = beaconEnter;
 
-function beaconBanner<C extends Context>(action: Action<LineContext, any>) {
+function beaconBanner<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) =>
       context.platform === 'line' &&
       context.event.isBeacon &&
-      context.event.beacon.type === 'banner',
+      context.event.beacon?.type === 'banner',
     action
   );
 }
 
 beacon.banner = beaconBanner;
 
-function beaconStay<C extends Context>(action: Action<LineContext, any>) {
+function beaconStay<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) =>
       context.platform === 'line' &&
       context.event.isBeacon &&
-      context.event.beacon.type === 'stay',
+      context.event.beacon?.type === 'stay',
     action
   );
 }
 
 beacon.stay = beaconStay;
 
-function accountLink<C extends Context>(action: Action<LineContext, any>) {
+function accountLink<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'line' && context.event.isAccountLink,
     action
@@ -166,7 +165,7 @@ function accountLink<C extends Context>(action: Action<LineContext, any>) {
 
 line.accountLink = accountLink;
 
-function things<C extends Context>(action: Action<LineContext, any>) {
+function things<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) => context.platform === 'line' && context.event.isThings,
     action
@@ -175,38 +174,36 @@ function things<C extends Context>(action: Action<LineContext, any>) {
 
 line.things = things;
 
-function thingsLink<C extends Context>(action: Action<LineContext, any>) {
+function thingsLink<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) =>
       context.platform === 'line' &&
       context.event.isThings &&
-      context.event.things.type === 'link',
+      context.event.things?.type === 'link',
     action
   );
 }
 
 things.link = thingsLink;
 
-function thingsUnlink<C extends Context>(action: Action<LineContext, any>) {
+function thingsUnlink<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) =>
       context.platform === 'line' &&
       context.event.isThings &&
-      context.event.things.type === 'unlink',
+      context.event.things?.type === 'unlink',
     action
   );
 }
 
 things.unlink = thingsUnlink;
 
-function thingsScenarioResult<C extends Context>(
-  action: Action<LineContext, any>
-) {
+function thingsScenarioResult<C extends LineContext>(action: Action<C>) {
   return route(
     (context: C) =>
       context.platform === 'line' &&
       context.event.isThings &&
-      context.event.things.type === 'scenarioResult',
+      context.event.things?.type === 'scenarioResult',
     action
   );
 }

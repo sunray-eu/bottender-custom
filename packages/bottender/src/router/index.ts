@@ -19,10 +19,10 @@ export type RoutePredicate<C extends Context> = (
 
 type Route<C extends Context, AC extends Context = C> = {
   predicate: RoutePredicate<C>;
-  action: Action<AC, any>;
+  action: Action<AC>;
 };
 
-function router<C extends Context>(routes: Route<C, any>[]) {
+function router<C extends Context>(routes: Route<C>[]) {
   return async function Router(context: C, props: Props<C> = {}) {
     for (const r of routes) {
       // eslint-disable-next-line no-await-in-loop
@@ -43,7 +43,7 @@ function router<C extends Context>(routes: Route<C, any>[]) {
 
 function route<C extends Context, AC extends Context = C>(
   pattern: RoutePattern<C>,
-  action: Action<AC, any>
+  action: Action<AC>
 ) {
   if (pattern === '*') {
     return {
@@ -58,10 +58,7 @@ function route<C extends Context, AC extends Context = C>(
   };
 }
 
-function text<C extends Context>(
-  pattern: MatchPattern,
-  action: Action<C, any>
-) {
+function text<C extends Context>(pattern: MatchPattern, action: Action<C>) {
   if (typeof pattern === 'string') {
     if (pattern === '*') {
       return {
@@ -79,7 +76,7 @@ function text<C extends Context>(
   if (pattern instanceof RegExp) {
     return {
       predicate: (context: C) => {
-        const match = pattern.exec(context.event.text);
+        const match = context.event.text && pattern.exec(context.event.text);
         return match
           ? {
               match,
@@ -92,7 +89,8 @@ function text<C extends Context>(
 
   if (Array.isArray(pattern)) {
     return {
-      predicate: (context: C) => pattern.includes(context.event.text),
+      predicate: (context: C) =>
+        context.event.text && pattern.includes(context.event.text),
       action,
     };
   }
@@ -103,10 +101,7 @@ function text<C extends Context>(
   };
 }
 
-function payload<C extends Context>(
-  pattern: MatchPattern,
-  action: Action<C, any>
-) {
+function payload<C extends Context>(pattern: MatchPattern, action: Action<C>) {
   if (typeof pattern === 'string') {
     if (pattern === '*') {
       return {
@@ -116,7 +111,10 @@ function payload<C extends Context>(
     }
 
     return {
-      predicate: (context: C) => context.event.payload === pattern,
+      predicate: (context: C) =>
+        'payload' in context.event &&
+        typeof context.event.payload === 'string' &&
+        context.event.payload === pattern,
       action,
     };
   }
@@ -124,6 +122,15 @@ function payload<C extends Context>(
   if (pattern instanceof RegExp) {
     return {
       predicate: (context: C) => {
+        if (
+          !(
+            'payload' in context.event &&
+            typeof context.event.payload === 'string'
+          )
+        ) {
+          return false;
+        }
+
         const match = pattern.exec(context.event.payload);
         return match
           ? {
@@ -137,7 +144,10 @@ function payload<C extends Context>(
 
   if (Array.isArray(pattern)) {
     return {
-      predicate: (context: C) => pattern.includes(context.event.payload),
+      predicate: (context: C) =>
+        'payload' in context.event &&
+        typeof context.event.payload === 'string' &&
+        pattern.includes(context.event.payload),
       action,
     };
   }
@@ -148,10 +158,7 @@ function payload<C extends Context>(
   };
 }
 
-function platform<C extends Context>(
-  pattern: MatchPattern,
-  action: Action<C, any>
-) {
+function platform<C extends Context>(pattern: MatchPattern, action: Action<C>) {
   if (typeof pattern === 'string') {
     if (pattern === '*') {
       return {
