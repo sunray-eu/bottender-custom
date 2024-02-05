@@ -33,9 +33,9 @@ function createMemorySessionStore(): SessionStore {
   return new CacheBasedSessionStore(cache, MINUTES_IN_ONE_YEAR);
 }
 
-export function run<C extends Context>(action: Action<C, any>): Action<C, any> {
+export function run<C extends Context>(action: Action<C>): Action<C> {
   return async function Run(context: C, props: Props<C> = {}): Promise<void> {
-    let nextDialog: Action<C, any> | void = action;
+    let nextDialog: Action<C> | void = action;
 
     /* eslint-disable no-await-in-loop */
     invariant(
@@ -80,9 +80,9 @@ export default class Bot<
 
   _connector: Connector<B, C>;
 
-  _handler: Action<Ctx, any> | null;
+  _handler: Action<Ctx> | null;
 
-  _errorHandler: Action<Ctx, any> | null;
+  _errorHandler: Action<Ctx> | null;
 
   _initialState: JsonObject = {};
 
@@ -123,7 +123,7 @@ export default class Bot<
     return this._sessions;
   }
 
-  get handler(): Action<Ctx, any> | null {
+  get handler(): Action<Ctx> | null {
     return this._handler;
   }
 
@@ -131,7 +131,7 @@ export default class Bot<
     return this._emitter;
   }
 
-  onEvent(handler: Action<Ctx, any> | Builder<Ctx>): Bot<B, C, E, Ctx> {
+  onEvent(handler: Action<Ctx> | Builder<Ctx>): Bot<B, C, E, Ctx> {
     invariant(
       handler,
       'onEvent: Can not pass `undefined`, `null` or any falsy value as handler'
@@ -140,7 +140,7 @@ export default class Bot<
     return this;
   }
 
-  onError(handler: Action<Ctx, any> | Builder<Ctx>): Bot<B, C, E, Ctx> {
+  onError(handler: Action<Ctx> | Builder<Ctx>): Bot<B, C, E, Ctx> {
     invariant(
       handler,
       'onError: Can not pass `undefined`, `null` or any falsy value as error handler'
@@ -180,7 +180,7 @@ export default class Bot<
     return async (
       inputBody: B,
       requestContext?: RequestContext
-    ): Promise<any> => {
+    ): Promise<void | never> => {
       if (!inputBody) {
         throw new Error('Bot.createRequestHandler: Missing argument.');
       }
@@ -277,8 +277,8 @@ export default class Bot<
           'Bot: Missing event handler function. You should assign it using onEvent(...)'
         );
       }
-      const handler: Action<Ctx, any> = this._handler;
-      const errorHandler: Action<Ctx, any> | null = this._errorHandler;
+      const handler: Action<Ctx> = this._handler;
+      const errorHandler: Action<Ctx> | null = this._errorHandler;
 
       // TODO: only run concurrently for different session id
       const promises = Promise.all(
@@ -337,7 +337,7 @@ export default class Bot<
         return response;
       }
       promises
-        .then(async (): Promise<any> => {
+        .then(async (): Promise<void> => {
           await Promise.all(
             contexts.map(async (context) => {
               context.isSessionWritten = true;

@@ -1,10 +1,10 @@
 import { EventEmitter } from 'events';
 
-import cloneDeep from 'lodash/cloneDeep';
 import debug from 'debug';
 import delay from 'delay';
 import warning from 'warning';
 import { JsonObject } from 'type-fest';
+import { cloneDeep } from 'lodash-es';
 
 import Session from '../session/Session';
 import { Client, Event, RequestContext } from '../types';
@@ -23,7 +23,7 @@ type Options<C extends Client, E extends Event> = {
 type Response = {
   status: number;
   headers: Record<string, string>;
-  body: any;
+  body: unknown;
 };
 
 export default abstract class Context<
@@ -242,5 +242,5 @@ export default abstract class Context<
     }
   }
 
-  handlerDidEnd(): any {}
+  handlerDidEnd() {}
 }

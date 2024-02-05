@@ -17,15 +17,16 @@ import { WhatsappConnectorOptions } from './whatsapp/WhatsappConnector';
 
 export type Action<
   C extends Context,
-  P extends Record<string, any> = {},
-  RAP extends Record<string, any> = {},
+  P extends object = object,
+  // This was not used at all, removed
+  // RAP extends Record<string, unknown> = Record<string, unknown>,
 > = (
   context: C,
   props: Props<C> & P
-) => void | Action<C, RAP> | Promise<Action<C, RAP> | void>;
+) => void | Action<C> | Promise<Action<C> | void>;
 
 export type Props<C extends Context> = {
-  next?: Action<C, any>;
+  next?: Action<C>;
   error?: Error;
 };
 
