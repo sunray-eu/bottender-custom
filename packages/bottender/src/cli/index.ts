@@ -1,20 +1,14 @@
-import path from 'path';
-
-import fs from 'fs-extra';
 import updateNotifier from 'update-notifier';
 import { JsonObject } from 'type-fest';
 import { Result } from 'arg';
 import { camelcase } from 'messaging-api-common';
 import { get } from 'lodash-es';
 
+import pkg from '../../package.json' assert { type: 'json' };
 import { error } from '../shared/log';
 
 import getArgs from './providers/sh/utils/getArgs';
 import providers from './providers';
-
-const pkg = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, '../../package.json'), 'utf8')
-);
 
 type Provider = 'messenger' | 'telegram' | 'line' | 'viber' | 'sh';
 
@@ -79,7 +73,7 @@ const main = async (argvFrom2: string[]) => {
   };
 
   try {
-    const method = get(provider, camelcase(subcommand));
+    const method = get(provider, camelcase(subcommand || ''));
     if (method) {
       await (provider as any)[camelcase(subcommand)](ctx);
     } else {

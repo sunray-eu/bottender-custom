@@ -1,5 +1,3 @@
-import path from 'path';
-
 import express from 'express';
 import { createServer, registerRoutes } from '@bottender/express';
 import { merge } from 'lodash-es';
@@ -15,6 +13,10 @@ import WhatsappBot from './whatsapp/WhatsappBot';
 import getBottenderConfig from './shared/getBottenderConfig';
 import getSessionStore from './shared/getSessionStore';
 import { Action, BottenderConfig, Channel, Plugin } from './types';
+import {
+  getEntryFunctionFromGlobals,
+  getErrorHanlderFromGlobals,
+} from './shared/getGlobalVars';
 
 const BOT_MAP = {
   messenger: MessengerBot,
@@ -40,13 +42,12 @@ async function initializeServer({
 
   // TODO: refine handler entry, improve error message and hint
   // eslint-disable-next-line import/no-dynamic-require, @typescript-eslint/no-var-requires
-  const Entry: Action<any, any> = (await import(path.resolve('index.js')))
-    .default;
+  const Entry: Action<any, any> = getEntryFunctionFromGlobals();
 
   let ErrorEntry: Action<any, any>;
   try {
     // eslint-disable-next-line import/no-dynamic-require
-    ErrorEntry = await import(path.resolve('_error.js'));
+    ErrorEntry = getErrorHanlderFromGlobals();
   } catch (err) {} // eslint-disable-line no-empty
 
   function initializeBot(bot: Bot<any, any, any, any>): void {

@@ -1,5 +1,3 @@
-import path from 'path';
-
 import invariant from 'invariant';
 import { merge } from 'lodash-es';
 
@@ -19,6 +17,10 @@ import {
 } from '..';
 
 import getBottenderConfig from './getBottenderConfig';
+import {
+  getEntryFunctionFromGlobals,
+  getErrorHanlderFromGlobals,
+} from './getGlobalVars';
 
 let channelBots: ChannelBot[] = [];
 
@@ -43,12 +45,11 @@ async function getChannelBots(): Promise<ChannelBot[]> {
 
   // TODO: refine handler entry, improve error message and hint
   // eslint-disable-next-line import/no-dynamic-require, @typescript-eslint/no-var-requires
-  const Entry: Action<any, any> = (await import(path.resolve('index.js')))
-    .default;
+  const Entry: Action<any, any> = getEntryFunctionFromGlobals();
   let ErrorEntry: Action<any, any>;
   try {
     // eslint-disable-next-line import/no-dynamic-require
-    ErrorEntry = await import(path.resolve('_error.js'));
+    ErrorEntry = getErrorHanlderFromGlobals();
   } catch (err) {} // eslint-disable-line no-empty
 
   function initializeBot(bot: Bot<any, any, any, any>): void {

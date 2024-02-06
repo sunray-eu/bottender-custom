@@ -5,6 +5,8 @@ import { JsonObject } from 'type-fest';
 
 import { BottenderConfig } from '../types';
 
+import { getBottenderConfigFromGlobals } from './getGlobalVars';
+
 dotenv.config();
 
 /**
@@ -12,17 +14,18 @@ dotenv.config();
  */
 const getBottenderConfig = async (): Promise<BottenderConfig> => {
   try {
-    // eslint-disable-next-line import/no-dynamic-require, @typescript-eslint/no-var-requires
-    return (await import(path.resolve('bottender.config.js'))).default;
+    try {
+      return getBottenderConfigFromGlobals();
+    } catch {
+      return (await import(path.resolve('src/bottender.config'))).default;
+    }
   } catch (err) {
-    // if config is not found, return empty config
     if (
       (err as JsonObject).code &&
       (err as JsonObject).code === 'MODULE_NOT_FOUND'
     ) {
       return {};
     }
-
     throw err;
   }
 };
