@@ -71,6 +71,16 @@ export type OnRequest = (
   requestContext?: RequestContext
 ) => void;
 
+interface SessionHandlingState {
+  timer?: ReturnType<typeof setTimeout>;
+  startTimestamp?: number;
+  currentSession: Session;
+  events: Event[];
+  requestContexts: RequestContext[];
+}
+
+type handleContextsArgs<Ctx> = { context: Ctx; runHandler?: boolean };
+
 export default class Bot<
   B extends Record<string, JsonValue> | PlainObject,
   C extends Client,
@@ -97,6 +107,10 @@ export default class Bot<
   _emitter: EventEmitter;
 
   _onRequest: OnRequest | undefined;
+
+  _timerDuration = 5000; // 5 seconds default
+
+  private _handlingStates: Map<string, SessionHandlingState> = new Map();
 
   constructor({
     connector,
@@ -170,6 +184,132 @@ export default class Bot<
     }
   }
 
+  async handleContexts(
+    // contexts: Ctx[],
+    contexts: handleContextsArgs<Ctx>[]
+  ): Promise<Response | void> {
+    // Call all of extension functions before passing to handler.
+    await Promise.all(
+      contexts.map(async (context) =>
+        Promise.all(this._plugins.map((ext) => ext(context.context)))
+      )
+    );
+
+    if (this._handler == null) {
+      throw new Error(
+        'Bot: Missing event handler function. You should assign it using onEvent(...)'
+      );
+    }
+    const handler: Action<Ctx> = this._handler;
+    const errorHandler: Action<Ctx> | null = this._errorHandler;
+
+    // ? TODO (DONE): only run concurrently for different session id
+    // Group contexts by session ID
+    const contextsBySessionId: {
+      [sessionId: string]: handleContextsArgs<Ctx>[];
+    } = contexts.reduce<{ [sessionId: string]: handleContextsArgs<Ctx>[] }>(
+      (acc, context) => {
+        const sessionId = context.context.session?.id;
+        if (sessionId) {
+          if (!acc[sessionId]) {
+            acc[sessionId] = [];
+          }
+          acc[sessionId].push(context);
+        }
+        return acc;
+      },
+      {}
+    );
+
+    // Process each group of contexts sequentially, but different groups in parallel
+    const promises = Promise.all(
+      Object.values(contextsBySessionId).map((contextGroup) =>
+        contextGroup.reduce<Promise<void | Action<Ctx, object>>>(
+          (promiseChain, context) => {
+            return promiseChain.then(() =>
+              context.runHandler
+                ? Promise.resolve()
+                    .then(() => run(handler)(context.context, {}))
+                    .then(() => {
+                      if (context.context.handlerDidEnd) {
+                        return context.context.handlerDidEnd();
+                      }
+                    })
+                    .catch((err) => {
+                      if (errorHandler) {
+                        return run(errorHandler)(context.context, {
+                          error: err,
+                        });
+                      }
+                      throw err;
+                    })
+                    .catch((err) => {
+                      context.context.emitError(err);
+                      throw err;
+                    })
+                : Promise.resolve()
+            );
+          },
+          Promise.resolve()
+        )
+      )
+    );
+    if (this._sync) {
+      try {
+        await promises;
+
+        await Promise.all(
+          contexts.map(async (context) => {
+            if (context.runHandler) context.context.isSessionWritten = true;
+
+            const { session } = context.context;
+
+            if (session) {
+              session.lastActivity = Date.now();
+
+              debugSessionWrite(`Write session: ${session.id}`);
+              debugSessionWrite(JSON.stringify(session, null, 2));
+
+              // eslint-disable-next-line no-await-in-loop
+              await this._sessions.write(session.id, session);
+            }
+          })
+        );
+      } catch (err) {
+        console.error(err);
+      }
+
+      // TODO: Any chances to merge multiple responses from context?
+      const response = contexts[0].context.response;
+      if (response && typeof response === 'object') {
+        debugResponse('Outgoing response:');
+        debugResponse(JSON.stringify(response, null, 2));
+      }
+      return response;
+    }
+    promises
+      .then(async (): Promise<void> => {
+        await Promise.all(
+          contexts.map(async (context) => {
+            if (context.runHandler) context.context.isSessionWritten = true;
+
+            const { session } = context.context;
+
+            if (session) {
+              session.lastActivity = Date.now();
+
+              debugSessionWrite(`Write session: ${session.id}`);
+              debugSessionWrite(JSON.stringify(session, null, 2));
+
+              // eslint-disable-next-line no-await-in-loop
+              await this._sessions.write(session.id, session);
+            }
+          })
+        );
+      })
+      .catch(console.error);
+  }
+
   createRequestHandler(): RequestHandler<B> {
     if (this._handler == null) {
       throw new Error(
@@ -202,165 +342,117 @@ export default class Bot<
 
       const events = this._connector.mapRequestToEvents(body);
 
-      const contexts: Ctx[] = await pMap(
-        events,
-        async (event) => {
-          const { platform } = this._connector;
-          const sessionKey = this._connector.getUniqueSessionKey(
-            // TODO: deprecating passing request body in those connectors
-            ['telegram', 'slack', 'viber', 'whatsapp'].includes(
-              this._connector.platform
-            )
-              ? body
-              : event,
-            requestContext
-          );
-
-          // Create or retrieve session if possible
-          let sessionId: string | undefined;
-          let session: Session | undefined;
-          if (sessionKey) {
-            sessionId = `${platform}:${sessionKey}`;
-
-            session =
-              (await this._sessions.read(sessionId)) ||
-              (Object.create(null) as Session);
-
-            debugSessionRead(`Read session: ${sessionId}`);
-            debugSessionRead(JSON.stringify(session, null, 2));
-
-            Object.defineProperty(session, 'id', {
-              configurable: false,
-              enumerable: true,
-              writable: false,
-              value: session.id || sessionId,
-            });
-
-            if (!session.platform) session.platform = platform;
-
-            Object.defineProperty(session, 'platform', {
-              configurable: false,
-              enumerable: true,
-              writable: false,
-              value: session.platform,
-            });
-
-            await this._connector.updateSession(
-              session,
+      const contextDataArray: { event: Event; session: Session | undefined }[] =
+        await pMap(
+          events,
+          async (event) => {
+            const { platform } = this._connector;
+            const sessionKey = this._connector.getUniqueSessionKey(
               // TODO: deprecating passing request body in those connectors
               ['telegram', 'slack', 'viber', 'whatsapp'].includes(
                 this._connector.platform
               )
                 ? body
-                : event
+                : event,
+              requestContext
             );
-          }
 
-          return this._connector.createContext({
-            event,
-            session,
+            // Create or retrieve session if possible
+            let sessionId: string | undefined;
+            let session: Session | undefined;
+            if (sessionKey) {
+              sessionId = `${platform}:${sessionKey}`;
+
+              session =
+                (await this._sessions.read(sessionId)) ||
+                (Object.create(null) as Session);
+
+              debugSessionRead(`Read session: ${sessionId}`);
+              debugSessionRead(JSON.stringify(session, null, 2));
+
+              Object.defineProperty(session, 'id', {
+                configurable: false,
+                enumerable: true,
+                writable: false,
+                value: session.id || sessionId,
+              });
+
+              if (!session.platform) session.platform = platform;
+
+              Object.defineProperty(session, 'platform', {
+                configurable: false,
+                enumerable: true,
+                writable: false,
+                value: session.platform,
+              });
+
+              await this._connector.updateSession(
+                session,
+                // TODO: deprecating passing request body in those connectors
+                ['telegram', 'slack', 'viber', 'whatsapp'].includes(
+                  this._connector.platform
+                )
+                  ? body
+                  : event
+              );
+            }
+
+            return {
+              event,
+              session,
+            };
+          },
+          {
+            concurrency: 5,
+          }
+        );
+
+      const contexts: handleContextsArgs<Ctx>[] = [];
+
+      // TODO: check if sessionId is currently handling
+      contextDataArray.forEach((contextData) => {
+        if (contextData.event.isText && contextData.session) {
+          const sessId = contextData.session.id;
+          const reqCtx = requestContext || ({} as RequestContext);
+          let handledSession = this._handlingStates.get(sessId);
+          if (handledSession) {
+            handledSession.events.push(contextData.event);
+            handledSession.requestContexts.push(reqCtx);
+            handledSession.currentSession = contextData.session;
+            clearTimeout(handledSession.timer);
+          } else
+            handledSession = {
+              events: [contextData.event],
+              requestContexts: [reqCtx],
+              currentSession: contextData.session,
+            };
+
+          handledSession.startTimestamp = Date.now();
+          const newCtx = this._connector.createContext({
+            event: contextData.event,
+            session: contextData.session,
             initialState: this._initialState,
             requestContext,
             emitter: this._emitter,
           });
-        },
-        {
-          concurrency: 5,
-        }
-      );
 
-      // Call all of extension functions before passing to handler.
-      await Promise.all(
-        contexts.map(async (context) =>
-          Promise.all(this._plugins.map((ext) => ext(context)))
-        )
-      );
+          handledSession.timer = setTimeout(() => {}, this._timerDuration);
 
-      if (this._handler == null) {
-        throw new Error(
-          'Bot: Missing event handler function. You should assign it using onEvent(...)'
-        );
-      }
-      const handler: Action<Ctx> = this._handler;
-      const errorHandler: Action<Ctx> | null = this._errorHandler;
-
-      // TODO: only run concurrently for different session id
-      const promises = Promise.all(
-        contexts.map((context: Ctx) =>
-          Promise.resolve()
-            .then(() => run(handler)(context, {}))
-            .then(() => {
-              if (context.handlerDidEnd) {
-                return context.handlerDidEnd();
-              }
-            })
-            .catch((err) => {
-              if (errorHandler) {
-                return run(errorHandler)(context, { error: err });
-              }
-              throw err;
-            })
-            .catch((err) => {
-              context.emitError(err);
-              throw err;
-            })
-        )
-      );
-
-      if (this._sync) {
-        try {
-          await promises;
-
-          await Promise.all(
-            contexts.map(async (context) => {
-              context.isSessionWritten = true;
-
-              const { session } = context;
-
-              if (session) {
-                session.lastActivity = Date.now();
-
-                debugSessionWrite(`Write session: ${session.id}`);
-                debugSessionWrite(JSON.stringify(session, null, 2));
-
-                // eslint-disable-next-line no-await-in-loop
-                await this._sessions.write(session.id, session);
-              }
-            })
-          );
-        } catch (err) {
-          console.error(err);
+          contexts.push({ context: newCtx });
+          this._handlingStates.set(sessId, handledSession);
+        } else {
+          const newCtx = this._connector.createContext({
+            event: contextData.event,
+            session: contextData.session,
+            initialState: this._initialState,
+            requestContext,
+            emitter: this._emitter,
+          });
+          contexts.push({ context: newCtx });
         }
 
-        // TODO: Any chances to merge multiple responses from context?
-        const response = contexts[0].response;
-        if (response && typeof response === 'object') {
-          debugResponse('Outgoing response:');
-          debugResponse(JSON.stringify(response, null, 2));
-        }
-        return response;
-      }
-      promises
-        .then(async (): Promise<void> => {
-          await Promise.all(
-            contexts.map(async (context) => {
-              context.isSessionWritten = true;
-
-              const { session } = context;
-
-              if (session) {
-                session.lastActivity = Date.now();
-
-                debugSessionWrite(`Write session: ${session.id}`);
-                debugSessionWrite(JSON.stringify(session, null, 2));
-
-                // eslint-disable-next-line no-await-in-loop
-                await this._sessions.write(session.id, session);
-              }
-            })
-          );
-        })
-        .catch(console.error);
+        return this.handleContexts(contexts);
+      });
     };
   }
 }
