@@ -41,9 +41,14 @@ export default function rasa({
   jwt?: string;
 }): Action<Context> {
   return async function Rasa(
-    context: Context,
+    context: Context | Context[],
     { next }: { next?: Action<Context> }
   ): Promise<Action<Context> | void> {
+    // TODO: Support multiple contextes
+    if (Array.isArray(context)) {
+      return next;
+    }
+
     if (!context.event.isText) {
       return next;
     }

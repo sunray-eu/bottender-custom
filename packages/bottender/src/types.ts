@@ -22,7 +22,7 @@ export type Action<
   // This was not used at all, removed
   // RAP extends Record<string, unknown> = Record<string, unknown>,
 > = (
-  context: C,
+  context: C | C[],
   props: Props<C> & P
 ) => void | Action<C> | Promise<Action<C> | void>;
 

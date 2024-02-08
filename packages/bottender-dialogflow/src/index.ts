@@ -81,9 +81,13 @@ export default function dialogflow({
   const sessionsClient = new dialogflowSdk.SessionsClient();
 
   return async function Dialogflow(
-    context: Context,
+    context: Context | Context[],
     { next }: { next?: Action<Context> }
   ): Promise<Action<Context> | void> {
+    // TODO: Support multiple contextes
+    if (Array.isArray(context)) {
+      return next;
+    }
     if (!context.event.isText || !context.session) {
       return next;
     }
