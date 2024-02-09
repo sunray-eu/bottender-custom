@@ -366,8 +366,6 @@ export default class Bot<
       const waitingStatePromises = Promise.all(
         Object.entries(groupedContexts.inWaitingState).map(
           ([sessionId, contextGroup]) => {
-            console.log('new session');
-
             let currentHandlingState = this._handlingStates.get(sessionId);
             if (currentHandlingState !== undefined) {
               clearTimeout(currentHandlingState?.timer);
@@ -375,8 +373,6 @@ export default class Bot<
                 currentHandlingState.lastSession = contextGroup.at(-1)
                   ?.session as Session;
             } else {
-              console.log('session not here, creating');
-
               let promiseResolver: (
                 value: void | PromiseLike<void>
               ) => void = () => {};
@@ -397,23 +393,16 @@ export default class Bot<
               currentHandlingState.contexts.concat(contextGroup);
             currentHandlingState.startTimestamp = Date.now();
             currentHandlingState.timer = setTimeout(async () => {
-              console.log('finishing timer', sessionId);
-
               const currentHandlingStateTimeout =
                 this._handlingStates.get(sessionId);
               if (!currentHandlingStateTimeout) {
-                console.log('return');
-
                 return Promise.resolve();
               }
-              console.log('before await');
 
               await Promise.resolve()
-                .then(() => {
-                  console.log('running handler');
-
-                  run(handler)(currentHandlingStateTimeout.contexts, {});
-                })
+                .then(() =>
+                  run(handler)(currentHandlingStateTimeout.contexts, {})
+                )
                 .then(() => {
                   return currentHandlingStateTimeout.contexts.map((context) => {
                     if (context.handlerDidEnd) {
@@ -436,16 +425,51 @@ export default class Bot<
                   });
                   throw err;
                 });
+
+              const contextWriteSess =
+                currentHandlingStateTimeout.contexts.at(-1);
+              if (contextWriteSess) {
+                contextWriteSess.isSessionWritten = true;
+
+                const { session } = contextWriteSess;
+
+                if (session) {
+                  session.lastActivity = Date.now();
+
+                  debugSessionWrite(`Write session: ${session.id}`);
+                  debugSessionWrite(JSON.stringify(session, null, 2));
+
+                  await this._sessions.write(session.id, session);
+                }
+              }
+
               if (currentHandlingStateTimeout.promiseResolver)
                 currentHandlingStateTimeout.promiseResolver();
-              console.log('removing state');
-
               this._handlingStates.delete(sessionId);
             }, this._timerDuration);
             this._handlingStates.set(sessionId, currentHandlingState);
             return currentHandlingState.mainPromise;
           }
         )
+      );
+
+      Object.values(groupedContexts.inWaitingState).forEach(
+        async (contextArray) => {
+          contextArray.forEach(async (context) => {
+            context.isSessionWritten = true;
+
+            const { session } = context;
+
+            if (session) {
+              session.lastActivity = Date.now();
+
+              debugSessionWrite(`Write session: ${session.id}`);
+              debugSessionWrite(JSON.stringify(session, null, 2));
+
+              await this._sessions.write(session.id, session);
+            }
+          });
+        }
       );
 
       // Here we ignore contexts in the 'inWaitingState' group as per the requirement
@@ -457,45 +481,53 @@ export default class Bot<
           await Promise.all(
             Object.values(groupedContexts.runHandlerNow).map(
               async (contextArray) => {
-                contextArray.map(async (context) => {
-                  context.isSessionWritten = true;
+                await Promise.all(
+                  contextArray.map(async (context) => {
+                    context.isSessionWritten = true;
 
-                  const { session } = context;
+                    const { session } = context;
 
-                  if (session) {
-                    session.lastActivity = Date.now();
+                    if (session) {
+                      session.lastActivity = Date.now();
 
-                    debugSessionWrite(`Write session: ${session.id}`);
-                    debugSessionWrite(JSON.stringify(session, null, 2));
+                      debugSessionWrite(`Write session: ${session.id}`);
+                      debugSessionWrite(JSON.stringify(session, null, 2));
 
-                    await this._sessions.write(session.id, session);
-                  }
-                });
+                      await this._sessions.write(session.id, session);
+                    }
+                  })
+                );
+                const sessionAfter = contextArray.at(-1)?.session;
+                const waitingState = this._handlingStates.get(
+                  contextArray.at(-1)?.session?.id
+                );
+                if (waitingState && sessionAfter)
+                  waitingState.lastSession = sessionAfter;
               }
             )
           );
 
           await waitingStatePromises;
-          await Promise.all(
-            Object.values(groupedContexts.inWaitingState).map(
-              async (contextArray) => {
-                contextArray.map(async (context) => {
-                  context.isSessionWritten = true;
+          // await Promise.all(
+          //   Object.values(groupedContexts.inWaitingState).map(
+          //     async (contextArray) => {
+          //       contextArray.map(async (context) => {
+          //         context.isSessionWritten = true;
 
-                  const { session } = context;
+          //         const { session } = context;
 
-                  if (session) {
-                    session.lastActivity = Date.now();
+          //         if (session) {
+          //           session.lastActivity = Date.now();
 
-                    debugSessionWrite(`Write session: ${session.id}`);
-                    debugSessionWrite(JSON.stringify(session, null, 2));
+          //           debugSessionWrite(`Write session: ${session.id}`);
+          //           debugSessionWrite(JSON.stringify(session, null, 2));
 
-                    await this._sessions.write(session.id, session);
-                  }
-                });
-              }
-            )
-          );
+          //           await this._sessions.write(session.id, session);
+          //         }
+          //       });
+          //     }
+          //   )
+          // );
         } catch (err) {
           console.error(err);
         }
@@ -513,20 +545,28 @@ export default class Bot<
           await Promise.all(
             Object.values(groupedContexts.runHandlerNow).map(
               async (contextArray) => {
-                contextArray.map(async (context) => {
-                  context.isSessionWritten = true;
+                await Promise.all(
+                  contextArray.map(async (context) => {
+                    context.isSessionWritten = true;
+                    const { session } = context;
 
-                  const { session } = context;
+                    if (session) {
+                      session.lastActivity = Date.now();
 
-                  if (session) {
-                    session.lastActivity = Date.now();
+                      debugSessionWrite(`Write session: ${session.id}`);
+                      debugSessionWrite(JSON.stringify(session, null, 2));
 
-                    debugSessionWrite(`Write session: ${session.id}`);
-                    debugSessionWrite(JSON.stringify(session, null, 2));
+                      await this._sessions.write(session.id, session);
+                    }
+                  })
+                );
 
-                    await this._sessions.write(session.id, session);
-                  }
-                });
+                const sessionAfter = contextArray.at(-1)?.session;
+                const waitingState = this._handlingStates.get(
+                  contextArray.at(-1)?.session?.id
+                );
+                if (waitingState && sessionAfter)
+                  waitingState.lastSession = sessionAfter;
               }
             )
           );
@@ -535,28 +575,22 @@ export default class Bot<
 
       waitingStatePromises
         .then(async (): Promise<void> => {
-          console.log('waitingStatePromises done');
-
-          await Promise.all(
-            Object.values(groupedContexts.inWaitingState).map(
-              async (contextArray) => {
-                contextArray.map(async (context) => {
-                  context.isSessionWritten = true;
-
-                  const { session } = context;
-
-                  if (session) {
-                    session.lastActivity = Date.now();
-
-                    debugSessionWrite(`Write session: ${session.id}`);
-                    debugSessionWrite(JSON.stringify(session, null, 2));
-
-                    await this._sessions.write(session.id, session);
-                  }
-                });
-              }
-            )
-          );
+          // await Promise.all(
+          //   Object.values(groupedContexts.inWaitingState).map(
+          //     async (contextArray) => {
+          //       contextArray.map(async (context) => {
+          //         context.isSessionWritten = true;
+          //         const { session } = context;
+          //         if (session) {
+          //           session.lastActivity = Date.now();
+          //           debugSessionWrite(`Write session: ${session.id}`);
+          //           debugSessionWrite(JSON.stringify(session, null, 2));
+          //           await this._sessions.write(session.id, session);
+          //         }
+          //       });
+          //     }
+          //   )
+          // );
         })
         .catch(console.error);
     };
