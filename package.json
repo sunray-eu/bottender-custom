@@ -13,16 +13,17 @@
     "clean": "git clean -dfqX -- ./node_modules **/{dist,node_modules}/ ./packages/*/tsconfig*tsbuildinfo",
     "compile": "tsc --build tsconfig.build.json",
     "compile:clean": "tsc --build tsconfig.build.json --clean",
+    "compile:watch": "yarn compile --watch",
     "postinstall": "yarn compile",
     "lint": "eslint packages examples --ext=js,ts",
-    "lint:fix:ts": "yarn lint --fix",
-    "lint:fix:md": "prettier --write **/*.md",
     "lint:fix": "yarn lint:fix:md && yarn lint:fix:ts",
+    "lint:fix:md": "prettier --write **/*.md",
+    "lint:fix:ts": "yarn lint --fix",
     "lint:staged": "lint-staged",
     "lint:website": "eslint website --ext=js,ts,tsx",
     "prepare": "husky",
-    "publish": "lerna publish",
     "prepublishOnly": "yarn clean && yarn && yarn test",
+    "publish": "lerna publish",
     "test": "yarn compile && yarn lint && yarn testonly",
     "testonly": "jest",
     "testonly:cov": "jest --coverage",
@@ -32,6 +33,17 @@
   "workspaces": [
     "packages/*"
   ],
+  "resolutions": {
+    "axios-error": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/axios-error",
+    "facebook-batch": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/facebook-batch",
+    "messaging-api-common": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-common",
+    "messaging-api-line": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-line",
+    "messaging-api-messenger": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-messenger",
+    "messaging-api-slack": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-slack",
+    "messaging-api-telegram": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-telegram",
+    "messaging-api-viber": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-viber",
+    "messaging-api-wechat": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-wechat"
+  },
   "devDependencies": {
     "@types/jest": "^29.5.11",
     "@types/prettier": "^3.0.0",
@@ -73,16 +85,5 @@
   "engines": {
     "node": ">=8"
   },
-  "packageManager": "yarn@4.0.2",
-  "resolutions": {
-    "axios-error": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/axios-error",
-    "facebook-batch": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/facebook-batch",
-    "messaging-api-common": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-common",
-    "messaging-api-line": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-line",
-    "messaging-api-messenger": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-messenger",
-    "messaging-api-slack": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-slack",
-    "messaging-api-telegram": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-telegram",
-    "messaging-api-viber": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-viber",
-    "messaging-api-wechat": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-wechat"
-  }
+  "packageManager": "yarn@4.0.2"
 }

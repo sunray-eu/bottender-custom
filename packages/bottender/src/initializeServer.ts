@@ -46,7 +46,6 @@ async function initializeServer({
 
   let ErrorEntry: Action<any, any>;
   try {
-    // eslint-disable-next-line import/no-dynamic-require
     ErrorEntry = getErrorHanlderFromGlobals();
   } catch (err) {} // eslint-disable-line no-empty
 

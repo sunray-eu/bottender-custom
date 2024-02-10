@@ -558,20 +558,20 @@ export default class Bot<
 
       Object.values(groupedContexts.inWaitingState).forEach(
         async (contextArray) => {
-          contextArray.forEach(async (context) => {
-            context.isSessionWritten = true;
+          const context = contextArray.at(-1) as Ctx;
 
-            const { session } = context;
+          const { session } = context;
 
-            if (session) {
-              session.lastActivity = Date.now();
+          if (session) {
+            session.lastActivity = Date.now();
 
-              debugSessionWrite(`Write session: ${session.id}`);
-              debugSessionWrite(JSON.stringify(session, null, 2));
+            debugSessionWrite(
+              `Write session (updating time for waiting state): ${session.id}`
+            );
+            debugSessionWrite(JSON.stringify(session, null, 2));
 
-              await this._sessions.write(session.id, session);
-            }
-          });
+            await this._sessions.write(session.id, session);
+          }
         }
       );
 
@@ -611,26 +611,6 @@ export default class Bot<
           );
 
           await waitingStatePromises;
-          // await Promise.all(
-          //   Object.values(groupedContexts.inWaitingState).map(
-          //     async (contextArray) => {
-          //       contextArray.map(async (context) => {
-          //         context.isSessionWritten = true;
-
-          //         const { session } = context;
-
-          //         if (session) {
-          //           session.lastActivity = Date.now();
-
-          //           debugSessionWrite(`Write session: ${session.id}`);
-          //           debugSessionWrite(JSON.stringify(session, null, 2));
-
-          //           await this._sessions.write(session.id, session);
-          //         }
-          //       });
-          //     }
-          //   )
-          // );
         } catch (err) {
           console.error(err);
         }
@@ -673,27 +653,6 @@ export default class Bot<
               }
             )
           );
-        })
-        .catch(console.error);
-
-      waitingStatePromises
-        .then(async (): Promise<void> => {
-          // await Promise.all(
-          //   Object.values(groupedContexts.inWaitingState).map(
-          //     async (contextArray) => {
-          //       contextArray.map(async (context) => {
-          //         context.isSessionWritten = true;
-          //         const { session } = context;
-          //         if (session) {
-          //           session.lastActivity = Date.now();
-          //           debugSessionWrite(`Write session: ${session.id}`);
-          //           debugSessionWrite(JSON.stringify(session, null, 2));
-          //           await this._sessions.write(session.id, session);
-          //         }
-          //       });
-          //     }
-          //   )
-          // );
         })
         .catch(console.error);
     };

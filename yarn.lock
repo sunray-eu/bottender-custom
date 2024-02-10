@@ -475,18 +475,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@bottender/jfs@npm:^0.4.1":
-  version: 0.4.1
-  resolution: "@bottender/jfs@npm:0.4.1"
-  dependencies:
-    async: "npm:^3.2.1"
-    clone: "npm:^2.1.2"
-    mkdirp: "npm:^1.0.4"
-    uuid: "npm:^8.3.2"
-  checksum: 53f58be031f0d35ded923642b4935d70e18febb1429d7541086112dc0e8e18f2c7af9b85b779d1bb697f49249815664e9aee0f4622f318c9d1b1f5fb569d1d41
-  languageName: node
-  linkType: hard
-
 "@bottender/luis@workspace:packages/bottender-luis":
   version: 0.0.0-use.local
   resolution: "@bottender/luis@workspace:packages/bottender-luis"
@@ -2346,6 +2334,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node-persist@npm:^3.1.8":
+  version: 3.1.8
+  resolution: "@types/node-persist@npm:3.1.8"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 38bef35fa7d51ce335e3d80331249f9e112ce181980252a170b25c9145ebc02bcde4e6cf5e613b9a7b648ab97c59bd6379e6cfb93d44b7ccab91984f244ad93b
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*, @types/node@npm:>=12.0.0, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:>=8.9.0, @types/node@npm:^20.11.10":
   version: 20.11.16
   resolution: "@types/node@npm:20.11.16"
@@ -3156,7 +3153,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^3.2.1, async@npm:^3.2.3":
+"async@npm:^3.2.3":
   version: 3.2.5
   resolution: "async@npm:3.2.5"
   checksum: 1408287b26c6db67d45cb346e34892cee555b8b59e6c68e6f8c3e495cad5ca13b4f218180e871f3c2ca30df4ab52693b66f2f6ff43644760cab0b2198bda79c1
@@ -3408,7 +3405,6 @@ __metadata:
   resolution: "bottender@workspace:packages/bottender"
   dependencies:
     "@bottender/express": "npm:^1.5.1"
-    "@bottender/jfs": "npm:^0.4.1"
     "@hapi/joi": "npm:^17.1.1"
     "@slack/rtm-api": "npm:^6.2.1"
     "@types/debug": "npm:^4.1.12"
@@ -3422,6 +3418,7 @@ __metadata:
     "@types/lodash-es": "npm:^4.17.12"
     "@types/lru-cache": "npm:^7.10.10"
     "@types/mongodb": "npm:^4.0.7"
+    "@types/node-persist": "npm:^3.1.8"
     "@types/object.fromentries": "npm:^2.0.4"
     "@types/shortid": "npm:^0.0.32"
     "@types/update-notifier": "npm:^6.0.8"
@@ -3460,6 +3457,7 @@ __metadata:
     minimist: "npm:^1.2.8"
     mongodb: "npm:^6.3.0"
     ngrok: "npm:^5.0.0-beta.2"
+    node-persist: "npm:^4.0.1"
     nodemon: "npm:^3.0.3"
     object.fromentries: "npm:^2.0.7"
     p-map: "npm:^7.0.1"
@@ -3992,13 +3990,6 @@ __metadata:
   version: 1.0.4
   resolution: "clone@npm:1.0.4"
   checksum: 2176952b3649293473999a95d7bebfc9dc96410f6cbd3d2595cf12fd401f63a4bf41a7adbfd3ab2ff09ed60cb9870c58c6acdd18b87767366fabfc163700f13b
-  languageName: node
-  linkType: hard
-
-"clone@npm:^2.1.2":
-  version: 2.1.2
-  resolution: "clone@npm:2.1.2"
-  checksum: ed0601cd0b1606bc7d82ee7175b97e68d1dd9b91fd1250a3617b38d34a095f8ee0431d40a1a611122dcccb4f93295b4fdb94942aa763392b5fe44effa50c2d5e
   languageName: node
   linkType: hard
 
@@ -9450,6 +9441,13 @@ __metadata:
   version: 1.1.12
   resolution: "node-machine-id@npm:1.1.12"
   checksum: ab2fea5f75a6f1ce3c76c5e0ae3903b631230e0a99b003d176568fff8ddbdf7b2943be96cd8d220c497ca0f6149411831f8a450601929f326781cb1b59bab7f8
+  languageName: node
+  linkType: hard
+
+"node-persist@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "node-persist@npm:4.0.1"
+  checksum: fc79d65f7329bef0efc2f1276663ce76489053d3799a314a1c9cc72bb56c0130153e1e4b8e66f9cc4386eeae30c7a391bacbab5cd3104c1e2d36667c008c2a05
   languageName: node
   linkType: hard
 
