@@ -22,7 +22,7 @@ export type Action<
   // This was not used at all, removed
   // RAP extends Record<string, unknown> = Record<string, unknown>,
 > = (
-  context: C,
+  context: C | C[],
   props: Props<C> & P
 ) => void | Action<C> | Promise<Action<C> | void>;
 
@@ -80,8 +80,24 @@ export type SessionConfig =
   | StoreConfigForDriver<SessionDriver.Redis>
   | StoreConfigForDriver<SessionDriver.Mongo>;
 
+export enum TimerMode {
+  Extend,
+  Refresh,
+}
+
+export interface TimerOptions {
+  enabled: boolean;
+  seenAlwaysAfterFirst?: boolean;
+  showSeenBeforeEndMs?: number;
+  showTypingBeforeEndMs?: number;
+  initialDuration: number;
+  extendDuration: number;
+  mode: TimerMode;
+}
+
 type ChannelCommonConfig = {
   enabled: boolean;
+  timer: TimerOptions;
   path?: string;
   sync?: boolean;
   onRequest?: OnRequest;

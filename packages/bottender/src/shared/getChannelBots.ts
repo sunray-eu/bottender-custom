@@ -69,12 +69,19 @@ async function getChannelBots(): Promise<ChannelBot[]> {
     }
   }
 
-  channelBots = (Object.entries(channels) as [string, any][])
+  channelBots = Object.entries(channels)
     .filter(([, { enabled }]) => enabled)
     .map(
       ([
         channel,
-        { path: webhookPath, sync, onRequest, connector, ...connectorConfig },
+        {
+          path: webhookPath,
+          timer,
+          sync,
+          onRequest,
+          connector,
+          ...connectorConfig
+        },
       ]) => {
         let channelConnector;
         if (
@@ -120,6 +127,7 @@ async function getChannelBots(): Promise<ChannelBot[]> {
           sync,
           onRequest,
           connector: channelConnector,
+          timerConfig: timer,
         }) as Bot<any, any, any, any>;
 
         initializeBot(channelBot);

@@ -52,9 +52,14 @@ export default function qnaMaker({
   );
 
   return async function QnaMaker(
-    context: Context,
+    context: Context | Context[],
     { next }: { next?: Action<Context> }
   ): Promise<Action<Context> | void> {
+    // TODO: Support multiple contextes
+    if (Array.isArray(context)) {
+      return next;
+    }
+
     if (!context.event.isText || !context.session) {
       return next;
     }

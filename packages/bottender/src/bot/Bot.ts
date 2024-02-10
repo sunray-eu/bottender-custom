@@ -19,6 +19,8 @@ import {
   Props,
   RequestContext,
   RequestHandler,
+  TimerMode,
+  TimerOptions,
 } from '../types';
 import { Event } from '../context/Event';
 
@@ -42,7 +44,10 @@ function createMemorySessionStore(): SessionStore {
 }
 
 export function run<C extends Context>(action: Action<C>): Action<C> {
-  return async function Run(context: C, props: Props<C> = {}): Promise<void> {
+  return async function Run(
+    context: C | C[],
+    props: Props<C> = {}
+  ): Promise<void> {
     let nextDialog: Action<C> | void = action;
 
     /* eslint-disable no-await-in-loop */
@@ -71,6 +76,24 @@ export type OnRequest = (
   requestContext?: RequestContext
 ) => void;
 
+interface SessionHandlingState<Ctx> {
+  timer?: ReturnType<typeof setTimeout>;
+  seenTimer?: ReturnType<typeof setTimeout>;
+  markedSeen?: boolean;
+  typingTimer?: ReturnType<typeof setTimeout>;
+  typingOn?: boolean;
+  startTimestamp?: number;
+  lastDuration: number;
+  mainPromise?: Promise<void>;
+  promiseResolver?: (value: void | PromiseLike<void>) => void;
+  lastSession: Session;
+  // events: Event[];
+  contexts: Ctx[];
+  requestContexts: RequestContext[];
+}
+
+// type handleContextsArgs<Ctx> = { context: Ctx; runHandler?: boolean };
+
 export default class Bot<
   B extends Record<string, JsonValue> | PlainObject,
   C extends Client,
@@ -98,16 +121,29 @@ export default class Bot<
 
   _onRequest: OnRequest | undefined;
 
+  _timerConfig: TimerOptions = {
+    enabled: false,
+    initialDuration: 15000,
+    extendDuration: 5000,
+    showSeenBeforeEndMs: 7000,
+    showTypingBeforeEndMs: 3500,
+    mode: TimerMode.Extend,
+  };
+
+  private _handlingStates: Map<string, SessionHandlingState<Ctx>> = new Map();
+
   constructor({
     connector,
     sessionStore = createMemorySessionStore(),
     sync = false,
     onRequest,
+    timerConfig,
   }: {
     connector: Connector<B, C>;
     sessionStore?: SessionStore;
     sync?: boolean;
     onRequest?: OnRequest;
+    timerConfig?: TimerOptions;
   }) {
     this._sessions = sessionStore;
     this._initialized = false;
@@ -117,6 +153,7 @@ export default class Bot<
     this._sync = sync;
     this._emitter = new EventEmitter();
     this._onRequest = onRequest;
+    if (timerConfig) this._timerConfig = timerConfig;
   }
 
   get connector(): Connector<B, C> {
@@ -284,50 +321,316 @@ export default class Bot<
       const handler: Action<Ctx> = this._handler;
       const errorHandler: Action<Ctx> | null = this._errorHandler;
 
-      // TODO: only run concurrently for different session id
-      const promises = Promise.all(
-        contexts.map((context: Ctx) =>
-          Promise.resolve()
-            .then(() => run(handler)(context, {}))
-            .then(() => {
-              if (context.handlerDidEnd) {
-                return context.handlerDidEnd();
-              }
-            })
-            .catch((err) => {
-              if (errorHandler) {
-                return run(errorHandler)(context, { error: err });
-              }
-              throw err;
-            })
-            .catch((err) => {
-              context.emitError(err);
-              throw err;
-            })
+      // ? TODO (DONE): only run concurrently for different session id
+      // Group contexts by session ID and whether they are in waiting state
+      const groupedContexts: {
+        runHandlerNow: { [sessionId: string]: Ctx[] };
+        inWaitingState: { [sessionId: string]: Ctx[] };
+      } = contexts.reduce<{
+        runHandlerNow: { [sessionId: string]: Ctx[] };
+        inWaitingState: { [sessionId: string]: Ctx[] };
+      }>(
+        (acc, context) => {
+          const sessionId = context.session?.id;
+          if (sessionId) {
+            const group =
+              this._timerConfig.enabled && context.event.isText
+                ? 'inWaitingState'
+                : 'runHandlerNow';
+            if (!acc[group][sessionId]) {
+              acc[group][sessionId] = [];
+            }
+            acc[group][sessionId].push(context);
+          }
+          return acc;
+        },
+        { runHandlerNow: {}, inWaitingState: {} }
+      );
+
+      // Process contexts that are not in waiting state
+      const immidiatePromises = Promise.all(
+        Object.values(groupedContexts.runHandlerNow).map((contextGroup) =>
+          contextGroup.reduce<Promise<void | Action<Ctx, object>>>(
+            (promiseChain, context) => {
+              return promiseChain.then(() =>
+                Promise.resolve()
+                  .then(() => run(handler)(context, {}))
+                  .then(() => {
+                    if (context.handlerDidEnd) {
+                      return context.handlerDidEnd();
+                    }
+                  })
+                  .catch((err) => {
+                    if (errorHandler) {
+                      return run(errorHandler)(context, {
+                        error: err,
+                      });
+                    }
+                    throw err;
+                  })
+                  .catch((err) => {
+                    context.emitError(err);
+                    throw err;
+                  })
+              );
+            },
+            Promise.resolve()
+          )
         )
       );
 
+      // Process contexts that are not in waiting state
+
+      const waitingStatePromises = Promise.all(
+        Object.entries(groupedContexts.inWaitingState).map(
+          ([sessionId, contextGroup]) => {
+            let currentHandlingState = this._handlingStates.get(sessionId);
+            const latestContext = contextGroup.at(-1) as Ctx;
+            if (currentHandlingState !== undefined) {
+              if (this._timerConfig.mode === TimerMode.Extend) {
+                clearTimeout(currentHandlingState?.timer);
+              }
+              if (latestContext.session !== undefined)
+                currentHandlingState.lastSession =
+                  latestContext.session as Session;
+            } else {
+              let promiseResolver: (
+                value: void | PromiseLike<void>
+              ) => void = () => {};
+              const mainPromise = new Promise<void>((resolve, _) => {
+                promiseResolver = resolve;
+              });
+
+              currentHandlingState = {
+                lastSession: contextGroup.at(-1) || {},
+                contexts: [],
+                requestContexts: [requestContext || ({} as RequestContext)],
+                mainPromise,
+                lastDuration: this._timerConfig.initialDuration,
+                promiseResolver,
+              };
+            }
+
+            currentHandlingState.contexts =
+              currentHandlingState.contexts.concat(contextGroup);
+            const timeNow = Date.now();
+
+            // Extend logic calculation
+            if (this._timerConfig.mode === TimerMode.Extend) {
+              currentHandlingState.lastDuration =
+                currentHandlingState.startTimestamp
+                  ? currentHandlingState.lastDuration -
+                    (timeNow - currentHandlingState.startTimestamp) +
+                    this._timerConfig.extendDuration
+                  : currentHandlingState.lastDuration;
+              currentHandlingState.startTimestamp = timeNow;
+            }
+
+            // Seen mechanism
+            if (
+              this._timerConfig.showSeenBeforeEndMs &&
+              'markSeen' in latestContext &&
+              typeof latestContext.markSeen === 'function'
+            ) {
+              if (
+                this._timerConfig.seenAlwaysAfterFirst &&
+                currentHandlingState.markedSeen
+              ) {
+                latestContext.markSeen();
+              } else {
+                clearTimeout(currentHandlingState.seenTimer);
+                currentHandlingState.seenTimer = setTimeout(
+                  (ctxInTimeout) => {
+                    if (currentHandlingState) {
+                      currentHandlingState.markedSeen = true;
+                    }
+                    if (typeof ctxInTimeout.markSeen === 'function')
+                      ctxInTimeout.markSeen();
+                  },
+                  currentHandlingState.lastDuration -
+                    this._timerConfig.showSeenBeforeEndMs,
+                  latestContext
+                );
+              }
+            }
+
+            // Typing mechanism
+            if (
+              this._timerConfig.showTypingBeforeEndMs &&
+              'typingOn' in latestContext &&
+              'typingOff' in latestContext &&
+              typeof latestContext.typingOff === 'function'
+            ) {
+              clearTimeout(currentHandlingState.typingTimer);
+              if (currentHandlingState.typingOn) {
+                currentHandlingState.typingOn = false;
+                latestContext.typingOff();
+              }
+              currentHandlingState.typingTimer = setTimeout(
+                (ctxInTimeout) => {
+                  if (typeof ctxInTimeout.typingOn === 'function')
+                    ctxInTimeout.typingOn();
+                  if (currentHandlingState)
+                    currentHandlingState.typingOn = true;
+                },
+                currentHandlingState.lastDuration -
+                  this._timerConfig.showTypingBeforeEndMs,
+                latestContext
+              );
+            }
+
+            // eslint-disable-next-line no-fallthrough
+            if (
+              currentHandlingState.timer === undefined ||
+              this._timerConfig.mode === TimerMode.Extend
+            ) {
+              currentHandlingState.timer = setTimeout(async () => {
+                const currentHandlingStateTimeout =
+                  this._handlingStates.get(sessionId);
+                this._handlingStates.delete(sessionId);
+                if (!currentHandlingStateTimeout) {
+                  return Promise.resolve();
+                }
+
+                await Promise.resolve()
+                  .then(() =>
+                    run(handler)(currentHandlingStateTimeout.contexts, {})
+                  )
+                  .then(() => {
+                    return currentHandlingStateTimeout.contexts.map(
+                      (context) => {
+                        if (context.handlerDidEnd) {
+                          return context.handlerDidEnd();
+                        }
+                        return Promise.resolve();
+                      }
+                    );
+                  })
+                  .catch((err) => {
+                    if (errorHandler) {
+                      return run(errorHandler)(contexts, {
+                        error: err,
+                      });
+                    }
+                    throw err;
+                  })
+                  .catch((err) => {
+                    currentHandlingStateTimeout.contexts.forEach((context) => {
+                      context.emitError(err);
+                    });
+                    throw err;
+                  });
+                if (
+                  this._timerConfig.showTypingBeforeEndMs &&
+                  'typingOff' in latestContext &&
+                  typeof latestContext.typingOff === 'function'
+                )
+                  latestContext.typingOff();
+                const contextWriteSess =
+                  currentHandlingStateTimeout.contexts.at(-1);
+                if (contextWriteSess) {
+                  contextWriteSess.isSessionWritten = true;
+
+                  const { session } = contextWriteSess;
+
+                  if (session) {
+                    session.lastActivity = Date.now();
+
+                    debugSessionWrite(`Write session: ${session.id}`);
+                    debugSessionWrite(JSON.stringify(session, null, 2));
+
+                    await this._sessions.write(session.id, session);
+                  }
+                }
+
+                if (currentHandlingStateTimeout.promiseResolver)
+                  currentHandlingStateTimeout.promiseResolver();
+              }, currentHandlingState.lastDuration);
+            } else if (this._timerConfig.mode === TimerMode.Refresh) {
+              currentHandlingState.timer.refresh();
+            }
+
+            this._handlingStates.set(sessionId, currentHandlingState);
+            return currentHandlingState.mainPromise;
+          }
+        )
+      );
+
+      Object.values(groupedContexts.inWaitingState).forEach(
+        async (contextArray) => {
+          contextArray.forEach(async (context) => {
+            context.isSessionWritten = true;
+
+            const { session } = context;
+
+            if (session) {
+              session.lastActivity = Date.now();
+
+              debugSessionWrite(`Write session: ${session.id}`);
+              debugSessionWrite(JSON.stringify(session, null, 2));
+
+              await this._sessions.write(session.id, session);
+            }
+          });
+        }
+      );
+
+      // Here we ignore contexts in the 'inWaitingState' group as per the requirement
+      // You can handle these contexts separately if needed
+
       if (this._sync) {
         try {
-          await promises;
-
+          await immidiatePromises;
           await Promise.all(
-            contexts.map(async (context) => {
-              context.isSessionWritten = true;
+            Object.values(groupedContexts.runHandlerNow).map(
+              async (contextArray) => {
+                await Promise.all(
+                  contextArray.map(async (context) => {
+                    context.isSessionWritten = true;
 
-              const { session } = context;
+                    const { session } = context;
 
-              if (session) {
-                session.lastActivity = Date.now();
+                    if (session) {
+                      session.lastActivity = Date.now();
 
-                debugSessionWrite(`Write session: ${session.id}`);
-                debugSessionWrite(JSON.stringify(session, null, 2));
+                      debugSessionWrite(`Write session: ${session.id}`);
+                      debugSessionWrite(JSON.stringify(session, null, 2));
 
-                // eslint-disable-next-line no-await-in-loop
-                await this._sessions.write(session.id, session);
+                      await this._sessions.write(session.id, session);
+                    }
+                  })
+                );
+                const sessionAfter = contextArray.at(-1)?.session;
+                const waitingState = this._handlingStates.get(
+                  contextArray.at(-1)?.session?.id
+                );
+                if (waitingState && sessionAfter)
+                  waitingState.lastSession = sessionAfter;
               }
-            })
+            )
           );
+
+          await waitingStatePromises;
+          // await Promise.all(
+          //   Object.values(groupedContexts.inWaitingState).map(
+          //     async (contextArray) => {
+          //       contextArray.map(async (context) => {
+          //         context.isSessionWritten = true;
+
+          //         const { session } = context;
+
+          //         if (session) {
+          //           session.lastActivity = Date.now();
+
+          //           debugSessionWrite(`Write session: ${session.id}`);
+          //           debugSessionWrite(JSON.stringify(session, null, 2));
+
+          //           await this._sessions.write(session.id, session);
+          //         }
+          //       });
+          //     }
+          //   )
+          // );
         } catch (err) {
           console.error(err);
         }
@@ -340,25 +643,57 @@ export default class Bot<
         }
         return response;
       }
-      promises
+      immidiatePromises
         .then(async (): Promise<void> => {
           await Promise.all(
-            contexts.map(async (context) => {
-              context.isSessionWritten = true;
+            Object.values(groupedContexts.runHandlerNow).map(
+              async (contextArray) => {
+                await Promise.all(
+                  contextArray.map(async (context) => {
+                    context.isSessionWritten = true;
+                    const { session } = context;
 
-              const { session } = context;
+                    if (session) {
+                      session.lastActivity = Date.now();
 
-              if (session) {
-                session.lastActivity = Date.now();
+                      debugSessionWrite(`Write session: ${session.id}`);
+                      debugSessionWrite(JSON.stringify(session, null, 2));
 
-                debugSessionWrite(`Write session: ${session.id}`);
-                debugSessionWrite(JSON.stringify(session, null, 2));
+                      await this._sessions.write(session.id, session);
+                    }
+                  })
+                );
 
-                // eslint-disable-next-line no-await-in-loop
-                await this._sessions.write(session.id, session);
+                const sessionAfter = contextArray.at(-1)?.session;
+                const waitingState = this._handlingStates.get(
+                  contextArray.at(-1)?.session?.id
+                );
+                if (waitingState && sessionAfter)
+                  waitingState.lastSession = sessionAfter;
               }
-            })
+            )
           );
+        })
+        .catch(console.error);
+
+      waitingStatePromises
+        .then(async (): Promise<void> => {
+          // await Promise.all(
+          //   Object.values(groupedContexts.inWaitingState).map(
+          //     async (contextArray) => {
+          //       contextArray.map(async (context) => {
+          //         context.isSessionWritten = true;
+          //         const { session } = context;
+          //         if (session) {
+          //           session.lastActivity = Date.now();
+          //           debugSessionWrite(`Write session: ${session.id}`);
+          //           debugSessionWrite(JSON.stringify(session, null, 2));
+          //           await this._sessions.write(session.id, session);
+          //         }
+          //       });
+          //     }
+          //   )
+          // );
         })
         .catch(console.error);
     };
