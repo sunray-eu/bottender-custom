@@ -80,8 +80,24 @@ export type SessionConfig =
   | StoreConfigForDriver<SessionDriver.Redis>
   | StoreConfigForDriver<SessionDriver.Mongo>;
 
+export enum TimerMode {
+  Extend,
+  Refresh,
+}
+
+export interface TimerOptions {
+  enabled: boolean;
+  seenAlwaysAfterFirst?: boolean;
+  showSeenBeforeEndMs?: number;
+  showTypingBeforeEndMs?: number;
+  initialDuration: number;
+  extendDuration: number;
+  mode: TimerMode;
+}
+
 type ChannelCommonConfig = {
   enabled: boolean;
+  timer: TimerOptions;
   path?: string;
   sync?: boolean;
   onRequest?: OnRequest;

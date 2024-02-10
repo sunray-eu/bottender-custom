@@ -19,6 +19,8 @@ import {
   Props,
   RequestContext,
   RequestHandler,
+  TimerMode,
+  TimerOptions,
 } from '../types';
 import { Event } from '../context/Event';
 
@@ -76,7 +78,12 @@ export type OnRequest = (
 
 interface SessionHandlingState<Ctx> {
   timer?: ReturnType<typeof setTimeout>;
+  seenTimer?: ReturnType<typeof setTimeout>;
+  markedSeen?: boolean;
+  typingTimer?: ReturnType<typeof setTimeout>;
+  typingOn?: boolean;
   startTimestamp?: number;
+  lastDuration: number;
   mainPromise?: Promise<void>;
   promiseResolver?: (value: void | PromiseLike<void>) => void;
   lastSession: Session;
@@ -114,7 +121,14 @@ export default class Bot<
 
   _onRequest: OnRequest | undefined;
 
-  _timerDuration = 5000; // 5 seconds default
+  _timerConfig: TimerOptions = {
+    enabled: false,
+    initialDuration: 15000,
+    extendDuration: 5000,
+    showSeenBeforeEndMs: 7000,
+    showTypingBeforeEndMs: 3500,
+    mode: TimerMode.Extend,
+  };
 
   private _handlingStates: Map<string, SessionHandlingState<Ctx>> = new Map();
 
@@ -123,11 +137,13 @@ export default class Bot<
     sessionStore = createMemorySessionStore(),
     sync = false,
     onRequest,
+    timerConfig,
   }: {
     connector: Connector<B, C>;
     sessionStore?: SessionStore;
     sync?: boolean;
     onRequest?: OnRequest;
+    timerConfig?: TimerOptions;
   }) {
     this._sessions = sessionStore;
     this._initialized = false;
@@ -137,6 +153,7 @@ export default class Bot<
     this._sync = sync;
     this._emitter = new EventEmitter();
     this._onRequest = onRequest;
+    if (timerConfig) this._timerConfig = timerConfig;
   }
 
   get connector(): Connector<B, C> {
@@ -316,9 +333,10 @@ export default class Bot<
         (acc, context) => {
           const sessionId = context.session?.id;
           if (sessionId) {
-            const group = context.event.isText
-              ? 'inWaitingState'
-              : 'runHandlerNow';
+            const group =
+              this._timerConfig.enabled && context.event.isText
+                ? 'inWaitingState'
+                : 'runHandlerNow';
             if (!acc[group][sessionId]) {
               acc[group][sessionId] = [];
             }
@@ -367,11 +385,14 @@ export default class Bot<
         Object.entries(groupedContexts.inWaitingState).map(
           ([sessionId, contextGroup]) => {
             let currentHandlingState = this._handlingStates.get(sessionId);
+            const latestContext = contextGroup.at(-1) as Ctx;
             if (currentHandlingState !== undefined) {
-              clearTimeout(currentHandlingState?.timer);
-              if (contextGroup.at(-1)?.session !== undefined)
-                currentHandlingState.lastSession = contextGroup.at(-1)
-                  ?.session as Session;
+              if (this._timerConfig.mode === TimerMode.Extend) {
+                clearTimeout(currentHandlingState?.timer);
+              }
+              if (latestContext.session !== undefined)
+                currentHandlingState.lastSession =
+                  latestContext.session as Session;
             } else {
               let promiseResolver: (
                 value: void | PromiseLike<void>
@@ -385,68 +406,150 @@ export default class Bot<
                 contexts: [],
                 requestContexts: [requestContext || ({} as RequestContext)],
                 mainPromise,
+                lastDuration: this._timerConfig.initialDuration,
                 promiseResolver,
               };
             }
 
             currentHandlingState.contexts =
               currentHandlingState.contexts.concat(contextGroup);
-            currentHandlingState.startTimestamp = Date.now();
-            currentHandlingState.timer = setTimeout(async () => {
-              const currentHandlingStateTimeout =
-                this._handlingStates.get(sessionId);
-              if (!currentHandlingStateTimeout) {
-                return Promise.resolve();
-              }
+            const timeNow = Date.now();
 
-              await Promise.resolve()
-                .then(() =>
-                  run(handler)(currentHandlingStateTimeout.contexts, {})
-                )
-                .then(() => {
-                  return currentHandlingStateTimeout.contexts.map((context) => {
-                    if (context.handlerDidEnd) {
-                      return context.handlerDidEnd();
+            // Extend logic calculation
+            if (this._timerConfig.mode === TimerMode.Extend) {
+              currentHandlingState.lastDuration =
+                currentHandlingState.startTimestamp
+                  ? currentHandlingState.lastDuration -
+                    (timeNow - currentHandlingState.startTimestamp) +
+                    this._timerConfig.extendDuration
+                  : currentHandlingState.lastDuration;
+              currentHandlingState.startTimestamp = timeNow;
+            }
+
+            // Seen mechanism
+            if (
+              this._timerConfig.showSeenBeforeEndMs &&
+              'markSeen' in latestContext &&
+              typeof latestContext.markSeen === 'function'
+            ) {
+              if (
+                this._timerConfig.seenAlwaysAfterFirst &&
+                currentHandlingState.markedSeen
+              ) {
+                latestContext.markSeen();
+              } else {
+                clearTimeout(currentHandlingState.seenTimer);
+                currentHandlingState.seenTimer = setTimeout(
+                  (ctxInTimeout) => {
+                    if (currentHandlingState) {
+                      currentHandlingState.markedSeen = true;
                     }
-                    return Promise.resolve();
-                  });
-                })
-                .catch((err) => {
-                  if (errorHandler) {
-                    return run(errorHandler)(contexts, {
-                      error: err,
-                    });
-                  }
-                  throw err;
-                })
-                .catch((err) => {
-                  currentHandlingStateTimeout.contexts.forEach((context) => {
-                    context.emitError(err);
-                  });
-                  throw err;
-                });
-
-              const contextWriteSess =
-                currentHandlingStateTimeout.contexts.at(-1);
-              if (contextWriteSess) {
-                contextWriteSess.isSessionWritten = true;
-
-                const { session } = contextWriteSess;
-
-                if (session) {
-                  session.lastActivity = Date.now();
-
-                  debugSessionWrite(`Write session: ${session.id}`);
-                  debugSessionWrite(JSON.stringify(session, null, 2));
-
-                  await this._sessions.write(session.id, session);
-                }
+                    if (typeof ctxInTimeout.markSeen === 'function')
+                      ctxInTimeout.markSeen();
+                  },
+                  currentHandlingState.lastDuration -
+                    this._timerConfig.showSeenBeforeEndMs,
+                  latestContext
+                );
               }
+            }
 
-              if (currentHandlingStateTimeout.promiseResolver)
-                currentHandlingStateTimeout.promiseResolver();
-              this._handlingStates.delete(sessionId);
-            }, this._timerDuration);
+            // Typing mechanism
+            if (
+              this._timerConfig.showTypingBeforeEndMs &&
+              'typingOn' in latestContext &&
+              'typingOff' in latestContext &&
+              typeof latestContext.typingOff === 'function'
+            ) {
+              clearTimeout(currentHandlingState.typingTimer);
+              if (currentHandlingState.typingOn) {
+                currentHandlingState.typingOn = false;
+                latestContext.typingOff();
+              }
+              currentHandlingState.typingTimer = setTimeout(
+                (ctxInTimeout) => {
+                  if (typeof ctxInTimeout.typingOn === 'function')
+                    ctxInTimeout.typingOn();
+                  if (currentHandlingState)
+                    currentHandlingState.typingOn = true;
+                },
+                currentHandlingState.lastDuration -
+                  this._timerConfig.showTypingBeforeEndMs,
+                latestContext
+              );
+            }
+
+            // eslint-disable-next-line no-fallthrough
+            if (
+              currentHandlingState.timer === undefined ||
+              this._timerConfig.mode === TimerMode.Extend
+            ) {
+              currentHandlingState.timer = setTimeout(async () => {
+                const currentHandlingStateTimeout =
+                  this._handlingStates.get(sessionId);
+                this._handlingStates.delete(sessionId);
+                if (!currentHandlingStateTimeout) {
+                  return Promise.resolve();
+                }
+
+                await Promise.resolve()
+                  .then(() =>
+                    run(handler)(currentHandlingStateTimeout.contexts, {})
+                  )
+                  .then(() => {
+                    return currentHandlingStateTimeout.contexts.map(
+                      (context) => {
+                        if (context.handlerDidEnd) {
+                          return context.handlerDidEnd();
+                        }
+                        return Promise.resolve();
+                      }
+                    );
+                  })
+                  .catch((err) => {
+                    if (errorHandler) {
+                      return run(errorHandler)(contexts, {
+                        error: err,
+                      });
+                    }
+                    throw err;
+                  })
+                  .catch((err) => {
+                    currentHandlingStateTimeout.contexts.forEach((context) => {
+                      context.emitError(err);
+                    });
+                    throw err;
+                  });
+                if (
+                  this._timerConfig.showTypingBeforeEndMs &&
+                  'typingOff' in latestContext &&
+                  typeof latestContext.typingOff === 'function'
+                )
+                  latestContext.typingOff();
+                const contextWriteSess =
+                  currentHandlingStateTimeout.contexts.at(-1);
+                if (contextWriteSess) {
+                  contextWriteSess.isSessionWritten = true;
+
+                  const { session } = contextWriteSess;
+
+                  if (session) {
+                    session.lastActivity = Date.now();
+
+                    debugSessionWrite(`Write session: ${session.id}`);
+                    debugSessionWrite(JSON.stringify(session, null, 2));
+
+                    await this._sessions.write(session.id, session);
+                  }
+                }
+
+                if (currentHandlingStateTimeout.promiseResolver)
+                  currentHandlingStateTimeout.promiseResolver();
+              }, currentHandlingState.lastDuration);
+            } else if (this._timerConfig.mode === TimerMode.Refresh) {
+              currentHandlingState.timer.refresh();
+            }
+
             this._handlingStates.set(sessionId, currentHandlingState);
             return currentHandlingState.mainPromise;
           }
