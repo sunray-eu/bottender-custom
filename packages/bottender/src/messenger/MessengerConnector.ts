@@ -108,9 +108,9 @@ export default class MessengerConnector
     return 'messenger';
   }
 
-  getUniqueSessionKey(
+  async getUniqueSessionKey(
     bodyOrEvent: MessengerRequestBody | MessengerEvent
-  ): string | null {
+  ): Promise<string | null> {
     const rawEvent =
       bodyOrEvent instanceof MessengerEvent
         ? bodyOrEvent.rawEvent
@@ -134,7 +134,7 @@ export default class MessengerConnector
     bodyOrEvent: MessengerRequestBody | MessengerEvent
   ): Promise<void> {
     if (!session.user || this._profilePicExpired(session.user)) {
-      const senderId = this.getUniqueSessionKey(bodyOrEvent);
+      const senderId = await this.getUniqueSessionKey(bodyOrEvent);
 
       const rawEvent =
         bodyOrEvent instanceof MessengerEvent

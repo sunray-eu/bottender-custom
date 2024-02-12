@@ -243,7 +243,7 @@ export default class Bot<
         events,
         async (event) => {
           const { platform } = this._connector;
-          const sessionKey = this._connector.getUniqueSessionKey(
+          const sessionKey = await this._connector.getUniqueSessionKey(
             // TODO: deprecating passing request body in those connectors
             ['telegram', 'slack', 'viber', 'whatsapp'].includes(
               this._connector.platform
@@ -332,6 +332,7 @@ export default class Bot<
       }>(
         (acc, context) => {
           const sessionId = context.session?.id;
+
           if (sessionId) {
             const group =
               this._timerConfig.enabled && context.event.isText

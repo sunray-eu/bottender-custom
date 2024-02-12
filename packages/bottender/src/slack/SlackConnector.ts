@@ -191,7 +191,7 @@ export default class SlackConnector
     );
   }
 
-  getUniqueSessionKey(body: SlackRequestBody): string | null {
+  async getUniqueSessionKey(body: SlackRequestBody): Promise<string | null> {
     const rawEvent = this._getRawEventFromRequest(body);
     return this._getChannelId(rawEvent) || this._getUserId(rawEvent);
   }

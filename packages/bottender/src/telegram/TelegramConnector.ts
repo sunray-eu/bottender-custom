@@ -71,7 +71,7 @@ export default class TelegramConnector
     return this._client;
   }
 
-  getUniqueSessionKey(body: TelegramRequestBody): string {
+  async getUniqueSessionKey(body: TelegramRequestBody): Promise<string> {
     if (body.message) {
       return `${body.message.chat.id}`;
     }

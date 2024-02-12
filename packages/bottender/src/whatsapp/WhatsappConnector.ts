@@ -71,7 +71,7 @@ export default class WhatsappConnector
     return this._client;
   }
 
-  getUniqueSessionKey(body: WhatsappRequestBody): string {
+  async getUniqueSessionKey(body: WhatsappRequestBody): Promise<string> {
     return body.smsStatus === 'received' ? body.from : body.to;
   }
 

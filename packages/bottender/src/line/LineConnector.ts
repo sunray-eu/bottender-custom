@@ -162,10 +162,10 @@ export default class LineConnector
     return this._client;
   }
 
-  getUniqueSessionKey(
+  async getUniqueSessionKey(
     bodyOrEvent: LineRequestBody | LineEvent,
     requestContext?: RequestContext
-  ): string {
+  ): Promise<string> {
     const rawEvent =
       bodyOrEvent instanceof LineEvent
         ? bodyOrEvent.rawEvent

@@ -453,10 +453,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bottender/facebook@workspace:packages/bottender-facebook"
   dependencies:
+    "@types/node-persist": "npm:^3.1.8"
     axios-error: "npm:^1.0.4"
     bottender: "npm:^1.5.5"
     facebook-batch: "npm:1.1.0"
     lodash: "npm:^4.17.21"
+    node-persist: "npm:^4.0.1"
     type-fest: "npm:4.7.1"
     warning: "npm:^4.0.3"
   peerDependencies:

@@ -3,6 +3,7 @@
   "version": "1.5.5",
   "license": "MIT",
   "homepage": "https://bottender.js.org/",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/Yoctol/bottender.git"
@@ -13,9 +14,11 @@
   ],
   "types": "dist/index.d.ts",
   "dependencies": {
+    "@types/node-persist": "^3.1.8",
     "axios-error": "^1.0.4",
     "facebook-batch": "1.1.0",
     "lodash": "^4.17.21",
+    "node-persist": "^4.0.1",
     "type-fest": "4.7.1",
     "warning": "^4.0.3"
   },

@@ -49,7 +49,7 @@ export default class ConsoleConnector
     return this._client;
   }
 
-  getUniqueSessionKey(): string {
+  async getUniqueSessionKey(): Promise<string> {
     return '1';
   }
 

@@ -21,7 +21,7 @@ export interface Connector<B, C> {
   getUniqueSessionKey(
     bodyOrEvent: B | Event<any>,
     requestContext?: RequestContext
-  ): string | null;
+  ): Promise<string | null>;
   updateSession(session: Session, bodyOrEvent: B | Event<any>): Promise<void>;
   mapRequestToEvents(body: B): Event<any>[];
   createContext(params: {

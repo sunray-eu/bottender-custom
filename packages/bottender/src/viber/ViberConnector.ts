@@ -80,7 +80,7 @@ export default class ViberConnector
     return this._client;
   }
 
-  getUniqueSessionKey(body: ViberRequestBody): string {
+  async getUniqueSessionKey(body: ViberRequestBody): Promise<string> {
     switch (body.event) {
       case 'subscribed':
       case 'conversation_started':
