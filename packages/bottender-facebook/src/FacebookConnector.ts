@@ -99,112 +99,109 @@ export default class FacebookConnector
       return readData;
     }
 
-    let newCommentData: CommentLevelData;
     if (event.isFirstLayerComment) {
-      newCommentData = {
+      const newCommentData: CommentLevelData = {
         level: 1,
         sessionId: comment.commentId,
+        fromId: comment.from.id,
       };
       await this._commentsLevelsStorage.setItem(commentId, newCommentData);
       return newCommentData;
     }
-    let actualComment: CommentLevelData = {
+
+    let currentCommentData: CommentLevelData = {
       level: 3,
       parentId: comment.parentId,
       fromId: comment.from.id,
     };
 
     const commentsPath: (CommentLevelData & { commentId: string })[] = [
-      { ...actualComment, commentId: comment.commentId },
+      { ...currentCommentData, commentId: comment.commentId },
     ];
+
     while (true) {
       let parentComment: CommentLevelData | null =
         // eslint-disable-next-line no-await-in-loop
-        await this._commentsLevelsStorage.get(actualComment.parentId as string);
+        await this._commentsLevelsStorage.get(
+          currentCommentData.parentId as string
+        );
 
       if (parentComment) {
-        if (parentComment.level === 1) {
-          // if (
-          //   commentsPath[commentsPath.length - 1].fromId !==
-          //   // eslint-disable-next-line no-await-in-loop
-          //   (await this.client.getPageInfo()).id
-          // ) {
-          //   return undefined;
-          // }
-          commentsPath[commentsPath.length - 1].level = 2;
-          const newSessionId = parentComment.sessionId;
-
-          commentsPath.forEach((val) => {
-            val.sessionId = newSessionId;
-          });
-        }
-
-        // eslint-disable-next-line no-await-in-loop
-        await Promise.all(
-          commentsPath.map(async (val) => {
-            await this._commentsLevelsStorage.setItem(
-              val.commentId,
-              val as CommentLevelData
-            );
-          })
-        );
+        this.processParentComment(parentComment, commentsPath);
         return commentsPath[commentsPath.length - 1];
       }
 
       // eslint-disable-next-line no-await-in-loop
       const apiComment = await this.client.getComment(
-        actualComment.parentId as string,
-        {
-          fields: ['parent'],
-        }
+        currentCommentData.parentId as string,
+        { fields: ['parent'] }
       );
 
-      const isRoot = apiComment.parent.id === actualComment.parentId;
+      const isRoot = apiComment.parent === undefined;
 
       if (isRoot) {
-        // if (
-        //   commentsPath[commentsPath.length - 1].fromId !==
-        //   // eslint-disable-next-line no-await-in-loop
-        //   (await this.client.getPageInfo()).id
-        // ) {
-        //   return undefined;
-        // }
-        parentComment = {
-          level: 1,
-        };
-        commentsPath[commentsPath.length - 1].level = 2;
-        commentsPath.push({
-          ...parentComment,
-          commentId: actualComment.parentId as string,
-        });
-
-        const newSessionId = `${actualComment.parentId}`;
-
-        commentsPath.forEach((val) => {
-          val.sessionId = newSessionId;
-        });
-
-        // eslint-disable-next-line no-await-in-loop
-        await Promise.all(
-          commentsPath.map(async (val) => {
-            await this._commentsLevelsStorage.setItem(
-              val.commentId,
-              val as CommentLevelData
-            );
-          })
+        parentComment = { level: 1 };
+        this.processRootComment(
+          parentComment,
+          commentsPath,
+          currentCommentData
         );
         return commentsPath[commentsPath.length - 1];
       }
-      parentComment = {
-        level: 3,
-        parentId: apiComment.parent.id,
-      };
+
+      parentComment = { level: 3, parentId: apiComment.parent.id };
       commentsPath.push({
         ...parentComment,
-        commentId: actualComment.parentId as string,
+        commentId: currentCommentData.parentId as string,
       });
-      actualComment = parentComment;
+      currentCommentData = parentComment;
     }
+  }
+
+  private async processParentComment(
+    parentComment: CommentLevelData,
+    commentsPath: (CommentLevelData & { commentId: string })[]
+  ): Promise<void> {
+    if (parentComment.level === 1) {
+      commentsPath[commentsPath.length - 1].level = 2;
+    }
+    const newSessionId = parentComment.sessionId;
+    commentsPath.forEach((val) => {
+      val.sessionId = newSessionId;
+    });
+
+    await Promise.all(
+      commentsPath.map(async (val) => {
+        const { commentId, ...rest } = val;
+        await this._commentsLevelsStorage.setItem(commentId, rest);
+      })
+    );
+  }
+
+  private async processRootComment(
+    parentComment: CommentLevelData,
+    commentsPath: (CommentLevelData & { commentId: string })[],
+    currentCommentData: CommentLevelData
+  ): Promise<void> {
+    commentsPath[commentsPath.length - 1].level = 2;
+    const newSessionId = `${currentCommentData.parentId}`;
+
+    commentsPath.push({
+      ...parentComment,
+      // level: 2, // Assuming root comments are treated as level 2 for consistency with the previous logic
+      sessionId: newSessionId,
+      commentId: currentCommentData.parentId as string,
+    });
+
+    commentsPath.forEach((val) => {
+      val.sessionId = newSessionId;
+    });
+
+    await Promise.all(
+      commentsPath.map(async (val) => {
+        await this._commentsLevelsStorage.setItem(val.commentId, val);
+      })
+    );
   }
 
   /**
