@@ -177,7 +177,6 @@ export default class FacebookContext extends Context<
       //   ? (this._event.rawEvent.value as Types.FeedComment).commentId
       //   : (this._event.rawEvent.value as Types.FeedComment).parentId;
       objectId = (this._event.rawEvent.value as Types.FeedComment).commentId;
-      console.log('objectId If', this._event.isFirstLayerComment);
     } else if (this._event.isPost) {
       objectId = (this._event.rawEvent.value as Types.FeedComment).postId;
     }

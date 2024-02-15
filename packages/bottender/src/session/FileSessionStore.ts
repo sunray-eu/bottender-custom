@@ -43,13 +43,12 @@ export default class FileSessionStore implements SessionStore {
       expiredInterval: 2 * 60 * 1000, // every 2 minutes the process will clean-up the expired cache
       forgiveParseErrors: false,
     });
-
-    this._storage.init();
   }
 
   async init(): Promise<FileSessionStore> {
     // Assuming storage.init() is called in the constructor and is synchronous
     // or if it's asynchronous, make sure to await it in the constructor
+    await this._storage.init();
     return this;
   }
 

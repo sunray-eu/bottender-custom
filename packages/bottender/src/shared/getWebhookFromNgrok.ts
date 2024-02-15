@@ -39,7 +39,7 @@ export default async function getWebhookFromNgrok(
 ): Promise<string | never> {
   // ngork API reference: https://ngrok.com/docs#client-api
   const ngrokAxios = axios.create({
-    baseURL: `http://localhost:${ngrokPort}`,
+    baseURL: `http://127.0.0.1:${ngrokPort}`,
   });
 
   const { data } = await ngrokAxios.get<{

@@ -113,7 +113,6 @@ export default class FacebookConnector
       parentId: comment.parentId,
       fromId: comment.from.id,
     };
-    console.log('Actual comment:', actualComment);
 
     const commentsPath: (CommentLevelData & { commentId: string })[] = [
       { ...actualComment, commentId: comment.commentId },
@@ -238,6 +237,11 @@ export default class FacebookConnector
     session: Session,
     event: FacebookEvent | MessengerEvent
   ): Promise<void> {
+    if (event instanceof MessengerEvent) {
+      this._messengerConnector.updateSession(session, event);
+      return;
+    }
+
     if (!session.user) {
       session.page = {
         id: event.pageId,
@@ -246,7 +250,7 @@ export default class FacebookConnector
 
       session.user = {
         _updatedAt: new Date().toISOString(),
-        id: this.getUniqueSessionKey(event),
+        id: await this.getUniqueSessionKey(event),
       };
     }
 
