@@ -3199,9 +3199,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios-error@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/axios-error::locator=%40bottender%2Fworkspace%40workspace%3A.":
+"axios-error@portal:../messaging-apis-custom/packages/axios-error::locator=%40bottender%2Fworkspace%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "axios-error@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/axios-error::locator=%40bottender%2Fworkspace%40workspace%3A."
+  resolution: "axios-error@portal:../messaging-apis-custom/packages/axios-error::locator=%40bottender%2Fworkspace%40workspace%3A."
   dependencies:
     axios: "npm:^1.6.7"
     type-fest: "npm:4.7.1"
@@ -5642,9 +5642,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"facebook-batch@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/facebook-batch::locator=%40bottender%2Fworkspace%40workspace%3A.":
+"facebook-batch@portal:../messaging-apis-custom/packages/facebook-batch::locator=%40bottender%2Fworkspace%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "facebook-batch@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/facebook-batch::locator=%40bottender%2Fworkspace%40workspace%3A."
+  resolution: "facebook-batch@portal:../messaging-apis-custom/packages/facebook-batch::locator=%40bottender%2Fworkspace%40workspace%3A."
   dependencies:
     messaging-api-messenger: "npm:1.1.0"
     type-fest: "npm:4.7.1"
@@ -8843,9 +8843,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"messaging-api-common@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-common::locator=%40bottender%2Fworkspace%40workspace%3A.":
+"messaging-api-common@portal:../messaging-apis-custom/packages/messaging-api-common::locator=%40bottender%2Fworkspace%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "messaging-api-common@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-common::locator=%40bottender%2Fworkspace%40workspace%3A."
+  resolution: "messaging-api-common@portal:../messaging-apis-custom/packages/messaging-api-common::locator=%40bottender%2Fworkspace%40workspace%3A."
   dependencies:
     "@types/debug": "npm:^4.1.12"
     "@types/lodash": "npm:^4.14.202"
@@ -8860,9 +8860,9 @@ __metadata:
   languageName: node
   linkType: soft
 
-"messaging-api-line@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-line::locator=%40bottender%2Fworkspace%40workspace%3A.":
+"messaging-api-line@portal:../messaging-apis-custom/packages/messaging-api-line::locator=%40bottender%2Fworkspace%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "messaging-api-line@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-line::locator=%40bottender%2Fworkspace%40workspace%3A."
+  resolution: "messaging-api-line@portal:../messaging-apis-custom/packages/messaging-api-line::locator=%40bottender%2Fworkspace%40workspace%3A."
   dependencies:
     "@types/warning": "npm:^3.0.3"
     axios: "npm:^1.6.7"
@@ -8875,9 +8875,9 @@ __metadata:
   languageName: node
   linkType: soft
 
-"messaging-api-messenger@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-messenger::locator=%40bottender%2Fworkspace%40workspace%3A.":
+"messaging-api-messenger@portal:../messaging-apis-custom/packages/messaging-api-messenger::locator=%40bottender%2Fworkspace%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "messaging-api-messenger@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-messenger::locator=%40bottender%2Fworkspace%40workspace%3A."
+  resolution: "messaging-api-messenger@portal:../messaging-apis-custom/packages/messaging-api-messenger::locator=%40bottender%2Fworkspace%40workspace%3A."
   dependencies:
     "@types/append-query": "npm:^2.0.3"
     "@types/lodash": "npm:^4.14.202"
@@ -8893,9 +8893,9 @@ __metadata:
   languageName: node
   linkType: soft
 
-"messaging-api-slack@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-slack::locator=%40bottender%2Fworkspace%40workspace%3A.":
+"messaging-api-slack@portal:../messaging-apis-custom/packages/messaging-api-slack::locator=%40bottender%2Fworkspace%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "messaging-api-slack@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-slack::locator=%40bottender%2Fworkspace%40workspace%3A."
+  resolution: "messaging-api-slack@portal:../messaging-apis-custom/packages/messaging-api-slack::locator=%40bottender%2Fworkspace%40workspace%3A."
   dependencies:
     "@types/lodash": "npm:^4.14.202"
     "@types/warning": "npm:^3.0.3"
@@ -8908,9 +8908,9 @@ __metadata:
   languageName: node
   linkType: soft
 
-"messaging-api-telegram@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-telegram::locator=%40bottender%2Fworkspace%40workspace%3A.":
+"messaging-api-telegram@portal:../messaging-apis-custom/packages/messaging-api-telegram::locator=%40bottender%2Fworkspace%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "messaging-api-telegram@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-telegram::locator=%40bottender%2Fworkspace%40workspace%3A."
+  resolution: "messaging-api-telegram@portal:../messaging-apis-custom/packages/messaging-api-telegram::locator=%40bottender%2Fworkspace%40workspace%3A."
   dependencies:
     "@types/lodash": "npm:^4.14.202"
     "@types/warning": "npm:^3.0.3"
@@ -8923,9 +8923,9 @@ __metadata:
   languageName: node
   linkType: soft
 
-"messaging-api-viber@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-viber::locator=%40bottender%2Fworkspace%40workspace%3A.":
+"messaging-api-viber@portal:../messaging-apis-custom/packages/messaging-api-viber::locator=%40bottender%2Fworkspace%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "messaging-api-viber@portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-viber::locator=%40bottender%2Fworkspace%40workspace%3A."
+  resolution: "messaging-api-viber@portal:../messaging-apis-custom/packages/messaging-api-viber::locator=%40bottender%2Fworkspace%40workspace%3A."
   dependencies:
     "@types/warning": "npm:^3.0.3"
     axios: "npm:^1.6.7"

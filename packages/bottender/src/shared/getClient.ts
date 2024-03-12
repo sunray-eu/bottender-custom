@@ -28,21 +28,22 @@ const BOT_MAP = {
 async function getClient<C extends string>(
   channel: C
 ): Promise<
-  Awaited<
-    C extends 'messenger'
-      ? MessengerClient
-      : C extends 'line'
-        ? LineClient
-        : C extends 'slack'
-          ? SlackOAuthClient
-          : C extends 'telegram'
-            ? TelegramClient
-            : C extends 'viber'
-              ? ViberClient
-              : C extends 'whatsapp'
-                ? TwilioClient
-                : any
-  >
+  | Awaited<
+      C extends 'messenger'
+        ? MessengerClient
+        : C extends 'line'
+          ? LineClient
+          : C extends 'slack'
+            ? SlackOAuthClient
+            : C extends 'telegram'
+              ? TelegramClient
+              : C extends 'viber'
+                ? ViberClient
+                : C extends 'whatsapp'
+                  ? TwilioClient
+                  : any
+    >
+  | undefined
 > {
   const { channels = {} } = await getBottenderConfig();
   const sessionStore = getSessionStore();
@@ -53,6 +54,13 @@ async function getClient<C extends string>(
     throw new Error(
       `getClient: ${channel} config is missing in \`bottender.config.js\`.`
     );
+  }
+  if (!(channel in BOT_MAP)) {
+    if (!('connector' in channelConfig)) {
+      return undefined;
+    }
+
+    return channelConfig.connector.client;
   }
 
   const ChannelBot = BOT_MAP[channel as Channel];

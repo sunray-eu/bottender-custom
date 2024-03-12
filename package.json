@@ -34,15 +34,15 @@
     "packages/*"
   ],
   "resolutions": {
-    "axios-error": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/axios-error",
-    "facebook-batch": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/facebook-batch",
-    "messaging-api-common": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-common",
-    "messaging-api-line": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-line",
-    "messaging-api-messenger": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-messenger",
-    "messaging-api-slack": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-slack",
-    "messaging-api-telegram": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-telegram",
-    "messaging-api-viber": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-viber",
-    "messaging-api-wechat": "portal:/Users/marosvarchola/Programming/sunray/gits/messaging-apis-custom/packages/messaging-api-wechat"
+    "axios-error": "portal:../messaging-apis-custom/packages/axios-error",
+    "facebook-batch": "portal:../messaging-apis-custom/packages/facebook-batch",
+    "messaging-api-common": "portal:../messaging-apis-custom/packages/messaging-api-common",
+    "messaging-api-line": "portal:../messaging-apis-custom/packages/messaging-api-line",
+    "messaging-api-messenger": "portal:../messaging-apis-custom/packages/messaging-api-messenger",
+    "messaging-api-slack": "portal:../messaging-apis-custom/packages/messaging-api-slack",
+    "messaging-api-telegram": "portal:../messaging-apis-custom/packages/messaging-api-telegram",
+    "messaging-api-viber": "portal:../messaging-apis-custom/packages/messaging-api-viber",
+    "messaging-api-wechat": "portal:../messaging-apis-custom/packages/messaging-api-wechat"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
