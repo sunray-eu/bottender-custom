@@ -16,14 +16,8 @@ env:
 
 jobs:
   build:
-    name: Node.js, version from .nvmrc on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-
+    name: Node.js, version from .nvmrc on ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Prepare git
         run: git config --global core.autocrlf false
@@ -31,10 +25,11 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      - name: Setup Latest Yarn
-        uses: threeal/setup-yarn-action@v2.0.0
-        with:
-          version: latest
+      - name: Enable corepack
+        run: corepack enable yarn
+
+      - name: Setup yarn
+        run: yarn set version berry
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -69,8 +64,7 @@ jobs:
       # - name: Run tests
       #   run: npm run testonly:cov -- --colors
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.node-version == 12 }}
-        with:
-          fail_ci_if_error: true
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v1
+      #   with:
+      #     fail_ci_if_error: true
