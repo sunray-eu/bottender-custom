@@ -1,5 +1,5 @@
 import warning from 'warning';
-import { TelegramClient } from 'messaging-api-telegram';
+import { TelegramClient } from '@sunray-eu/messaging-api-telegram';
 
 import TelegramContext from '../TelegramContext';
 import TelegramEvent from '../TelegramEvent';

@@ -1,6 +1,6 @@
 import qs from 'querystring';
 
-import AxiosError from 'axios-error';
+import AxiosError from '@sunray-eu/axios-error';
 import axios, { AxiosInstance } from 'axios';
 import { JsonObject } from 'type-fest';
 import {
@@ -8,7 +8,7 @@ import {
   camelcaseKeys,
   createRequestInterceptor,
   pascalcaseKeys,
-} from 'messaging-api-common';
+} from '@sunray-eu/messaging-api-common';
 import { get } from 'lodash-es';
 
 type ClientConfig = {

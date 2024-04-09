@@ -4,7 +4,10 @@ import debug from 'debug';
 import invariant from 'invariant';
 import pMap from 'p-map';
 import { JsonObject, JsonValue } from 'type-fest';
-import { PlainObject, camelcaseKeysDeep } from 'messaging-api-common';
+import {
+  PlainObject,
+  camelcaseKeysDeep,
+} from '@sunray-eu/messaging-api-common';
 
 import CacheBasedSessionStore from '../session/CacheBasedSessionStore';
 import Context, { Response } from '../context/Context';

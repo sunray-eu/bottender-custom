@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "@bottender/workspace",
+  "version": "1.5.5",
   "description": "A framework for building conversational user interfaces.",
   "license": "MIT",
   "homepage": "https://bottender.js.org/",
@@ -10,11 +11,11 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "clean": "git clean -dfqX -- ./node_modules **/{dist,node_modules}/ ./packages/*/tsconfig*tsbuildinfo",
-    "compile": "tsc --build tsconfig.build.json",
-    "compile:clean": "tsc --build tsconfig.build.json --clean",
-    "compile:watch": "yarn compile --watch",
-    "postinstall": "yarn compile",
+    "build": "tsc --build tsconfig.build.json",
+    "build:clean": "tsc --build tsconfig.build.json --clean",
+    "build:watch": "yarn build --watch",
+    "clean": "git clean -dfqX -- ./node_modules **/{dist,node_modules}/ ./packages/*/tsconfig*tsbuildinfo ./.yarn",
+    "postinstall": "yarn build",
     "lint": "eslint packages examples --ext=js,ts",
     "lint:fix": "yarn lint:fix:md && yarn lint:fix:ts",
     "lint:fix:md": "prettier --write **/*.md",
@@ -22,9 +23,8 @@
     "lint:staged": "lint-staged",
     "lint:website": "eslint website --ext=js,ts,tsx",
     "prepare": "husky",
-    "prepublishOnly": "yarn clean && yarn && yarn test",
-    "publish": "lerna publish",
-    "test": "yarn compile && yarn lint && yarn testonly",
+    "prepublishOnly": "yarn clean && yarn",
+    "test": "yarn build && yarn lint && yarn testonly",
     "testonly": "jest",
     "testonly:cov": "jest --coverage",
     "testonly:watch": "jest --watch",
@@ -33,17 +33,6 @@
   "workspaces": [
     "packages/*"
   ],
-  "resolutions": {
-    "axios-error": "portal:../messaging-apis-custom/packages/axios-error",
-    "facebook-batch": "portal:../messaging-apis-custom/packages/facebook-batch",
-    "messaging-api-common": "portal:../messaging-apis-custom/packages/messaging-api-common",
-    "messaging-api-line": "portal:../messaging-apis-custom/packages/messaging-api-line",
-    "messaging-api-messenger": "portal:../messaging-apis-custom/packages/messaging-api-messenger",
-    "messaging-api-slack": "portal:../messaging-apis-custom/packages/messaging-api-slack",
-    "messaging-api-telegram": "portal:../messaging-apis-custom/packages/messaging-api-telegram",
-    "messaging-api-viber": "portal:../messaging-apis-custom/packages/messaging-api-viber",
-    "messaging-api-wechat": "portal:../messaging-apis-custom/packages/messaging-api-wechat"
-  },
   "devDependencies": {
     "@types/jest": "^29.5.11",
     "@types/prettier": "^3.0.0",
@@ -68,7 +57,7 @@
     "husky": "^9.0.6",
     "jest": "^29.7.0",
     "jest-junit": "^16.0.0",
-    "lerna": "^8.0.2",
+    "lerna": "^8.1.2",
     "lint-staged": "^15.2.0",
     "micromatch": "^4.0.5",
     "mkdirp": "^3.0.1",
@@ -80,10 +69,10 @@
     "rimraf": "^5.0.5",
     "supertest": "^6.3.4",
     "ts-jest": "^29.1.2",
-    "typescript": "^5.3.3"
+    "typescript": "5.3.3"
   },
   "engines": {
     "node": ">=8"
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.1.1"
 }

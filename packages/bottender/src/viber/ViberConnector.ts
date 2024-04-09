@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 
 import invariant from 'invariant';
 import { JsonObject } from 'type-fest';
-import { ViberClient } from 'messaging-api-viber';
+import { ViberClient } from '@sunray-eu/messaging-api-viber';
 import { addedDiff } from 'deep-object-diff';
 
 import Session from '../session/Session';

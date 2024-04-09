@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import invariant from 'invariant'; // Use inquirer
-import { TelegramClient } from 'messaging-api-telegram';
+import { TelegramClient } from '@sunray-eu/messaging-api-telegram';
 
 import getChannelConfig from '../../../shared/getChannelConfig';
 import getSubArgs from '../sh/utils/getSubArgs';

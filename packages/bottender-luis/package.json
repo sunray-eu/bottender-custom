@@ -1,12 +1,13 @@
 {
-  "name": "@bottender/luis",
+  "name": "@sunray-eu/bottender-luis",
   "version": "1.5.5",
   "description": "LUIS integration for Bottender.",
   "license": "MIT",
   "homepage": "https://bottender.js.org/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Yoctol/bottender.git"
+    "url": "https://github.com/sunray-eu/bottender-new.git",
+    "directory": "packages/bottender-luis"
   },
   "main": "dist/index.js",
   "files": [
@@ -14,14 +15,14 @@
   ],
   "types": "dist/index.d.ts",
   "dependencies": {
-    "axios": "^1.6.7",
+    "axios": "^1.6.8",
     "invariant": "^2.2.4"
   },
   "peerDependencies": {
-    "bottender": ">= 1.2.0-0"
+    "@sunray-eu/bottender": ">=1.5.5"
   },
   "devDependencies": {
-    "bottender": "^1.5.5"
+    "@sunray-eu/bottender": "^1.5.5"
   },
   "keywords": [
     "bot",
@@ -32,5 +33,9 @@
     "messaging",
     "nlu",
     "understanding"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  }
 }

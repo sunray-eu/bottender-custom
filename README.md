@@ -156,6 +156,12 @@ So that you can start straight away.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Yoctol/bottender)
 
+# Migration to ESM TODO
+
+- Repair tests and linting
+- Update docs
+- Update README
+
 ## License
 
 MIT © [Yoctol](https://github.com/Yoctol/bottender)

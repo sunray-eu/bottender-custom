@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { ViberClient } from 'messaging-api-viber';
+import { ViberClient } from '@sunray-eu/messaging-api-viber';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
 import getWebhookFromNgrok from '../../../../shared/getWebhookFromNgrok';

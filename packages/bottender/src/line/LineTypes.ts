@@ -1,6 +1,6 @@
 import { RequestContext } from '../types';
 
-export * from 'messaging-api-line/dist/LineTypes';
+export * from '@sunray-eu/messaging-api-line/dist/LineTypes';
 export { LineConnectorOptions } from './LineConnector';
 export { LineContextOptions } from './LineContext';
 

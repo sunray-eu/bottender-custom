@@ -1,4 +1,4 @@
-import { camelcaseKeysDeep } from 'messaging-api-common';
+import { camelcaseKeysDeep } from '@sunray-eu/messaging-api-common';
 
 import { Event } from '../context/Event';
 

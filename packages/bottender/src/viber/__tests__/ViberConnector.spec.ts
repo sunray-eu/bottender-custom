@@ -1,4 +1,4 @@
-import { ViberClient } from 'messaging-api-viber';
+import { ViberClient } from '@sunray-eu/messaging-api-viber';
 
 import ViberConnector from '../ViberConnector';
 import ViberContext from '../ViberContext';

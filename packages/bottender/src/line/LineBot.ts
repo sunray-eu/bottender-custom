@@ -1,4 +1,4 @@
-import { LineClient } from 'messaging-api-line';
+import { LineClient } from '@sunray-eu/messaging-api-line';
 
 import Bot, { OnRequest } from '../bot/Bot';
 import SessionStore from '../session/SessionStore';

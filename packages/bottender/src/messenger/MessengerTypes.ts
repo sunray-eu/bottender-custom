@@ -1,6 +1,6 @@
 import { RequestContext } from '../types';
 
-export * from 'messaging-api-messenger/dist/MessengerTypes';
+export * from '@sunray-eu/messaging-api-messenger/dist/MessengerTypes';
 
 export { MessengerConnectorOptions } from './MessengerConnector';
 export { FacebookBaseConnectorOptions } from './FacebookBaseConnector';

@@ -3,7 +3,7 @@
     "composite": true,
     "target": "es2020",
     "module": "ESNext",
-    "moduleResolution": "Node10",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,
@@ -26,6 +26,6 @@
     "baseUrl": ".",
     "paths": {
       "*": ["types/*"]
-    },
+    }
   }
 }

@@ -1,5 +1,5 @@
 import warning from 'warning';
-import { Line, LineClient } from 'messaging-api-line';
+import { Line, LineClient } from '@sunray-eu/messaging-api-line';
 
 import LineContext from '../LineContext';
 import LineEvent from '../LineEvent';

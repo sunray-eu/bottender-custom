@@ -1,5 +1,5 @@
 import warning from 'warning';
-import { SlackOAuthClient as SlackClient } from 'messaging-api-slack';
+import { SlackOAuthClient as SlackClient } from '@sunray-eu/messaging-api-slack';
 
 import SlackContext from '../SlackContext';
 import SlackEvent from '../SlackEvent';

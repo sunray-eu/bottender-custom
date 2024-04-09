@@ -1,16 +1,10 @@
 {
-  "lerna": "3.4.0",
   "npmClient": "yarn",
-  "useWorkspaces": true,
   "version": "1.5.5",
   "command": {
     "publish": {
-      "ignoreChanges": [
-        "__tests__/**"
-      ]
+      "ignoreChanges": ["__tests__/**"]
     }
   },
-  "publishConfig": {
-    "access": "public"
-  }
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

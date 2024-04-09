@@ -5,8 +5,8 @@ import invariant from 'invariant';
 import pProps from 'p-props';
 import warning from 'warning';
 import { JsonObject } from 'type-fest';
-import { SlackOAuthClient } from 'messaging-api-slack';
-import { camelcaseKeysDeep } from 'messaging-api-common';
+import { SlackOAuthClient } from '@sunray-eu/messaging-api-slack';
+import { camelcaseKeysDeep } from '@sunray-eu/messaging-api-common';
 
 import Session from '../session/Session';
 import { Connector } from '../bot/Connector';

@@ -4,7 +4,7 @@ import { EventEmitter } from 'events';
 import invariant from 'invariant';
 import warning from 'warning';
 import { JsonObject } from 'type-fest';
-import { LineClient } from 'messaging-api-line';
+import { LineClient } from '@sunray-eu/messaging-api-line';
 
 import Session from '../session/Session';
 import { Connector } from '../bot/Connector';

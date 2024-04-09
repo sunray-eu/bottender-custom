@@ -1,5 +1,5 @@
 import warning from 'warning';
-import { ViberClient, ViberTypes } from 'messaging-api-viber';
+import { ViberClient, ViberTypes } from '@sunray-eu/messaging-api-viber';
 
 import Context from '../context/Context';
 

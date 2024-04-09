@@ -1,8 +1,8 @@
-import { LineClient } from 'messaging-api-line';
-import { MessengerClient } from 'messaging-api-messenger';
-import { SlackOAuthClient } from 'messaging-api-slack';
-import { TelegramClient } from 'messaging-api-telegram';
-import { ViberClient } from 'messaging-api-viber';
+import { LineClient } from '@sunray-eu/messaging-api-line';
+import { MessengerClient } from '@sunray-eu/messaging-api-messenger';
+import { SlackOAuthClient } from '@sunray-eu/messaging-api-slack';
+import { TelegramClient } from '@sunray-eu/messaging-api-telegram';
+import { ViberClient } from '@sunray-eu/messaging-api-viber';
 
 import LineBot from '../line/LineBot';
 import MessengerBot from '../messenger/MessengerBot';

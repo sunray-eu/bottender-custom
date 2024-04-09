@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import invariant from 'invariant';
 import warning from 'warning';
 import { JsonObject } from 'type-fest';
-import { Line, LineClient } from 'messaging-api-line';
+import { Line, LineClient } from '@sunray-eu/messaging-api-line';
 import { chunk } from 'lodash-es';
 
 import Context from '../context/Context';

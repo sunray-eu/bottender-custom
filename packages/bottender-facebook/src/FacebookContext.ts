@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 
 import warning from 'warning';
-import { BatchRequest, FacebookBatchQueue } from 'facebook-batch';
+import { BatchRequest, FacebookBatchQueue } from '@sunray-eu/facebook-batch';
 import {
   Context,
   MessengerBatch,

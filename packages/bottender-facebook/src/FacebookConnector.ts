@@ -1,8 +1,8 @@
 import { EventEmitter } from 'events';
-import storage from 'node-persist';
 
+import storage from 'node-persist';
 import warning from 'warning';
-import { BatchConfig } from 'facebook-batch';
+import { BatchConfig } from '@sunray-eu/facebook-batch';
 import {
   Connector,
   FacebookBaseConnector,

@@ -1,4 +1,4 @@
-import { SlackOAuthClient } from 'messaging-api-slack';
+import { SlackOAuthClient } from '@sunray-eu/messaging-api-slack';
 
 import SlackConnector from '../SlackConnector';
 import SlackContext from '../SlackContext';

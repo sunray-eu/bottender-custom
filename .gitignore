@@ -28,3 +28,10 @@ node_modules/
 # Docusaurus i18n
 website/i18n/*
 website/translated_docs
+
+# Yarn files
+.yarn/install-state.gz
+
+# env files
+.env
+.envrc

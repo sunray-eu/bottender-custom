@@ -3,7 +3,7 @@ import { URL } from 'url';
 
 import warning from 'warning';
 import { JsonObject } from 'type-fest';
-import { MessengerClient } from 'messaging-api-messenger';
+import { MessengerClient } from '@sunray-eu/messaging-api-messenger';
 import { isAfter, isValid } from 'date-fns';
 
 import Session from '../session/Session';

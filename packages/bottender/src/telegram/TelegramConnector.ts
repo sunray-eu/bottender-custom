@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 
 import invariant from 'invariant';
 import { JsonObject } from 'type-fest';
-import { TelegramClient } from 'messaging-api-telegram';
+import { TelegramClient } from '@sunray-eu/messaging-api-telegram';
 
 import Session from '../session/Session';
 import { Connector } from '../bot/Connector';

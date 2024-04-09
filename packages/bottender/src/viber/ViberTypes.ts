@@ -1,6 +1,6 @@
 import { RequestContext } from '../types';
 
-export * from 'messaging-api-viber/dist/ViberTypes';
+export * from '@sunray-eu/messaging-api-viber/dist/ViberTypes';
 export { ViberConnectorOptions } from './ViberConnector';
 
 export type ViberUser = {

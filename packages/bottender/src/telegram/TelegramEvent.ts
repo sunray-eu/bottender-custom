@@ -1,4 +1,4 @@
-import { TelegramTypes } from 'messaging-api-telegram';
+import { TelegramTypes } from '@sunray-eu/messaging-api-telegram';
 
 import { Event } from '../context/Event';
 

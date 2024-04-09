@@ -1,10 +1,13 @@
 /* eslint-disable consistent-return */
 import chalk from 'chalk';
 import invariant from 'invariant';
-import { MessengerClient, MessengerTypes } from 'messaging-api-messenger';
+import {
+  MessengerClient,
+  MessengerTypes,
+} from '@sunray-eu/messaging-api-messenger';
 import { addedDiff, deletedDiff, diff, updatedDiff } from 'deep-object-diff';
 import { omit, pick } from 'lodash-es';
-import { snakecase } from 'messaging-api-common';
+import { snakecase } from '@sunray-eu/messaging-api-common';
 
 import getChannelConfig from '../../../shared/getChannelConfig';
 import getSubArgs from '../sh/utils/getSubArgs';

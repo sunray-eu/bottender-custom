@@ -1,4 +1,4 @@
-import { TelegramClient } from 'messaging-api-telegram';
+import { TelegramClient } from '@sunray-eu/messaging-api-telegram';
 
 import TelegramConnector from '../TelegramConnector';
 import TelegramContext from '../TelegramContext';

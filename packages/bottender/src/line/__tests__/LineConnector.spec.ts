@@ -1,5 +1,5 @@
 import warning from 'warning';
-import { LineClient } from 'messaging-api-line';
+import { LineClient } from '@sunray-eu/messaging-api-line';
 
 import LineConnector, { GetSessionKeyPrefixFunction } from '../LineConnector';
 import LineContext from '../LineContext';

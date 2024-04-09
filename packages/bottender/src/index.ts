@@ -47,7 +47,7 @@ export {
   Messenger,
   MessengerClient,
   MessengerBatch,
-} from 'messaging-api-messenger';
+} from '@sunray-eu/messaging-api-messenger';
 export { MessengerTypes };
 
 /* WhatsApp */
@@ -63,7 +63,7 @@ export { default as LineBot } from './line/LineBot';
 export { default as LineConnector } from './line/LineConnector';
 export { default as LineContext } from './line/LineContext';
 export { default as LineEvent } from './line/LineEvent';
-export { Line, LineNotify, LineClient } from 'messaging-api-line';
+export { Line, LineNotify, LineClient } from '@sunray-eu/messaging-api-line';
 export { LineTypes };
 
 /* Slack */
@@ -71,7 +71,7 @@ export { default as SlackBot } from './slack/SlackBot';
 export { default as SlackConnector } from './slack/SlackConnector';
 export { default as SlackContext } from './slack/SlackContext';
 export { default as SlackEvent } from './slack/SlackEvent';
-export { SlackOAuthClient } from 'messaging-api-slack';
+export { SlackOAuthClient } from '@sunray-eu/messaging-api-slack';
 export { SlackTypes };
 
 /* Telegram */
@@ -79,7 +79,7 @@ export { default as TelegramBot } from './telegram/TelegramBot';
 export { default as TelegramConnector } from './telegram/TelegramConnector';
 export { default as TelegramContext } from './telegram/TelegramContext';
 export { default as TelegramEvent } from './telegram/TelegramEvent';
-export { TelegramClient } from 'messaging-api-telegram';
+export { TelegramClient } from '@sunray-eu/messaging-api-telegram';
 export { TelegramTypes };
 
 /* Viber */
@@ -87,7 +87,7 @@ export { default as ViberBot } from './viber/ViberBot';
 export { default as ViberConnector } from './viber/ViberConnector';
 export { default as ViberContext } from './viber/ViberContext';
 export { default as ViberEvent } from './viber/ViberEvent';
-export { ViberClient } from 'messaging-api-viber';
+export { ViberClient } from '@sunray-eu/messaging-api-viber';
 export { ViberTypes };
 
 /* Types */

@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import invariant from 'invariant'; // Use inquirer
-import { ViberClient, ViberTypes } from 'messaging-api-viber';
+import { ViberClient, ViberTypes } from '@sunray-eu/messaging-api-viber';
 
 import getChannelConfig from '../../../shared/getChannelConfig';
 import getSubArgs from '../sh/utils/getSubArgs';

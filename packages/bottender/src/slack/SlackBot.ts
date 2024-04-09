@@ -1,5 +1,5 @@
 import { RTMClient } from '@slack/rtm-api';
-import { SlackOAuthClient } from 'messaging-api-slack';
+import { SlackOAuthClient } from '@sunray-eu/messaging-api-slack';
 
 import Bot, { OnRequest } from '../bot/Bot';
 import SessionStore from '../session/SessionStore';

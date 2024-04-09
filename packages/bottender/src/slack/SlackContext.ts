@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 
 import warning from 'warning';
 import { JsonObject } from 'type-fest';
-import { SlackOAuthClient, SlackTypes } from 'messaging-api-slack';
+import { SlackOAuthClient, SlackTypes } from '@sunray-eu/messaging-api-slack';
 
 import Context from '../context/Context';
 import Session from '../session/Session';

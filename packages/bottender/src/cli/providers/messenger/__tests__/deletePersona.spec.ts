@@ -1,4 +1,4 @@
-import { MessengerClient } from 'messaging-api-messenger';
+import { MessengerClient } from '@sunray-eu/messaging-api-messenger';
 
 import getChannelConfig from '../../../../shared/getChannelConfig';
 import { deletePersona } from '../persona';

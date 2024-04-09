@@ -1,7 +1,7 @@
 import updateNotifier from 'update-notifier';
 import { JsonObject } from 'type-fest';
 import { Result } from 'arg';
-import { camelcase } from 'messaging-api-common';
+import { camelcase } from '@sunray-eu/messaging-api-common';
 import { get } from 'lodash-es';
 
 import pkg from '../../package.json' assert { type: 'json' };

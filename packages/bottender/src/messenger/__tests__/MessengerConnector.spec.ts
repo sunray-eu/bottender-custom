@@ -1,5 +1,5 @@
 import warning from 'warning';
-import { MessengerClient } from 'messaging-api-messenger';
+import { MessengerClient } from '@sunray-eu/messaging-api-messenger';
 
 import MessengerConnector from '../MessengerConnector';
 import MessengerContext from '../MessengerContext';

@@ -1,8 +1,8 @@
-import { TelegramTypes as TelegramTypesInternal } from 'messaging-api-telegram';
+import { TelegramTypes as TelegramTypesInternal } from '@sunray-eu/messaging-api-telegram';
 
 import { RequestContext } from '../types';
 
-export * from 'messaging-api-telegram/dist/TelegramTypes';
+export * from '@sunray-eu/messaging-api-telegram/dist/TelegramTypes';
 export { TelegramConnectorOptions } from './TelegramConnector';
 
 export type TelegramRawEvent = {

@@ -1,12 +1,13 @@
 {
-  "name": "@bottender/rasa",
+  "name": "@sunray-eu/bottender-rasa",
   "version": "1.5.5",
   "description": "Rasa NLU integration for Bottender.",
   "license": "MIT",
   "homepage": "https://bottender.js.org/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Yoctol/bottender.git"
+    "url": "https://github.com/sunray-eu/bottender-new.git",
+    "directory": "packages/bottender-rasa"
   },
   "main": "dist/index.js",
   "files": [
@@ -15,14 +16,14 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "@types/lodash": "^4.14.202",
-    "axios": "^1.6.7",
+    "axios": "^1.6.8",
     "lodash-es": "^4.17.21"
   },
   "peerDependencies": {
-    "bottender": ">= 1.2.0-0"
+    "@sunray-eu/bottender": ">=1.5.5"
   },
   "devDependencies": {
-    "bottender": "^1.5.5"
+    "@sunray-eu/bottender": "^1.5.5"
   },
   "keywords": [
     "bot",
@@ -33,5 +34,9 @@
     "nlu",
     "rasa",
     "understanding"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
+  }
 }

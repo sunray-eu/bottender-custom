@@ -1,13 +1,14 @@
 {
-  "name": "@bottender/express",
+  "name": "@sunray-eu/bottender-express",
   "version": "1.5.1",
   "license": "MIT",
   "homepage": "https://bottender.js.org/",
-  "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Yoctol/bottender.git"
+    "url": "https://github.com/sunray-eu/bottender-new.git",
+    "directory": "packages/bottender-express"
   },
+  "type": "module",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -20,5 +21,9 @@
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
     "lodash": "^4.17.21"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
   }
 }

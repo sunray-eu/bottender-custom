@@ -2,9 +2,9 @@ import crypto from 'crypto';
 
 import invariant from 'invariant';
 import shortid from 'shortid';
-import { BatchConfig, FacebookBatchQueue } from 'facebook-batch';
+import { BatchConfig, FacebookBatchQueue } from '@sunray-eu/facebook-batch';
 import { JsonObject } from 'type-fest';
-import { MessengerClient } from 'messaging-api-messenger';
+import { MessengerClient } from '@sunray-eu/messaging-api-messenger';
 
 import { RequestContext } from '../types';
 

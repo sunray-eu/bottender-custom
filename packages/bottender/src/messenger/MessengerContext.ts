@@ -4,9 +4,12 @@ import { EventEmitter } from 'events';
 import invariant from 'invariant';
 import sleep from 'delay';
 import warning from 'warning';
-import { FacebookBatchQueue } from 'facebook-batch';
+import { FacebookBatchQueue } from '@sunray-eu/facebook-batch';
 import { JsonObject } from 'type-fest';
-import { MessengerBatch, MessengerClient } from 'messaging-api-messenger';
+import {
+  MessengerBatch,
+  MessengerClient,
+} from '@sunray-eu/messaging-api-messenger';
 
 import Context from '../context/Context';
 import Session from '../session/Session';

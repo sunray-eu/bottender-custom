@@ -1,6 +1,6 @@
 import { RequestContext } from '../types';
 
-export * from 'messaging-api-slack/dist/SlackTypes';
+export * from '@sunray-eu/messaging-api-slack/dist/SlackTypes';
 export { SlackConnectorOptions } from './SlackConnector';
 export { SlackContextOptions } from './SlackContext';
 

@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import { IncomingHttpHeaders } from 'http';
 
 import { JsonObject, JsonValue } from 'type-fest';
-import { PlainObject } from 'messaging-api-common';
+import { PlainObject } from '@sunray-eu/messaging-api-common';
 
 import Bot, { OnRequest } from './bot/Bot';
 import Context, { Response } from './context/Context';

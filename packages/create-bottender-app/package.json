@@ -1,6 +1,11 @@
 {
-  "name": "create-bottender-app",
+  "name": "@sunray-eu/create-bottender-app",
   "version": "1.5.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sunray-eu/bottender-new.git",
+    "directory": "packages/create-bottender-app"
+  },
   "bin": "bin/cli.js",
   "files": [
     "dist",
@@ -23,5 +28,9 @@
     "inquirer": "^8.1.5",
     "prettier": "^3.2.4",
     "validate-npm-package-name": "^5.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
   }
 }
