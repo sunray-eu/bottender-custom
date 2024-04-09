@@ -16,6 +16,9 @@ env:
 
 jobs:
   build:
+    permissions:
+      contents: read
+      packages: read
     name: Node.js, version from .nvmrc on ubuntu-latest
     runs-on: ubuntu-latest
     steps:
