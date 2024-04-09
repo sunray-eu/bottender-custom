@@ -34,7 +34,7 @@
     "testonly:cov": "jest --coverage",
     "testonly:watch": "jest --watch",
     "version": "cp README.md packages/bottender",
-    "versionup": "yarn version && lerna version"
+    "versionup": "lerna version"
   },
   "workspaces": [
     "packages/*"
