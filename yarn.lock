@@ -425,95 +425,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bottender/dialogflow@workspace:packages/bottender-dialogflow":
-  version: 0.0.0-use.local
-  resolution: "@bottender/dialogflow@workspace:packages/bottender-dialogflow"
+"@bottender/express@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "@bottender/express@npm:1.5.1"
   dependencies:
-    "@google-cloud/dialogflow": "npm:^6.3.1"
-    bottender: "npm:^1.5.5"
-    invariant: "npm:^2.2.4"
-  peerDependencies:
-    bottender: ">= 1.2.0-0"
-  languageName: unknown
-  linkType: soft
-
-"@bottender/express@npm:^1.5.1, @bottender/express@workspace:packages/bottender-express":
-  version: 0.0.0-use.local
-  resolution: "@bottender/express@workspace:packages/bottender-express"
-  dependencies:
-    "@types/body-parser": "npm:^1.19.5"
-    "@types/express": "npm:^4.17.21"
-    "@types/lodash": "npm:^4.14.202"
-    body-parser: "npm:^1.20.2"
-    express: "npm:^4.18.2"
-    lodash: "npm:^4.17.21"
-  languageName: unknown
-  linkType: soft
-
-"@bottender/facebook@workspace:packages/bottender-facebook":
-  version: 0.0.0-use.local
-  resolution: "@bottender/facebook@workspace:packages/bottender-facebook"
-  dependencies:
-    "@sunray-eu/axios-error": "npm:^1.2.0"
-    "@sunray-eu/facebook-batch": "npm:^1.2.0"
-    "@types/node-persist": "npm:^3.1.8"
-    bottender: "npm:^1.5.5"
-    lodash: "npm:^4.17.21"
-    node-persist: "npm:^4.0.1"
-    type-fest: "npm:4.7.1"
-    warning: "npm:^4.0.3"
-  peerDependencies:
-    bottender: ">= 1.5.1-alpha.4"
-  languageName: unknown
-  linkType: soft
-
-"@bottender/handlers@workspace:packages/bottender-handlers":
-  version: 0.0.0-use.local
-  resolution: "@bottender/handlers@workspace:packages/bottender-handlers"
-  dependencies:
-    "@types/koa-compose": "npm:^3.2.8"
-    "@types/warning": "npm:^3.0.3"
-    koa-compose: "npm:^4.1.0"
-    warning: "npm:^4.0.3"
-  languageName: unknown
-  linkType: soft
-
-"@bottender/luis@workspace:packages/bottender-luis":
-  version: 0.0.0-use.local
-  resolution: "@bottender/luis@workspace:packages/bottender-luis"
-  dependencies:
-    axios: "npm:^1.6.8"
-    bottender: "npm:^1.5.5"
-    invariant: "npm:^2.2.4"
-  peerDependencies:
-    bottender: ">= 1.2.0-0"
-  languageName: unknown
-  linkType: soft
-
-"@bottender/qna-maker@workspace:packages/bottender-qna-maker":
-  version: 0.0.0-use.local
-  resolution: "@bottender/qna-maker@workspace:packages/bottender-qna-maker"
-  dependencies:
-    axios: "npm:^1.6.7"
-    bottender: "npm:^1.5.5"
-    invariant: "npm:^2.2.4"
-  peerDependencies:
-    bottender: ">= 1.2.0-0"
-  languageName: unknown
-  linkType: soft
-
-"@bottender/rasa@workspace:packages/bottender-rasa":
-  version: 0.0.0-use.local
-  resolution: "@bottender/rasa@workspace:packages/bottender-rasa"
-  dependencies:
-    "@types/lodash": "npm:^4.14.202"
-    axios: "npm:^1.6.8"
-    bottender: "npm:^1.5.5"
-    lodash-es: "npm:^4.17.21"
-  peerDependencies:
-    bottender: ">= 1.2.0-0"
-  languageName: unknown
-  linkType: soft
+    "@types/body-parser": "npm:^1.19.0"
+    "@types/express": "npm:^4.17.2"
+    "@types/lodash": "npm:^4.14.149"
+    body-parser: "npm:^1.19.0"
+    express: "npm:^4.17.1"
+    lodash: "npm:^4.17.15"
+  checksum: 10c0/999bf427d5b5df1bc99169f14cb9559b9459f70fe082d49199b825f77f13e152c0aa157491cf50b8d94b62f0a389ef783ed7ddfdc14ebc71bd1cb7c33be6d4f5
+  languageName: node
+  linkType: hard
 
 "@bottender/workspace@workspace:.":
   version: 0.0.0-use.local
@@ -1873,6 +1797,196 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sunray-eu/bottender-dialogflow@workspace:packages/bottender-dialogflow":
+  version: 0.0.0-use.local
+  resolution: "@sunray-eu/bottender-dialogflow@workspace:packages/bottender-dialogflow"
+  dependencies:
+    "@google-cloud/dialogflow": "npm:^6.3.1"
+    "@sunray-eu/bottender": "npm:^1.5.5"
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    "@sunray-eu/bottender": ">=1.5.5"
+  languageName: unknown
+  linkType: soft
+
+"@sunray-eu/bottender-express@workspace:packages/bottender-express":
+  version: 0.0.0-use.local
+  resolution: "@sunray-eu/bottender-express@workspace:packages/bottender-express"
+  dependencies:
+    "@types/body-parser": "npm:^1.19.5"
+    "@types/express": "npm:^4.17.21"
+    "@types/lodash": "npm:^4.14.202"
+    body-parser: "npm:^1.20.2"
+    express: "npm:^4.18.2"
+    lodash: "npm:^4.17.21"
+  languageName: unknown
+  linkType: soft
+
+"@sunray-eu/bottender-facebook@workspace:packages/bottender-facebook":
+  version: 0.0.0-use.local
+  resolution: "@sunray-eu/bottender-facebook@workspace:packages/bottender-facebook"
+  dependencies:
+    "@sunray-eu/axios-error": "npm:^1.2.0"
+    "@sunray-eu/bottender": "npm:^1.5.5"
+    "@sunray-eu/facebook-batch": "npm:^1.2.0"
+    "@types/node-persist": "npm:^3.1.8"
+    lodash: "npm:^4.17.21"
+    node-persist: "npm:^4.0.1"
+    type-fest: "npm:4.7.1"
+    warning: "npm:^4.0.3"
+  peerDependencies:
+    "@sunray-eu/bottender": ">=1.5.5"
+  languageName: unknown
+  linkType: soft
+
+"@sunray-eu/bottender-handlers@workspace:packages/bottender-handlers":
+  version: 0.0.0-use.local
+  resolution: "@sunray-eu/bottender-handlers@workspace:packages/bottender-handlers"
+  dependencies:
+    "@types/koa-compose": "npm:^3.2.8"
+    "@types/warning": "npm:^3.0.3"
+    koa-compose: "npm:^4.1.0"
+    warning: "npm:^4.0.3"
+  languageName: unknown
+  linkType: soft
+
+"@sunray-eu/bottender-luis@workspace:packages/bottender-luis":
+  version: 0.0.0-use.local
+  resolution: "@sunray-eu/bottender-luis@workspace:packages/bottender-luis"
+  dependencies:
+    "@sunray-eu/bottender": "npm:^1.5.5"
+    axios: "npm:^1.6.8"
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    "@sunray-eu/bottender": ">=1.5.5"
+  languageName: unknown
+  linkType: soft
+
+"@sunray-eu/bottender-qna-maker@workspace:packages/bottender-qna-maker":
+  version: 0.0.0-use.local
+  resolution: "@sunray-eu/bottender-qna-maker@workspace:packages/bottender-qna-maker"
+  dependencies:
+    "@sunray-eu/bottender": "npm:^1.5.5"
+    axios: "npm:^1.6.7"
+    invariant: "npm:^2.2.4"
+  peerDependencies:
+    "@sunray-eu/bottender": ">=1.5.5"
+  languageName: unknown
+  linkType: soft
+
+"@sunray-eu/bottender-rasa@workspace:packages/bottender-rasa":
+  version: 0.0.0-use.local
+  resolution: "@sunray-eu/bottender-rasa@workspace:packages/bottender-rasa"
+  dependencies:
+    "@sunray-eu/bottender": "npm:^1.5.5"
+    "@types/lodash": "npm:^4.14.202"
+    axios: "npm:^1.6.8"
+    lodash-es: "npm:^4.17.21"
+  peerDependencies:
+    "@sunray-eu/bottender": ">=1.5.5"
+  languageName: unknown
+  linkType: soft
+
+"@sunray-eu/bottender@npm:^1.5.5, @sunray-eu/bottender@workspace:packages/bottender":
+  version: 0.0.0-use.local
+  resolution: "@sunray-eu/bottender@workspace:packages/bottender"
+  dependencies:
+    "@bottender/express": "npm:^1.5.1"
+    "@hapi/joi": "npm:^17.1.1"
+    "@slack/rtm-api": "npm:^6.2.1"
+    "@sunray-eu/axios-error": "npm:^1.2.0"
+    "@sunray-eu/facebook-batch": "npm:^1.2.0"
+    "@sunray-eu/messaging-api-common": "npm:^1.2.0"
+    "@sunray-eu/messaging-api-line": "npm:^1.2.0"
+    "@sunray-eu/messaging-api-messenger": "npm:^1.2.0"
+    "@sunray-eu/messaging-api-slack": "npm:^1.2.0"
+    "@sunray-eu/messaging-api-telegram": "npm:^1.2.0"
+    "@sunray-eu/messaging-api-viber": "npm:^1.2.0"
+    "@types/debug": "npm:^4.1.12"
+    "@types/express": "npm:4.17.21"
+    "@types/fs-extra": "npm:^11.0.4"
+    "@types/hapi__joi": "npm:^17.1.14"
+    "@types/inquirer": "npm:^9"
+    "@types/invariant": "npm:^2.2.37"
+    "@types/ioredis": "npm:^5.0.0"
+    "@types/jsonfile": "npm:^6.1.4"
+    "@types/lodash-es": "npm:^4.17.12"
+    "@types/lru-cache": "npm:^7.10.10"
+    "@types/mongodb": "npm:^4.0.7"
+    "@types/node-persist": "npm:^3.1.8"
+    "@types/object.fromentries": "npm:^2.0.4"
+    "@types/shortid": "npm:^0.0.32"
+    "@types/update-notifier": "npm:^6.0.8"
+    "@types/warning": "npm:^3.0.3"
+    arg: "npm:^5.0.2"
+    axios: "npm:^1.6.8"
+    body-parser: "npm:^1.20.2"
+    chalk: "npm:^5.3.0"
+    change-case: "npm:^5.4.4"
+    cli-table3: "npm:^0.6.3"
+    date-fns: "npm:^3.3.1"
+    debug: "npm:^4.3.4"
+    deep-object-diff: "npm:^1.1.9"
+    delay: "npm:^6.0.0"
+    dotenv: "npm:^16.4.1"
+    express: "npm:^4.18.2"
+    figures: "npm:^6.0.1"
+    file-type: "npm:^19.0.0"
+    fs-extra: "npm:^11.2.0"
+    hasha: "npm:^6.0.0"
+    import-fresh: "npm:^3.3.0"
+    inquirer: "npm:^9.2.14"
+    invariant: "npm:^2.2.4"
+    ioredis: "npm:^5.3.2"
+    jsonfile: "npm:^6.1.0"
+    lodash-es: "npm:^4.17.21"
+    lru-cache: "npm:^10.2.0"
+    minimist: "npm:^1.2.8"
+    mongodb: "npm:^6.3.0"
+    ngrok: "npm:^5.0.0-beta.2"
+    node-persist: "npm:^4.0.1"
+    nodemon: "npm:^3.0.3"
+    object.fromentries: "npm:^2.0.7"
+    p-map: "npm:^7.0.1"
+    p-props: "npm:^6.0.0"
+    path-to-regexp: "npm:^6.2.1"
+    pkg-dir: "npm:^8.0.0"
+    read-chunk: "npm:^4.0.3"
+    readline: "npm:^1.3.0"
+    recursive-readdir: "npm:^2.2.3"
+    shortid: "npm:^2.2.16"
+    type-fest: "npm:4.7.1"
+    update-notifier: "npm:^7.0.0"
+    warning: "npm:^4.0.3"
+  bin:
+    bottender: bin/cli.js
+    btd: bin/cli.js
+  languageName: unknown
+  linkType: soft
+
+"@sunray-eu/create-bottender-app@workspace:packages/create-bottender-app":
+  version: 0.0.0-use.local
+  resolution: "@sunray-eu/create-bottender-app@workspace:packages/create-bottender-app"
+  dependencies:
+    "@types/cross-spawn": "npm:^6.0.6"
+    "@types/figures": "npm:^3.0.1"
+    "@types/fs-extra": "npm:^11.0.4"
+    "@types/inquirer": "npm:^9.0.7"
+    "@types/node": "npm:^20.11.10"
+    chalk: "npm:^5.3.0"
+    commander: "npm:^11.1.0"
+    cross-spawn: "npm:^7.0.3"
+    envinfo: "npm:^7.11.0"
+    figures: "npm:^3.0.0"
+    fs-extra: "npm:^11.2.0"
+    inquirer: "npm:^8.1.5"
+    prettier: "npm:^3.2.4"
+    validate-npm-package-name: "npm:^5.0.0"
+  bin:
+    create-bottender-app: bin/cli.js
+  languageName: unknown
+  linkType: soft
+
 "@sunray-eu/facebook-batch@npm:^1.2.0":
   version: 1.2.0
   resolution: "@sunray-eu/facebook-batch@npm:1.2.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40sunray-eu%2Ffacebook-batch%2F1.2.0%2F97058adcc7c9bb0bac998dff13bacc7bdc3bbe8d"
@@ -2105,7 +2219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/body-parser@npm:*, @types/body-parser@npm:^1.19.5":
+"@types/body-parser@npm:*, @types/body-parser@npm:^1.19.0, @types/body-parser@npm:^1.19.5":
   version: 1.19.5
   resolution: "@types/body-parser@npm:1.19.5"
   dependencies:
@@ -2199,7 +2313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:*, @types/express@npm:4.17.21, @types/express@npm:^4.17.21":
+"@types/express@npm:*, @types/express@npm:4.17.21, @types/express@npm:^4.17.2, @types/express@npm:^4.17.21":
   version: 4.17.21
   resolution: "@types/express@npm:4.17.21"
   dependencies:
@@ -2410,7 +2524,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:*, @types/lodash@npm:^4.14.202, @types/lodash@npm:^4.17.0":
+"@types/lodash@npm:*, @types/lodash@npm:^4.14.149, @types/lodash@npm:^4.14.202, @types/lodash@npm:^4.17.0":
   version: 4.17.0
   resolution: "@types/lodash@npm:4.17.0"
   checksum: 10c0/4c5b41c9a6c41e2c05d08499e96f7940bcf194dcfa84356235b630da920c2a5e05f193618cea76006719bec61c76617dff02defa9d29934f9f6a76a49291bd8f
@@ -3493,7 +3607,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.20.2, body-parser@npm:^1.20.2":
+"body-parser@npm:1.20.2, body-parser@npm:^1.19.0, body-parser@npm:^1.20.2":
   version: 1.20.2
   resolution: "body-parser@npm:1.20.2"
   dependencies:
@@ -3512,83 +3626,6 @@ __metadata:
   checksum: 10c0/06f1438fff388a2e2354c96aa3ea8147b79bfcb1262dfcc2aae68ec13723d01d5781680657b74e9f83c808266d5baf52804032fbde2b7382b89bd8cdb273ace9
   languageName: node
   linkType: hard
-
-"bottender@npm:^1.5.5, bottender@workspace:packages/bottender":
-  version: 0.0.0-use.local
-  resolution: "bottender@workspace:packages/bottender"
-  dependencies:
-    "@bottender/express": "npm:^1.5.1"
-    "@hapi/joi": "npm:^17.1.1"
-    "@slack/rtm-api": "npm:^6.2.1"
-    "@sunray-eu/axios-error": "npm:^1.2.0"
-    "@sunray-eu/facebook-batch": "npm:^1.2.0"
-    "@sunray-eu/messaging-api-common": "npm:^1.2.0"
-    "@sunray-eu/messaging-api-line": "npm:^1.2.0"
-    "@sunray-eu/messaging-api-messenger": "npm:^1.2.0"
-    "@sunray-eu/messaging-api-slack": "npm:^1.2.0"
-    "@sunray-eu/messaging-api-telegram": "npm:^1.2.0"
-    "@sunray-eu/messaging-api-viber": "npm:^1.2.0"
-    "@types/debug": "npm:^4.1.12"
-    "@types/express": "npm:4.17.21"
-    "@types/fs-extra": "npm:^11.0.4"
-    "@types/hapi__joi": "npm:^17.1.14"
-    "@types/inquirer": "npm:^9"
-    "@types/invariant": "npm:^2.2.37"
-    "@types/ioredis": "npm:^5.0.0"
-    "@types/jsonfile": "npm:^6.1.4"
-    "@types/lodash-es": "npm:^4.17.12"
-    "@types/lru-cache": "npm:^7.10.10"
-    "@types/mongodb": "npm:^4.0.7"
-    "@types/node-persist": "npm:^3.1.8"
-    "@types/object.fromentries": "npm:^2.0.4"
-    "@types/shortid": "npm:^0.0.32"
-    "@types/update-notifier": "npm:^6.0.8"
-    "@types/warning": "npm:^3.0.3"
-    arg: "npm:^5.0.2"
-    axios: "npm:^1.6.8"
-    body-parser: "npm:^1.20.2"
-    chalk: "npm:^5.3.0"
-    change-case: "npm:^5.4.4"
-    cli-table3: "npm:^0.6.3"
-    date-fns: "npm:^3.3.1"
-    debug: "npm:^4.3.4"
-    deep-object-diff: "npm:^1.1.9"
-    delay: "npm:^6.0.0"
-    dotenv: "npm:^16.4.1"
-    express: "npm:^4.18.2"
-    figures: "npm:^6.0.1"
-    file-type: "npm:^19.0.0"
-    fs-extra: "npm:^11.2.0"
-    hasha: "npm:^6.0.0"
-    import-fresh: "npm:^3.3.0"
-    inquirer: "npm:^9.2.14"
-    invariant: "npm:^2.2.4"
-    ioredis: "npm:^5.3.2"
-    jsonfile: "npm:^6.1.0"
-    lodash-es: "npm:^4.17.21"
-    lru-cache: "npm:^10.2.0"
-    minimist: "npm:^1.2.8"
-    mongodb: "npm:^6.3.0"
-    ngrok: "npm:^5.0.0-beta.2"
-    node-persist: "npm:^4.0.1"
-    nodemon: "npm:^3.0.3"
-    object.fromentries: "npm:^2.0.7"
-    p-map: "npm:^7.0.1"
-    p-props: "npm:^6.0.0"
-    path-to-regexp: "npm:^6.2.1"
-    pkg-dir: "npm:^8.0.0"
-    read-chunk: "npm:^4.0.3"
-    readline: "npm:^1.3.0"
-    recursive-readdir: "npm:^2.2.3"
-    shortid: "npm:^2.2.16"
-    type-fest: "npm:4.7.1"
-    update-notifier: "npm:^7.0.0"
-    warning: "npm:^4.0.3"
-  bin:
-    bottender: bin/cli.js
-    btd: bin/cli.js
-  languageName: unknown
-  linkType: soft
 
 "boxen@npm:^7.1.1":
   version: 7.1.1
@@ -4463,29 +4500,6 @@ __metadata:
   checksum: 10c0/0382a9ed13208f8bfc22ca2f62b364855207dffdb73dc26e150ade78c3093f1cf56172df2dd460c8caf2afa91c0ed4ec8a88c62f8f9cd1cf423d26506aa8797a
   languageName: node
   linkType: hard
-
-"create-bottender-app@workspace:packages/create-bottender-app":
-  version: 0.0.0-use.local
-  resolution: "create-bottender-app@workspace:packages/create-bottender-app"
-  dependencies:
-    "@types/cross-spawn": "npm:^6.0.6"
-    "@types/figures": "npm:^3.0.1"
-    "@types/fs-extra": "npm:^11.0.4"
-    "@types/inquirer": "npm:^9.0.7"
-    "@types/node": "npm:^20.11.10"
-    chalk: "npm:^5.3.0"
-    commander: "npm:^11.1.0"
-    cross-spawn: "npm:^7.0.3"
-    envinfo: "npm:^7.11.0"
-    figures: "npm:^3.0.0"
-    fs-extra: "npm:^11.2.0"
-    inquirer: "npm:^8.1.5"
-    prettier: "npm:^3.2.4"
-    validate-npm-package-name: "npm:^5.0.0"
-  bin:
-    create-bottender-app: bin/cli.js
-  languageName: unknown
-  linkType: soft
 
 "create-jest@npm:^29.7.0":
   version: 29.7.0
@@ -5734,7 +5748,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.18.2":
+"express@npm:^4.17.1, express@npm:^4.18.2":
   version: 4.19.2
   resolution: "express@npm:4.19.2"
   dependencies:
@@ -8775,7 +8789,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.21":
+"lodash@npm:^4.17.15, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 10c0/d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
