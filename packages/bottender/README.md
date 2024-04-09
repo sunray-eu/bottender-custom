@@ -1,7 +1,7 @@
 # Bottender
 
 [![npm](https://img.shields.io/npm/v/bottender.svg)](https://www.npmjs.com/package/bottender)
-[![CircleCI](https://circleci.com/gh/Yoctol/bottender.svg?style=shield)](https://circleci.com/gh/Yoctol/bottender)
+[![Build Status](https://github.com/Yoctol/bottender/workflows/Node.js%20CI/badge.svg)](https://github.com/Yoctol/bottender/actions?query=workflow%3ANode.js%20CI+branch%3Amaster)
 [![coverage](https://codecov.io/gh/Yoctol/bottender/branch/master/graph/badge.svg)](https://codecov.io/gh/Yoctol/bottender)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Yoctol/bottender#contributing)
@@ -13,8 +13,8 @@
 
 > The readme below is the documentation for the v1 (stable) version of Bottender. To view the documentation:
 >
-> - for the latest Bottender version (v1.x), visit https://bottender.js.org/docs
-> - for the legacy Bottender version (v0.15), visit https://bottender.js.org/docs/0.15.17
+> - for the latest Bottender version (v1.x), visit https://bottender.js.org/docs/
+> - for the legacy Bottender version (v0.15), visit https://bottender.js.org/docs/0.15.17/
 
 - **Declarative** - Bottender takes care of the complexity of conversational UIs for you. Design actions for each event and state in your application, and Bottender will run accordingly. This approach makes your code more predictable and easier to debug.
 
@@ -155,6 +155,12 @@ You can use Gitpod(a free online VS Code-like) for contributing. With a single c
 So that you can start straight away.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Yoctol/bottender)
+
+# Migration to ESM TODO
+
+- Repair tests and linting
+- Update docs
+- Update README
 
 ## License
 
