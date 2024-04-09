@@ -79,8 +79,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Set PACKAGE_VERSION
         run: echo "PACKAGE_VERSION=$(cat lerna.json | jq -r .version)" >> $GITHUB_ENV
+
+        # Auth process
+      - name: Add npmAuthToken to .yarnrc.yml
+        run: yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
       - name: Install
         run: yarn install
+      - name: Checkout after auth and install
+        run: git checkout .
+
       - name: Publish
         run: npm run ci:release
         env:
