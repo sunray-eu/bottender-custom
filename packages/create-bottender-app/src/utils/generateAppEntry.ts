@@ -28,7 +28,7 @@ module.exports = async function App(context) {
 
   return prettier.format(
     `
-import { Action, ${contexts.join(', ')} } from 'bottender';
+import { Action, ${contexts.join(', ')} } from '@sunray-eu/bottender';
 
 export default async function App(context: ${contexts.join(
       ' | '

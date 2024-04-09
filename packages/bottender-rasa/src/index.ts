@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Action, Context, withProps } from 'bottender';
+import { Action, Context, withProps } from '@sunray-eu/bottender';
 import { get } from 'lodash-es';
 
 import { Entity, Intent, ParsedResult } from './types';

@@ -100,5 +100,5 @@ export * from './types';
 /* Plugins */
 export { default as withTyping } from './plugins/withTyping';
 
-export { createServer } from '@bottender/express';
+export { createServer } from '@sunray-eu/bottender-express';
 export { default as initializeServer } from './initializeServer';

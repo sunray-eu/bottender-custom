@@ -1,5 +1,5 @@
 import { JsonArray, JsonObject, JsonValue } from 'type-fest';
-import { MessengerTypes } from 'bottender';
+import { MessengerTypes } from '@sunray-eu/bottender';
 
 export { FacebookConnectorOptions } from './FacebookConnector';
 export { FacebookContextOptions } from './FacebookContext';

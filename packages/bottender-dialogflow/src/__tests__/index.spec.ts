@@ -1,7 +1,7 @@
 import dialogflowSdk, { protos } from '@google-cloud/dialogflow';
-import { Context, chain } from 'bottender';
+import { Context, chain } from '@sunray-eu/bottender';
 // FIXME: export public API for testing
-import { run } from 'bottender/dist/bot/Bot';
+import { run } from '@sunray-eu/bottender/dist/bot/Bot';
 
 import dialogflow from '..';
 

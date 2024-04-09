@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { IBot } from 'bottender/src/types';
+import { IBot } from '@sunray-eu/bottender/src/types';
 
 export type InstanceOfIBot<T> =
   T extends IBot<infer T1, infer T2, infer T3, infer T4>

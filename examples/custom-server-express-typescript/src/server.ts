@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import { bottender } from 'bottender';
+import { bottender } from '@sunray-eu/bottender';
 
 const app = bottender({
   dev: process.env.NODE_ENV !== 'production',

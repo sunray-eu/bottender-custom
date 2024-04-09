@@ -25,10 +25,10 @@
   ],
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@bottender/express": "^1.5.1",
     "@hapi/joi": "^17.1.1",
     "@slack/rtm-api": "^6.2.1",
     "@sunray-eu/axios-error": "^1.2.0",
+    "@sunray-eu/bottender-express": "^1.5.1",
     "@sunray-eu/facebook-batch": "^1.2.0",
     "@sunray-eu/messaging-api-common": "^1.2.0",
     "@sunray-eu/messaging-api-line": "^1.2.0",

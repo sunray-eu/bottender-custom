@@ -11,7 +11,7 @@ import {
   MessengerEvent,
   MessengerTypes,
   RequestContext,
-} from 'bottender';
+} from '@sunray-eu/bottender';
 import { JsonObject } from 'type-fest';
 
 import FacebookClient from './FacebookClient';

@@ -1,4 +1,4 @@
-import { MessengerContext, MessengerEvent } from 'bottender';
+import { MessengerContext, MessengerEvent } from '@sunray-eu/bottender';
 
 import FacebookClient from '../FacebookClient';
 import FacebookConnector from '../FacebookConnector';

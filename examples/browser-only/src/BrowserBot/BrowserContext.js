@@ -1,4 +1,4 @@
-import { Context } from 'bottender';
+import { Context } from '@sunray-eu/bottender';
 
 class BrowserContext extends Context {
   sendText(text) {

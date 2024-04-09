@@ -7,7 +7,7 @@ import {
   MessengerBatch,
   MessengerTypes,
   RequestContext,
-} from 'bottender';
+} from '@sunray-eu/bottender';
 import { JsonObject, JsonValue } from 'type-fest';
 
 import FacebookBatch from './FacebookBatch';

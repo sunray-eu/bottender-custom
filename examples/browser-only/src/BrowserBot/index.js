@@ -1,4 +1,4 @@
-import { Bot } from 'bottender';
+import { Bot } from '@sunray-eu/bottender';
 
 import BrowserConnector from './BrowserConnector';
 

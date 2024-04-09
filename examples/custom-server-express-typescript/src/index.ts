@@ -4,7 +4,7 @@ import {
   SlackContext,
   TelegramContext,
   ViberContext,
-} from 'bottender';
+} from '@sunray-eu/bottender';
 
 export default async function App(
   context:

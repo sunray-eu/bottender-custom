@@ -1,5 +1,5 @@
 import express from 'express';
-import { createServer, registerRoutes } from '@bottender/express';
+import { createServer, registerRoutes } from '@sunray-eu/bottender-express';
 import { merge } from 'lodash-es';
 
 import Bot from './bot/Bot';
