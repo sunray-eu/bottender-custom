@@ -31,7 +31,7 @@ jobs:
       - name: Enable corepack
         run: corepack enable yarn
 
-      - name: Setup yarn
+      - name: Setup latest yarn
         run: yarn set version berry
 
       - name: Setup Node.js
