@@ -14,7 +14,7 @@
     "build": "tsc --build tsconfig.build.json",
     "build:clean": "tsc --build tsconfig.build.json --clean",
     "build:watch": "yarn build --watch",
-    "clean": "git clean -dfqX -- ./node_modules **/{dist,node_modules}/ ./packages/*/tsconfig*tsbuildinfo ./.yarn",
+    "clean": "git clean -dfqX -- ./node_modules **/{dist,node_modules}/ ./packages/*/tsconfig*tsbuildinfo ./.yarn/install-state.gz",
     "postinstall": "yarn build",
     "lint": "eslint packages examples --ext=js,ts",
     "lint:fix": "yarn lint:fix:md && yarn lint:fix:ts",

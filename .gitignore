@@ -30,7 +30,7 @@ website/i18n/*
 website/translated_docs
 
 # Yarn files
-.yarn/install-state.gz
+**/.yarn/install-state.gz
 
 # env files
 .env
