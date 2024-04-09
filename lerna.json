@@ -1,4 +1,7 @@
 {
+  "packages": [
+    "packages/*"
+  ],
   "npmClient": "yarn",
   "version": "1.6.0",
   "command": {

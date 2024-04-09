@@ -36,9 +36,11 @@
     "version": "cp README.md packages/bottender",
     "versionup": "lerna version"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
   "devDependencies": {
     "@types/jest": "^29.5.11",
     "@types/prettier": "^3.0.0",
