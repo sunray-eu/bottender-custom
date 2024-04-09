@@ -43,20 +43,16 @@ jobs:
         run: yarn build
 
       - name: Run lint rules
-        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: yarn lint
 
       - name: Install npm dependencies for website
-        if: ${{ matrix.os == 'ubuntu-latest' }}
         working-directory: ./website
         run: yarn --frozen-lockfile
 
       - name: Run lint rules for website
-        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: yarn lint:website
 
       - name: Run type check for website
-        if: ${{ matrix.os == 'ubuntu-latest' }}
         working-directory: ./website
         run: yarn type-check
 
