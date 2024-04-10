@@ -1,6 +1,6 @@
 {
   "name": "@sunray-eu/bottender",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "A framework for building conversational user interfaces.",
   "license": "MIT",
   "homepage": "https://bottender.js.org/",
@@ -28,7 +28,7 @@
     "@hapi/joi": "^17.1.1",
     "@slack/rtm-api": "^6.2.1",
     "@sunray-eu/axios-error": "^1.2.0",
-    "@sunray-eu/bottender-express": "^1.6.1",
+    "@sunray-eu/bottender-express": "^1.6.2",
     "@sunray-eu/facebook-batch": "^1.2.0",
     "@sunray-eu/messaging-api-common": "^1.2.0",
     "@sunray-eu/messaging-api-line": "^1.2.0",
