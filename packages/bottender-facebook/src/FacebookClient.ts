@@ -70,29 +70,24 @@ export default class FacebookClient extends MessengerClient {
     T extends Types.CommentField = 'id' | 'message' | 'created_time',
   >(
     commentId: string,
-    {
-      fields = ['id' as T, 'message' as T, 'created_time' as T],
-    }: { fields?: T[] } = {}
+    { fields = [] }: { fields?: T[] } = {
+      fields: [],
+    }
   ): Promise<
-    Pick<
-      Types.Comment,
-      Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
-    >
+    Pick<Types.Comment, Types.CamelCaseUnion<Types.CommentKeyMap, T>>
   > {
     const conjunctFields = Array.isArray(fields) ? fields.join(',') : fields;
 
     return this.axios
-      .get<
-        Pick<
-          Types.Comment,
-          Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
-        >
-      >(`/${commentId}`, {
-        params: {
-          fields: conjunctFields,
-          access_token: this.accessToken,
-        },
-      })
+      .get<Pick<Types.Comment, Types.CamelCaseUnion<Types.CommentKeyMap, T>>>(
+        `/${commentId}`,
+        {
+          params: {
+            fields: conjunctFields,
+            access_token: this.accessToken,
+          },
+        }
+      )
       .then((res) => res.data, handleError);
   }
 
