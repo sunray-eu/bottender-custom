@@ -114,14 +114,11 @@ export default class FacebookClient extends MessengerClient {
       summary,
       filter,
       order,
-      fields = ['id' as T, 'message' as T, 'created_time' as T],
+      fields = [],
     }: Types.GetCommentsOptions<T, U> = {}
   ): Promise<
     Types.PagingData<
-      Pick<
-        Types.Comment,
-        Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
-      >[]
+      Pick<Types.Comment, Types.CamelCaseUnion<Types.CommentKeyMap, T>>[]
     > &
       (U extends true
         ? {
@@ -138,10 +135,7 @@ export default class FacebookClient extends MessengerClient {
     return this.axios
       .get<
         Types.PagingData<
-          Pick<
-            Types.Comment,
-            Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
-          >[]
+          Pick<Types.Comment, Types.CamelCaseUnion<Types.CommentKeyMap, T>>[]
         > &
           (U extends true
             ? {
