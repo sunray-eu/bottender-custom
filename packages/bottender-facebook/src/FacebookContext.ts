@@ -238,11 +238,15 @@ export default class FacebookContext extends Context<
    */
   public async getComment<
     T extends Types.CommentField = 'id' | 'message' | 'created_time',
-  >({
-    fields = ['id' as T, 'message' as T, 'created_time' as T],
-  }: Types.GetCommentOptions<T> = {}): Promise<Pick<
+  >(
+    {
+      fields = ['id' as T, 'message' as T, 'created_time' as T],
+    }: Types.GetCommentOptions<T> = {
+      fields: ['id' as T, 'message' as T, 'created_time' as T],
+    }
+  ): Promise<Pick<
     Types.Comment,
-    Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
+    Types.CamelCaseUnion<Types.CommentKeyMap, T>
   > | null> {
     const commentId = (this._event.rawEvent.value as Types.FeedComment)
       .commentId;
@@ -261,7 +265,7 @@ export default class FacebookContext extends Context<
         }) as BatchRequest
       ) as Promise<Pick<
         Types.Comment,
-        Types.CamelCaseUnion<Types.CommentKeyMap, (typeof fields)[number]>
+        Types.CamelCaseUnion<Types.CommentKeyMap, T>
       > | null>;
     }
     return this._client.getComment(commentId, { fields });

@@ -70,8 +70,10 @@ export default class FacebookClient extends MessengerClient {
     T extends Types.CommentField = 'id' | 'message' | 'created_time',
   >(
     commentId: string,
-    { fields = [] }: { fields?: T[] } = {
-      fields: [],
+    {
+      fields = ['id' as T, 'message' as T, 'created_time' as T],
+    }: { fields?: T[] } = {
+      fields: ['id' as T, 'message' as T, 'created_time' as T],
     }
   ): Promise<
     Pick<Types.Comment, Types.CamelCaseUnion<Types.CommentKeyMap, T>>
@@ -109,8 +111,10 @@ export default class FacebookClient extends MessengerClient {
       summary,
       filter,
       order,
-      fields = [],
-    }: Types.GetCommentsOptions<T, U> = {}
+      fields = ['id' as T, 'message' as T, 'created_time' as T],
+    }: Types.GetCommentsOptions<T, U> = {
+      fields: ['id' as T, 'message' as T, 'created_time' as T],
+    }
   ): Promise<
     Types.PagingData<
       Pick<Types.Comment, Types.CamelCaseUnion<Types.CommentKeyMap, T>>[]
