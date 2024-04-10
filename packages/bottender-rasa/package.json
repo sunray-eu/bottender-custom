@@ -1,6 +1,6 @@
 {
   "name": "@sunray-eu/bottender-rasa",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Rasa NLU integration for Bottender.",
   "license": "MIT",
   "homepage": "https://bottender.js.org/",
@@ -23,7 +23,7 @@
     "@sunray-eu/bottender": ">=1.5.5"
   },
   "devDependencies": {
-    "@sunray-eu/bottender": "^1.6.2"
+    "@sunray-eu/bottender": "^1.6.3"
   },
   "keywords": [
     "bot",
