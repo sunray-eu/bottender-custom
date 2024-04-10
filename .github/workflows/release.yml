@@ -22,7 +22,6 @@ jobs:
   check:
     permissions:
       contents: read
-      packages: read
     runs-on: ubuntu-latest
     # when release PR is merged or workflow_dispatch is triggered, run this job
     if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
