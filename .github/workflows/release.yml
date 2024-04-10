@@ -90,12 +90,12 @@ jobs:
       - name: Add npmAuthToken to .yarnrc.yml
         run: yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
       - name: Install
-        run: yarn --frozen-lockfile
+        run: yarn --immutable
       - name: Checkout after auth and install
         run: git checkout .
 
       - name: Publish
-        run: npm run ci:release
+        run: yarn ci:release
         env:
           # actions/setup-node create .npmrc with `NODE_AUTH_TOKEN` env if `registry-url` is defined
           # === `echo "${ registry-url }/:_authToken=${ NODE_AUTH_TOKEN }" > .npmrc`

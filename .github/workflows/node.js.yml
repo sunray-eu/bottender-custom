@@ -44,7 +44,7 @@ jobs:
         run: yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Install yarn dependencies
-        run: yarn --frozen-lockfile
+        run: yarn --immutable
 
       - name: Build TypeScript files
         run: yarn build
@@ -52,9 +52,9 @@ jobs:
       - name: Run lint rules
         run: yarn lint
 
-      - name: Install npm dependencies for website
+      - name: Install yarn dependencies for website
         working-directory: ./website
-        run: yarn --frozen-lockfile
+        run: yarn --immutable
 
       - name: Run lint rules for website
         run: yarn lint:website
@@ -65,7 +65,7 @@ jobs:
 
       # TODO: Fix tests
       # - name: Run tests
-      #   run: npm run testonly:cov -- --colors
+      #   run: yarn testonly:cov -- --colors
 
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v1
