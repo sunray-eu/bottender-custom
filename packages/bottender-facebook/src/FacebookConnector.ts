@@ -119,6 +119,7 @@ export default class FacebookConnector
       { ...currentCommentData, commentId: comment.commentId },
     ];
 
+    // TODO: Restrict to some max level
     while (true) {
       let parentComment: CommentLevelData | null =
         // eslint-disable-next-line no-await-in-loop
