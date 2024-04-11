@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@sunray-eu/bottender": "latest",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.2",
     "cross-env": "^6.0.3",
     "express": "^4.17.1"
   },
