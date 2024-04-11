@@ -10,14 +10,14 @@ import { getBottenderConfigFromGlobals } from './getGlobalVars';
 dotenv.config();
 
 /**
- * By default, it will try to require the module from `<root>/bottender.config.js`.
+ * By default, it will try to require the module from globals, if not found, then `<root>/bottender.config.js`.
  */
 const getBottenderConfig = async (): Promise<BottenderConfig> => {
   try {
     try {
       return getBottenderConfigFromGlobals();
     } catch {
-      return (await import(path.resolve('src/bottender.config'))).default;
+      return (await import(path.resolve('bottender.config.ts'))).default;
     }
   } catch (err) {
     if (
