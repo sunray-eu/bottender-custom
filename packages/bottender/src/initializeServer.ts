@@ -94,9 +94,9 @@ async function initializeServer({
       .forEach(({ channel, webhookPath, bot }) => {
         const routePath = webhookPath || `/webhooks/${channel}`;
         if (server) {
-          registerRoutes<typeof bot>(server, bot, { path: routePath });
+          registerRoutes(server, bot, { path: routePath });
         } else {
-          server = createServer<typeof bot>(bot, {
+          server = createServer(bot, {
             path: routePath,
           });
         }

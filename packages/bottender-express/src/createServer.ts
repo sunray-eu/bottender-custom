@@ -2,9 +2,9 @@ import bodyParser from 'body-parser';
 import express from 'express';
 
 import registerRoutes from './registerRoutes';
-import { InstanceOfIBot, RouteConfig } from './types';
+import { Bot, RouteConfig } from './types';
 
-function createServer<T>(bot: InstanceOfIBot<T>, config: RouteConfig = {}) {
+function createServer(bot: Bot, config: RouteConfig = {}) {
   const server = express();
 
   server.use(

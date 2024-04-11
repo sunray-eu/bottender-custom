@@ -1,11 +1,11 @@
 import express from 'express';
 
 import createMiddleware from './createMiddleware';
-import { InstanceOfIBot, RouteConfig } from './types';
+import { Bot, RouteConfig } from './types';
 
-function registerRoutes<T>(
+function registerRoutes(
   server: express.Application,
-  bot: InstanceOfIBot<T>,
+  bot: Bot,
   config: RouteConfig = {}
 ) {
   const path = config.path || '/';
