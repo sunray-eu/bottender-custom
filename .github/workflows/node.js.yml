@@ -38,8 +38,9 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
+        # Auth process
       - name: Add npmAuthToken to .yarnrc.yml
-        run: yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
+        run: yarn config set --home 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Install yarn dependencies
         run: yarn --immutable
