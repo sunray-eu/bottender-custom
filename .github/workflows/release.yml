@@ -87,21 +87,13 @@ jobs:
 
         # Auth process
       - name: Add npmAuthToken to .yarnrc.yml
-        run: yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
+        run: yarn config set --home 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
       - name: Install
         run: yarn --immutable
-      - name: Checkout after auth and install
-        run: git checkout .
 
       - name: Publish
         run: yarn ci:release
-        env:
-          # actions/setup-node create .npmrc with `NODE_AUTH_TOKEN` env if `registry-url` is defined
-          # === `echo "${ registry-url }/:_authToken=${ NODE_AUTH_TOKEN }" > .npmrc`
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # [EXAMPLE]
-          # for publishing packages to npm
-          # NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Git Tag
         uses: pkgdeps/git-tag-action@v3
         with:
