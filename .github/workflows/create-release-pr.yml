@@ -32,11 +32,9 @@ jobs:
 
         # Auth process
       - name: Add npmAuthToken to .yarnrc.yml
-        run: yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
-      - name: Install yarn dependencies
+        run: yarn config set --home 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
+      - name: Install
         run: yarn --immutable
-      - name: Checkout after auth and install
-        run: git checkout .
 
       - name: Update Version
         # run: |
