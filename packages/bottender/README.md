@@ -161,6 +161,7 @@ So that you can start straight away.
 - Repair tests and linting
 - Update docs
 - Update README
+- Add everywhere .js extensions for files
 
 ## License
 
