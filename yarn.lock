@@ -1788,14 +1788,14 @@ __metadata:
   resolution: "@sunray-eu/bottender-dialogflow@workspace:packages/bottender-dialogflow"
   dependencies:
     "@google-cloud/dialogflow": "npm:^6.3.1"
-    "@sunray-eu/bottender": "npm:^1.6.5"
+    "@sunray-eu/bottender": "npm:^1.6.6"
     invariant: "npm:^2.2.4"
   peerDependencies:
     "@sunray-eu/bottender": ">=1.5.5"
   languageName: unknown
   linkType: soft
 
-"@sunray-eu/bottender-express@npm:^1.6.5, @sunray-eu/bottender-express@workspace:packages/bottender-express":
+"@sunray-eu/bottender-express@npm:^1.6.6, @sunray-eu/bottender-express@workspace:packages/bottender-express":
   version: 0.0.0-use.local
   resolution: "@sunray-eu/bottender-express@workspace:packages/bottender-express"
   dependencies:
@@ -1813,7 +1813,7 @@ __metadata:
   resolution: "@sunray-eu/bottender-facebook@workspace:packages/bottender-facebook"
   dependencies:
     "@sunray-eu/axios-error": "npm:^1.2.0"
-    "@sunray-eu/bottender": "npm:^1.6.5"
+    "@sunray-eu/bottender": "npm:^1.6.6"
     "@sunray-eu/facebook-batch": "npm:^1.2.0"
     "@types/node-persist": "npm:^3.1.8"
     lodash: "npm:^4.17.21"
@@ -1840,7 +1840,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sunray-eu/bottender-luis@workspace:packages/bottender-luis"
   dependencies:
-    "@sunray-eu/bottender": "npm:^1.6.5"
+    "@sunray-eu/bottender": "npm:^1.6.6"
     axios: "npm:^1.6.8"
     invariant: "npm:^2.2.4"
   peerDependencies:
@@ -1852,7 +1852,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sunray-eu/bottender-qna-maker@workspace:packages/bottender-qna-maker"
   dependencies:
-    "@sunray-eu/bottender": "npm:^1.6.5"
+    "@sunray-eu/bottender": "npm:^1.6.6"
     axios: "npm:^1.6.7"
     invariant: "npm:^2.2.4"
   peerDependencies:
@@ -1864,7 +1864,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sunray-eu/bottender-rasa@workspace:packages/bottender-rasa"
   dependencies:
-    "@sunray-eu/bottender": "npm:^1.6.5"
+    "@sunray-eu/bottender": "npm:^1.6.6"
     "@types/lodash": "npm:^4.14.202"
     axios: "npm:^1.6.8"
     lodash-es: "npm:^4.17.21"
@@ -1873,14 +1873,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@sunray-eu/bottender@npm:^1.6.5, @sunray-eu/bottender@workspace:packages/bottender":
+"@sunray-eu/bottender@npm:^1.6.6, @sunray-eu/bottender@workspace:packages/bottender":
   version: 0.0.0-use.local
   resolution: "@sunray-eu/bottender@workspace:packages/bottender"
   dependencies:
     "@hapi/joi": "npm:^17.1.1"
     "@slack/rtm-api": "npm:^6.2.1"
     "@sunray-eu/axios-error": "npm:^1.2.0"
-    "@sunray-eu/bottender-express": "npm:^1.6.5"
+    "@sunray-eu/bottender-express": "npm:^1.6.6"
     "@sunray-eu/facebook-batch": "npm:^1.2.0"
     "@sunray-eu/messaging-api-common": "npm:^1.2.0"
     "@sunray-eu/messaging-api-line": "npm:^1.2.0"
