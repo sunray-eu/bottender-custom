@@ -50,15 +50,15 @@ export enum SessionDriver {
 }
 
 // Define individual store config types
-type MemoryStoreConfig = { memory?: { maxSize?: number } };
+type MemoryStoreConfig = { maxSize?: number };
 type FileStoreConfig = { dirname?: string };
 type RedisStoreConfig = {
   port?: number;
-  host?: string;
+  host: string;
   password?: string;
-  db?: number;
+  db: number;
 };
-type MongoStoreConfig = { url?: string; collectionName?: string };
+type MongoStoreConfig = { url: string; collectionName: string };
 
 // Map driver names to their config types
 type StoreConfigs = {
@@ -68,17 +68,40 @@ type StoreConfigs = {
   [SessionDriver.Mongo]: MongoStoreConfig;
 };
 
+// Utility type to convert a union type to an intersection type
+// type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (
+//   x: infer I
+// ) => void
+//   ? I
+//   : never;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type KeyCombos<T, O = T> = T extends infer U
+  ?
+      | [T]
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      | (KeyCombos<Exclude<O, U>> extends infer U extends any[]
+          ? U extends U
+            ? [T | U[number]]
+            : never
+          : never)
+  : never;
+
+type SessionDriverCombinations = KeyCombos<SessionDriver>;
+
 // Helper type for extracting store config based on the driver
-type StoreConfigForDriver<Driver extends SessionDriver> = {
-  [K in Driver]: { driver: K; expiresIn?: number; store: StoreConfigs[K] };
-}[Driver];
+type StoreConfigForDriver<Drivers extends SessionDriver[]> = {
+  [index in keyof Drivers]: {
+    driver: Drivers[index];
+    store: Pick<StoreConfigs, Drivers[index]>;
+  };
+}[number];
 
 // Union type for all possible session configurations
-export type SessionConfig =
-  | StoreConfigForDriver<SessionDriver.Memory>
-  | StoreConfigForDriver<SessionDriver.File>
-  | StoreConfigForDriver<SessionDriver.Redis>
-  | StoreConfigForDriver<SessionDriver.Mongo>;
+
+export type SessionConfig = {
+  expiresIn?: number;
+} & StoreConfigForDriver<SessionDriverCombinations>;
 
 export enum TimerMode {
   Extend,

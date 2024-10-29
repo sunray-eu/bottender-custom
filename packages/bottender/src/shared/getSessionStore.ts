@@ -17,13 +17,13 @@ async function getSessionStore(): Promise<SessionStore> {
 
   switch (driver) {
     case SessionDriver.Memory:
-      return new MemorySessionStore(store.memory, expiresIn);
+      return new MemorySessionStore(store[SessionDriver.Memory], expiresIn);
     case SessionDriver.File:
-      return new FileSessionStore(store || {}, expiresIn);
+      return new FileSessionStore(store[SessionDriver.File], expiresIn);
     case SessionDriver.Mongo:
-      return new MongoSessionStore(store || {}, expiresIn);
+      return new MongoSessionStore(store[SessionDriver.Mongo], expiresIn);
     case SessionDriver.Redis:
-      return new RedisSessionStore(store || {}, expiresIn);
+      return new RedisSessionStore(store[SessionDriver.Redis], expiresIn);
     default:
       warning(
         false,
